@@ -1,12 +1,10 @@
-package main
+package main // import "github.com/monocash/iban.im
 
 import (
 	"context"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/gin-gonic/gin"
 
 	graphql "github.com/graph-gophers/graphql-go"
 
@@ -30,7 +28,6 @@ func main() {
 	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
 	schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: db}, opts...)
 
-
 	port := os.Getenv("PORT")
 
 	if port == "" {
@@ -42,25 +39,25 @@ func main() {
 	mux.Handle("/query", handler.Authenticate(&handler.GraphQL{Schema: schema}))
 
 	s := &http.Server{
-		Addr:    ":"+port,
+		Addr:    ":" + port,
 		Handler: mux,
 	}
 
-	log.Println("Listening to... port "+port)
+	log.Println("Listening to... port " + port)
 	if err = s.ListenAndServe(); err != nil {
 		panic(err)
 	}
 	/*
-	TODO: Use Gin
-	router := gin.New()
-	router.Use(gin.Logger())
-	router.LoadHTMLGlob("templates/*.tmpl.html")
-	router.Static("/static", "static")
+		TODO: Use Gin
+		router := gin.New()
+		router.Use(gin.Logger())
+		router.LoadHTMLGlob("templates/*.tmpl.html")
+		router.Static("/static", "static")
 
-	router.GET("/home", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
-	})
+		router.GET("/home", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "index.tmpl.html", nil)
+		})
 
-	router.Run(":" + port)
+		router.Run(":" + port)
 	*/
 }
