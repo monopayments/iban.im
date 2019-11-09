@@ -12,9 +12,17 @@ import (
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/resolvers"
 	"github.com/monocash/iban.im/schema"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
+
+	router := gin.New()
+
+	router.Use(gin.Logger())
+	router.LoadHTMLGlob("templates/*.tmpl.html")
+	router.Static("/static", "static")
 
 	db, err := db.ConnectDB()
 	if err != nil {
@@ -57,7 +65,6 @@ func main() {
 		router.GET("/home", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "index.tmpl.html", nil)
 		})
-
-		router.Run(":" + port)
 	*/
+
 }

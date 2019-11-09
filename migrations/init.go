@@ -14,6 +14,8 @@ func main() {
 	defer d.Close()
 
 	d.DropTableIfExists(&model.User{})
+	d.DropTableIfExists(&model.Iban{})
+	d.DropTableIfExists(&model.Group{})
 	d.CreateTable(&model.User{})
 	d.CreateTable(&model.Iban{})
 	d.CreateTable(&model.Group{})
