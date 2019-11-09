@@ -13,7 +13,7 @@ func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
 
 	r.DB.Where("email = ?", args.Email).First(&user)
 
-	if user.ID == 0 {
+	if user.UserID == 0 {
 		msg := "Not Sign up yet"
 		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil
 	}
@@ -23,7 +23,7 @@ func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
 		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil
 	}
 
-	userIDString := strconv.Itoa(int(user.ID))
+	userIDString := strconv.Itoa(int(user.UserID))
 	tokenString, err := utils.SignJWT(&userIDString)
 	if err != nil {
 		msg := "Error in generating JWT"

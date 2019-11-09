@@ -15,7 +15,7 @@ type UserResponse struct {
 
 // ID for UserResponse
 func (r *UserResponse) ID() graphql.ID {
-	id := strconv.Itoa(int(r.u.ID))
+	id := strconv.Itoa(int(r.u.UserID))
 	return graphql.ID(id)
 }
 

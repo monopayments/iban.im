@@ -2,6 +2,7 @@ package main // import "github.com/monocash/iban.im
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -9,7 +10,6 @@ import (
 	graphql "github.com/graph-gophers/graphql-go"
 
 	"github.com/monocash/iban.im/db"
-	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/resolvers"
 	"github.com/monocash/iban.im/schema"
 
@@ -33,38 +33,44 @@ func main() {
 
 	context.Background()
 
-	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
-	schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: db}, opts...)
-
 	port := os.Getenv("PORT")
 
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
 
-	mux := http.NewServeMux()
-	mux.Handle("/", handler.GraphiQL{})
-	mux.Handle("/query", handler.Authenticate(&handler.GraphQL{Schema: schema}))
+	router.GET("/graph", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "graph.tmpl.html", nil)
+	})
 
-	s := &http.Server{
-		Addr:    ":" + port,
-		Handler: mux,
+	router.POST("/graph", func(c *gin.Context) {
+		var params struct {
+			Query         string                 `json:"query"`
+			OperationName string                 `json:"operationName"`
+			Variables     map[string]interface{} `json:"variables"`
+		}
+		if err := json.NewDecoder(c.Request.Body).Decode(&params); err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
+		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: db}, opts...)
+
+		response := schema.Exec(c, params.Query, params.OperationName, params.Variables)
+
+		if err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		c.JSON(200, response)
+	})
+
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+	})
+
+	if err := http.ListenAndServe(":"+port, router); err != nil {
+		log.Fatal(err)
 	}
-
-	log.Println("Listening to... port " + port)
-	if err = s.ListenAndServe(); err != nil {
-		panic(err)
-	}
-	/*
-		TODO: Use Gin
-		router := gin.New()
-		router.Use(gin.Logger())
-		router.LoadHTMLGlob("templates/*.tmpl.html")
-		router.Static("/static", "static")
-
-		router.GET("/home", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "index.tmpl.html", nil)
-		})
-	*/
 
 }

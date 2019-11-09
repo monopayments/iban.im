@@ -9,15 +9,15 @@ import (
 
 // GetMyProfile resolver
 func (r *Resolvers) GetMyProfile(ctx context.Context) (*GetMyProfileResponse, error) {
-	userID := ctx.Value(handler.ContextKey("userID"))
+	UserID := ctx.Value(handler.ContextKey("UserID"))
 
-	if userID == nil {
+	if UserID == nil {
 		msg := "Not Authorized"
 		return &GetMyProfileResponse{Status: false, Msg: &msg, User: nil}, nil
 	}
 
 	user := model.User{}
-	if err := r.DB.First(&user, userID).Error; err != nil {
+	if err := r.DB.First(&user, UserID).Error; err != nil {
 		msg := "Not found"
 		return &GetMyProfileResponse{Status: false, Msg: &msg, User: nil}, nil
 	}

@@ -1,23 +1,3 @@
-package handler
-
-import "net/http"
-
-// GraphiQL is an in-browser IDE for exploring GraphiQL APIs.
-// This handler returns GraphiQL when requested.
-//
-// For more information, see https://github.com/graphql/graphiql.
-type GraphiQL struct{}
-
-func (h GraphiQL) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		respond(w, errorJSON("only GET requests are supported"), http.StatusMethodNotAllowed)
-		return
-	}
-
-	w.Write(graphiql)
-}
-
-var graphiql = []byte(`
 <!DOCTYPE html>
 <html>
 	<head>
@@ -31,7 +11,7 @@ var graphiql = []byte(`
 		<div id="graphiql" style="height: 100vh;">Loading...</div>
 		<script>
 			function fetchGQL(params) {
-				return fetch("/query", {
+				return fetch("/graph", {
 					method: "post",
 					body: JSON.stringify(params),
 					credentials: "include",
@@ -53,4 +33,3 @@ var graphiql = []byte(`
 		</script>
 	</body>
 </html>
-`)

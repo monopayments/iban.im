@@ -13,9 +13,9 @@ type IbanResponse struct {
 	i *model.Iban
 }
 
-// ID for IbanResponse
-func (r *IbanResponse) ID() graphql.ID {
-	id := strconv.Itoa(int(r.i.ID))
+// UserID for IbanResponse
+func (r *IbanResponse) UserID() graphql.ID {
+	id := strconv.Itoa(int(r.i.IbanID))
 	return graphql.ID(id)
 }
 
