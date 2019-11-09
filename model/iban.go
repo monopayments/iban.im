@@ -16,4 +16,5 @@ type Iban struct {
 	Text      string `gorm:"type:varchar(100);not null"`
 	Password  string
 	Handle    string `gorm:"type:varchar(20);not null"`
+	Active    bool
 }

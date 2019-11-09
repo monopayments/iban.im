@@ -22,6 +22,8 @@ type User struct {
 	LastName  string `gorm:"type:varchar(50);not null"`
 	Bio       string
 	Avatar    string
+	Verified  bool
+	Active    bool
 }
 
 // HashPassword : hashing the password

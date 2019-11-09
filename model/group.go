@@ -14,5 +14,9 @@ type Group struct {
 	UpdatedAt time.Time
 	DeletedAt *time.Time
 	GroupName string `gorm:"type:varchar(100);not null"`
+	GroupURL  string `gorm:"type:varchar(244)"`
+	GroupLogo string
+	Verified  bool
+	Active    bool
 	Handle    string `gorm:"type:varchar(20);not null"`
 }
