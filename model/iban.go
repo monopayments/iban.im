@@ -9,7 +9,7 @@ import (
 
 // Iban : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`
 type Iban struct {
-	ID        uint `gorm:"primary_key"`
+	IbanID    uint `gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time
@@ -17,4 +17,6 @@ type Iban struct {
 	Password  string
 	Handle    string `gorm:"type:varchar(20);not null"`
 	Active    bool
+	OwnerID   uint
+	OwnerType string
 }

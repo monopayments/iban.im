@@ -11,7 +11,7 @@ import (
 
 // User : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`
 type User struct {
-	ID        uint `gorm:"primary_key"`
+	UserID    uint `gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time
@@ -24,6 +24,7 @@ type User struct {
 	Avatar    string
 	Verified  bool
 	Active    bool
+	Ibans     []Iban `gorm:"polymorphic:Owner;"`
 }
 
 // HashPassword : hashing the password
