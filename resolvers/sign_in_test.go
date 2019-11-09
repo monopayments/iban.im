@@ -18,5 +18,5 @@ func TestSignIn(t *testing.T) {
 	user := model.User{}
 	db.DB.Where("email = ?", "notexisting@test.com").First(&user)
 
-	t.Log(user.ID)
+	t.Log(user.UserID)
 }

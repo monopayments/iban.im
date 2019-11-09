@@ -3,6 +3,7 @@ module github.com/monocash/iban.im
 go 1.13
 
 require (
+	github.com/appleboy/gin-jwt/v2 v2.6.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.4.0
 	github.com/graph-gophers/graphql-go v0.0.0-20191031232829-adde0d0f76a3
