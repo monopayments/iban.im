@@ -6,19 +6,28 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
+	// "time"
 
 	graphql "github.com/graph-gophers/graphql-go"
 
 	"github.com/monocash/iban.im/db"
-	"github.com/monocash/iban.im/model"
+	// "github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/resolvers"
 	"github.com/monocash/iban.im/schema"
+	"github.com/monocash/iban.im/handler"
 
 	"github.com/appleboy/gin-jwt/v2"
 
 	"github.com/gin-gonic/gin"
+	"fmt"
+	"reflect"
 )
+var identityKey = "UserID"
+type login struct {
+	Handle   string `form:"handle" json:"handle" binding:"required"`
+	Password string `form:"password" json:"password" binding:"required"`
+}
+// var database *db.DB
 
 func main() {
 
@@ -28,12 +37,13 @@ func main() {
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
 
-	db, err := db.ConnectDB()
+	database, err := db.ConnectDB()
+	fmt.Printf("db: %+v:",database)
 	if err != nil {
 		panic(err)
 	}
 
-	defer db.Close()
+	defer database.Close()
 
 	context.Background()
 
@@ -43,77 +53,12 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	type login struct {
-		Handle   string `form:"handle" json:"handle" binding:"required"`
-		Password string `form:"password" json:"password" binding:"required"`
-	}
+	
 
-	var identityKey = "UserID"
+	
 
-	// the jwt middleware
-	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
-		Realm:       "ibanim zone",
-		Key:         []byte("ibanim key"),
-		Timeout:     time.Hour,
-		MaxRefresh:  time.Hour,
-		IdentityKey: identityKey,
-		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*model.User); ok {
-				return jwt.MapClaims{
-					identityKey: v.Handle,
-				}
-			}
-			return jwt.MapClaims{}
-		},
-		IdentityHandler: func(c *gin.Context) interface{} {
-			claims := jwt.ExtractClaims(c)
-			return &model.User{
-				Handle: claims[identityKey].(string),
-			}
-		},
-		Authenticator: func(c *gin.Context) (interface{}, error) {
-			var loginVals login
-			if err := c.ShouldBind(&loginVals); err != nil {
-				return "", jwt.ErrMissingLoginValues
-			}
+	authMiddleware, err := handler.AuthMiddleware(database)
 
-			user := model.User{}
-
-			db.DB.Where("email = ?", loginVals.Handle).First(&user)
-
-			if user.UserID == 0 {
-				return "", jwt.ErrFailedAuthentication
-			}
-
-			if !user.ComparePassword(loginVals.Password) {
-				return "", jwt.ErrFailedAuthentication
-			}
-
-			return &model.User{
-				UserID:    user.UserID,
-				LastName:  user.LastName,
-				FirstName: user.FirstName,
-			}, nil
-
-			return nil, jwt.ErrFailedAuthentication
-		},
-		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if v, ok := data.(*model.User); ok && v.Admin == true {
-				return true
-			}
-
-			return false
-		},
-		Unauthorized: func(c *gin.Context, code int, message string) {
-			c.JSON(code, gin.H{
-				"code":    code,
-				"message": message,
-			})
-		},
-		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
-		TokenHeadName: "Bearer",
-		TimeFunc:      time.Now,
-	})
 
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
@@ -129,11 +74,56 @@ func main() {
 		})
 	}
 
+	auth.Use(authMiddleware.MiddlewareFunc())
+	{
+		auth.GET("/hello", func (c *gin.Context) {
+			claims := jwt.ExtractClaims(c)
+			user, _ := c.Get(identityKey)
+			fmt.Println("inside hello")
+			fmt.Printf("claims: %+v",claims)
+			fmt.Printf("user: %+v",user)
+			fmt.Printf("gin context in hello : %+v",c)
+
+
+			c.JSON(200, gin.H{
+				"userID":   claims[identityKey],
+				"userName": user,
+				"text":     "Hello World.",
+			})
+		})
+	}
+
 	router.GET("/graph", func(c *gin.Context) {
+		fmt.Println("inside get graph")
 		c.HTML(http.StatusOK, "graph.tmpl.html", nil)
 	})
+	type ContextKey string
+	authMW := authMiddleware.MiddlewareFunc()
 
 	router.POST("/graph", func(c *gin.Context) {
+		fmt.Println("inside post graph")
+		// fmt.Printf("c body: %+v\n",c.Request.Body)
+		fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
+		// ctx := context.WithValue(c,ContextKey("UserID"), 1)
+		ctx := c.Request.Context()
+		ctx = context.WithValue(ctx,ContextKey("UserID"), 1)
+		fmt.Printf("context: %+v\n",ctx)
+		fmt.Println("c details")
+		getContextDetails(c)
+		fmt.Println("ctx details")
+
+		getContextDetails(ctx)
+		fmt.Println("details sonu")
+
+
+		if _, ok := c.Request.Header["Authorization"]; ok {
+			// fmt.Println("authmw oncesi")
+			authMW(c)
+			// fmt.Println("authmw sonrasi")
+
+		}
+		// ctx := context.WithValue(c, ContextKey("UserID"), 1)
+		// fmt.Printf("ctx: %+v\n",ctx)
 		var params struct {
 			Query         string                 `json:"query"`
 			OperationName string                 `json:"operationName"`
@@ -142,12 +132,13 @@ func main() {
 		if err := json.NewDecoder(c.Request.Body).Decode(&params); err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 		}
-
+		// fmt.Printf("c body: %+v\n",c.Request.Body)
+		// fmt.Printf("params: %+v\n",params)
 		opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
-		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: db}, opts...)
+		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: database}, opts...)
 
-		response := schema.Exec(c, params.Query, params.OperationName, params.Variables)
-
+		response := schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
+		fmt.Printf("response: %+v",string(response.Data))
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 		}
@@ -164,3 +155,44 @@ func main() {
 	}
 
 }
+
+func getContextDetails(c context.Context){
+	rv := reflect.ValueOf(c)
+	for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
+		rv = rv.Elem()
+	}
+
+	if rv.Kind() == reflect.Struct {
+		for i := 0; i < rv.NumField(); i++ {
+			f := rv.Type().Field(i)
+
+			if f.Name == "key" {
+				fmt.Println("key: ", rv.Field(i))
+			}
+			if f.Name == "Context" {
+				
+				// this is just a repetition of the above, so you can make a recursive
+				// function from it, or for loop, that stops when there are no more
+				// contexts to be inspected.
+				
+				rv := rv.Field(i)
+				for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
+					rv = rv.Elem()
+				}
+
+				if rv.Kind() == reflect.Struct {
+					for i := 0; i < rv.NumField(); i++ {
+						f := rv.Type().Field(i)
+
+						if f.Name == "key" {
+							fmt.Println("key: ", rv.Field(i))
+						}
+						// ...
+					}
+				}
+			}
+			
+		}
+	}
+}
+

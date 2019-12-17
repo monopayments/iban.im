@@ -5,12 +5,58 @@ import (
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
+	"fmt"
+	"reflect"
 )
+
+func getContextDetails(c context.Context){
+	rv := reflect.ValueOf(c)
+	for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
+		rv = rv.Elem()
+	}
+
+	if rv.Kind() == reflect.Struct {
+		for i := 0; i < rv.NumField(); i++ {
+			f := rv.Type().Field(i)
+
+			if f.Name == "key" {
+				fmt.Println("key: ", rv.Field(i))
+			}
+			if f.Name == "Context" {
+				
+				// this is just a repetition of the above, so you can make a recursive
+				// function from it, or for loop, that stops when there are no more
+				// contexts to be inspected.
+				
+				rv := rv.Field(i)
+				for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
+					rv = rv.Elem()
+				}
+
+				if rv.Kind() == reflect.Struct {
+					for i := 0; i < rv.NumField(); i++ {
+						f := rv.Type().Field(i)
+
+						if f.Name == "key" {
+							fmt.Println("key: ", rv.Field(i))
+						}else{
+							fmt.Println("value: ", rv.Field(i))
+						}
+						// ...
+					}
+				}
+			}
+		}
+	}
+}
 
 // GetMyProfile resolver
 func (r *Resolvers) GetMyProfile(ctx context.Context) (*GetMyProfileResponse, error) {
 	UserID := ctx.Value(handler.ContextKey("UserID"))
-
+	fmt.Println("inside resolver getmyprofile")
+	fmt.Println("UserID: ",UserID)
+	fmt.Printf("context:%+v\n",ctx)
+	getContextDetails(ctx)
 	if UserID == nil {
 		msg := "Not Authorized"
 		return &GetMyProfileResponse{Status: false, Msg: &msg, User: nil}, nil

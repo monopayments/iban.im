@@ -4,6 +4,7 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"fmt"
 )
 
 // SignJWT : func to generate JWT
@@ -14,6 +15,7 @@ func SignJWT(userID *string) (*string, error) {
 	})
 
 	tokenString, err := token.SignedString([]byte("my_secret"))
+	fmt.Println("signJWT token: ",tokenString)
 
 	return &tokenString, err
 }
