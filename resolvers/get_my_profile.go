@@ -40,7 +40,7 @@ func getContextDetails(c context.Context){
 						if f.Name == "key" {
 							fmt.Println("key: ", rv.Field(i))
 						}else{
-							fmt.Println("value: ", rv.Field(i))
+							fmt.Printf("value: %+v\n", rv.Field(i))
 						}
 						// ...
 					}
@@ -53,9 +53,12 @@ func getContextDetails(c context.Context){
 // GetMyProfile resolver
 func (r *Resolvers) GetMyProfile(ctx context.Context) (*GetMyProfileResponse, error) {
 	UserID := ctx.Value(handler.ContextKey("UserID"))
+	jwtToken := ctx.Value(handler.ContextKey("JWT_TOKEN"))
 	fmt.Println("inside resolver getmyprofile")
 	fmt.Println("UserID: ",UserID)
+	fmt.Println("JWT_TOKEN: ",jwtToken)
 	fmt.Printf("context:%+v\n",ctx)
+	// fmt.Printf("context Req :%+v\n",ctx.Request)
 	getContextDetails(ctx)
 	if UserID == nil {
 		msg := "Not Authorized"

@@ -97,7 +97,7 @@ func main() {
 		fmt.Println("inside get graph")
 		c.HTML(http.StatusOK, "graph.tmpl.html", nil)
 	})
-	type ContextKey string
+	// type ContextKey string
 	authMW := authMiddleware.MiddlewareFunc()
 
 	router.POST("/graph", func(c *gin.Context) {
@@ -106,12 +106,12 @@ func main() {
 		fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
 		// ctx := context.WithValue(c,ContextKey("UserID"), 1)
 		ctx := c.Request.Context()
-		ctx = context.WithValue(ctx,ContextKey("UserID"), 1)
+		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), 1)
 		fmt.Printf("context: %+v\n",ctx)
+		fmt.Printf("c: %+v\n",c)
 		fmt.Println("c details")
 		getContextDetails(c)
 		fmt.Println("ctx details")
-
 		getContextDetails(ctx)
 		fmt.Println("details sonu")
 

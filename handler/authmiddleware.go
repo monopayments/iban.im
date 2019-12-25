@@ -38,6 +38,9 @@ return jwt.New(&jwt.GinJWTMiddleware{
 	IdentityHandler: func(c *gin.Context) interface{} {
 		fmt.Println("inside identity handler")
 		claims := jwt.ExtractClaims(c)
+		fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
+		fmt.Printf("claims: %+v\n",claims)
+		fmt.Printf("claims identityKey: %+v\n",claims[identityKey])
 		return &model.User{
 			Handle: claims[identityKey].(string),
 		}
@@ -52,7 +55,7 @@ return jwt.New(&jwt.GinJWTMiddleware{
 		user := model.User{}
 
 		database.DB.Where("email = ?", loginVals.Handle).First(&user)
-		fmt.Println("user: ",user)
+		fmt.Printf("user: %+v\n",user)
 		if user.UserID == 0 {
 			return "", fmt.Errorf("fatih 2: %v ", jwt.ErrFailedAuthentication)
 		}
@@ -71,6 +74,8 @@ return jwt.New(&jwt.GinJWTMiddleware{
 	},
 	Authorizator: func(data interface{}, c *gin.Context) bool {
 		fmt.Println("inside Authorizator")
+		fmt.Printf("data: %+v\n",data)
+		fmt.Printf("c : %+v\n",c)
 		if _, ok := data.(*model.User);ok{
 			return true
 		}
