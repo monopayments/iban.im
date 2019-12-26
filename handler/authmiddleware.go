@@ -28,9 +28,12 @@ return jwt.New(&jwt.GinJWTMiddleware{
 	IdentityKey: identityKey,
 	PayloadFunc: func(data interface{}) jwt.MapClaims {
 		fmt.Println("inside payload func")
+		fmt.Printf("payload data: %+v\n",data)
 		if v, ok := data.(*model.User); ok {
+			fmt.Println("inside v, ",v.Handle, v.UserID)
+			
 			return jwt.MapClaims{
-				identityKey: v.Handle,
+				identityKey: v.UserID,
 			}
 		}
 		return jwt.MapClaims{}
@@ -38,11 +41,14 @@ return jwt.New(&jwt.GinJWTMiddleware{
 	IdentityHandler: func(c *gin.Context) interface{} {
 		fmt.Println("inside identity handler")
 		claims := jwt.ExtractClaims(c)
+		user, _ := c.Get(identityKey)
 		fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
 		fmt.Printf("claims: %+v\n",claims)
 		fmt.Printf("claims identityKey: %+v\n",claims[identityKey])
+		fmt.Printf("user: %+v\n",user)
+		// fmt.Printf("claims identityKey string: %+v\n",claims[identityKey]
 		return &model.User{
-			Handle: claims[identityKey].(string),
+			Handle: fmt.Sprintf("%f",claims[identityKey].(float64)),
 		}
 	},
 	Authenticator: func(c *gin.Context) (interface{}, error) {
@@ -65,9 +71,11 @@ return jwt.New(&jwt.GinJWTMiddleware{
 		}
 
 		return &model.User{
+			// Handle: (string)(user.UserID),
 			UserID:    user.UserID,
 			LastName:  user.LastName,
 			FirstName: user.FirstName,
+			// Handle: user.Email,
 		}, nil
 
 		return "", fmt.Errorf("fatih 4: %v ", jwt.ErrFailedAuthentication)

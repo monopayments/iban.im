@@ -80,9 +80,11 @@ func main() {
 			claims := jwt.ExtractClaims(c)
 			user, _ := c.Get(identityKey)
 			fmt.Println("inside hello")
-			fmt.Printf("claims: %+v",claims)
-			fmt.Printf("user: %+v",user)
-			fmt.Printf("gin context in hello : %+v",c)
+			fmt.Printf("claims: %+v\n",claims)
+			fmt.Printf("user: %+v\n",user)
+			fmt.Printf("gin context in hello : %+v\n",c)
+			fmt.Println("identityKey: ", identityKey)
+			fmt.Println("claims[identityKey]: ", claims[identityKey])
 
 
 			c.JSON(200, gin.H{
@@ -103,10 +105,20 @@ func main() {
 	router.POST("/graph", func(c *gin.Context) {
 		fmt.Println("inside post graph")
 		// fmt.Printf("c body: %+v\n",c.Request.Body)
-		fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
-		// ctx := context.WithValue(c,ContextKey("UserID"), 1)
 		ctx := c.Request.Context()
-		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), 1)
+
+		if _, ok := c.Request.Header["Authorization"]; ok {
+			fmt.Println("authmw oncesi")
+			authMW(c)
+			fmt.Println("authmw sonrasi")
+			fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
+		claims := jwt.ExtractClaims(c)
+		user, _ := c.Get(identityKey)
+		
+		// ctx := context.WithValue(c,ContextKey("UserID"), 1)
+		currentID:=int(claims[identityKey].(float64))
+		fmt.Printf("Current ID Type = %v\n", currentID) 
+		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), currentID)
 		fmt.Printf("context: %+v\n",ctx)
 		fmt.Printf("c: %+v\n",c)
 		fmt.Println("c details")
@@ -114,14 +126,22 @@ func main() {
 		fmt.Println("ctx details")
 		getContextDetails(ctx)
 		fmt.Println("details sonu")
+		
+		fmt.Printf("claims: %+v\n",claims)
+		fmt.Printf("user: %+v\n",user)
 
-
-		if _, ok := c.Request.Header["Authorization"]; ok {
-			// fmt.Println("authmw oncesi")
-			authMW(c)
-			// fmt.Println("authmw sonrasi")
 
 		}
+		
+
+		// claims = jwt.ExtractClaims(c)
+		// user, _ = c.Get(identityKey)
+		// fmt.Printf("claims ikinci: %+v\n",claims)
+		// fmt.Printf("user ikinci: %+v\n",user)
+		// fmt.Printf("user id : %+v\n",claims[identityKey])
+		// fmt.Printf("identity key: %+v\n",identityKey)
+
+
 		// ctx := context.WithValue(c, ContextKey("UserID"), 1)
 		// fmt.Printf("ctx: %+v\n",ctx)
 		var params struct {
