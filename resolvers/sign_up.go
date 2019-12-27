@@ -26,6 +26,7 @@ type signUpMutationArgs struct {
 	Password  string
 	FirstName string
 	LastName  string
+	Handle	  string
 }
 
 // SignUpResponse is the response type

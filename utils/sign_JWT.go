@@ -12,8 +12,8 @@ import (
 )
 
 // SignJWT : func to generate JWT
-func SignJWT(userID *string) (*string, error) {
-	jwt_token,err:= login_jwt_token()
+func SignJWT(userMail, userPass *string) (*string, error) {
+	jwt_token,err:= login_jwt_token(userMail,userPass)
 	// token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 	// 	"userID": *userID,
 	// 	"exp":    time.Now().Add(time.Second * 30 * 24 * 60 * 60),
@@ -32,12 +32,12 @@ type Payload struct {
 	Password string `json:"password"`
 }
 
-func login_jwt_token() (string,error){
+func login_jwt_token(userMail,userPass *string) (string,error){
 
 
 	data := Payload{
-		Handle:"test@test.com", 
-		Password:"12345678",
+		Handle:*userMail, 
+		Password:*userPass,
 	}
 
 	payloadBytes, err := json.Marshal(data)
@@ -46,6 +46,8 @@ func login_jwt_token() (string,error){
 		return "",err
 	}
 	fmt.Println("payloadbytes: ",payloadBytes)
+	fmt.Println("payloadbytes string: ",string(payloadBytes))
+
 	body := bytes.NewReader(payloadBytes)
 
 	req, err := http.NewRequest("POST", "http://localhost:8081/login", body)

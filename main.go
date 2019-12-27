@@ -23,10 +23,10 @@ import (
 	"reflect"
 )
 var identityKey = "UserID"
-type login struct {
-	Handle   string `form:"handle" json:"handle" binding:"required"`
-	Password string `form:"password" json:"password" binding:"required"`
-}
+// type login struct {
+// 	Handle   string `form:"handle" json:"handle" binding:"required"`
+// 	Password string `form:"password" json:"password" binding:"required"`
+// }
 // var database *db.DB
 
 func main() {
@@ -116,9 +116,12 @@ func main() {
 		user, _ := c.Get(identityKey)
 		
 		// ctx := context.WithValue(c,ContextKey("UserID"), 1)
-		currentID:=int(claims[identityKey].(float64))
+		currentID,ok:=claims[identityKey].(float64)
+		if !ok{
+			currentID=0
+		}
 		fmt.Printf("Current ID Type = %v\n", currentID) 
-		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), currentID)
+		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), int(currentID))
 		fmt.Printf("context: %+v\n",ctx)
 		fmt.Printf("c: %+v\n",c)
 		fmt.Println("c details")

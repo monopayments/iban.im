@@ -1,15 +1,18 @@
 package resolvers
 
 import (
-	"strconv"
+	// "strconv"
 
 	"github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/utils"
+	"fmt"
 )
 
 // SignIn mutation creates user
 func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
 	user := model.User{}
+	fmt.Println("signin resolver ici")
+	// fmt.Println("args: ",args)
 
 	r.DB.Where("email = ?", args.Email).First(&user)
 
@@ -23,8 +26,10 @@ func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
 		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil
 	}
 
-	userIDString := strconv.Itoa(int(user.UserID))
-	tokenString, err := utils.SignJWT(&userIDString)
+	// userIDString := strconv.Itoa(int(user.UserID))
+	userEmailString := user.Email
+	userPassString:= args.Password
+	tokenString, err := utils.SignJWT(&userEmailString,&userPassString)
 	if err != nil {
 		msg := "Error in generating JWT"
 		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil
