@@ -7,7 +7,7 @@ import (
 // SignUp mutation creates user
 func (r *Resolvers) SignUp(args signUpMutationArgs) (*SignUpResponse, error) {
 
-	newUser := model.User{Email: args.Email, Password: args.Password, FirstName: args.FirstName, LastName: args.LastName}
+	newUser := model.User{Email: args.Email, Password: args.Password, FirstName: args.FirstName, LastName: args.LastName, Handle: args.Handle}
 
 	if !r.DB.Where("email = ?", args.Email).First(&model.User{}).RecordNotFound() {
 		msg := "Already signed up"

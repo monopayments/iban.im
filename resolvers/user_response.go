@@ -58,3 +58,8 @@ func (r *UserResponse) CreatedAt() string {
 func (r *UserResponse) UpdatedAt() string {
 	return r.u.UpdatedAt.String()
 }
+
+// Handle for UserResponse
+func (r *UserResponse) Handle() string {
+	return r.u.Handle
+}
