@@ -108,12 +108,11 @@ func main() {
 		ctx := c.Request.Context()
 
 		if _, ok := c.Request.Header["Authorization"]; ok {
-			fmt.Println("authmw oncesi")
 			authMW(c)
-			fmt.Println("authmw sonrasi")
+			
 			fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
-		claims := jwt.ExtractClaims(c)
-		user, _ := c.Get(identityKey)
+			claims := jwt.ExtractClaims(c)
+			user, _ := c.Get(identityKey)
 		
 		// ctx := context.WithValue(c,ContextKey("UserID"), 1)
 		currentID,ok:=claims[identityKey].(float64)
@@ -124,11 +123,7 @@ func main() {
 		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), int(currentID))
 		fmt.Printf("context: %+v\n",ctx)
 		fmt.Printf("c: %+v\n",c)
-		fmt.Println("c details")
-		getContextDetails(c)
-		fmt.Println("ctx details")
-		getContextDetails(ctx)
-		fmt.Println("details sonu")
+
 		
 		fmt.Printf("claims: %+v\n",claims)
 		fmt.Printf("user: %+v\n",user)
@@ -136,17 +131,6 @@ func main() {
 
 		}
 		
-
-		// claims = jwt.ExtractClaims(c)
-		// user, _ = c.Get(identityKey)
-		// fmt.Printf("claims ikinci: %+v\n",claims)
-		// fmt.Printf("user ikinci: %+v\n",user)
-		// fmt.Printf("user id : %+v\n",claims[identityKey])
-		// fmt.Printf("identity key: %+v\n",identityKey)
-
-
-		// ctx := context.WithValue(c, ContextKey("UserID"), 1)
-		// fmt.Printf("ctx: %+v\n",ctx)
 		var params struct {
 			Query         string                 `json:"query"`
 			OperationName string                 `json:"operationName"`
