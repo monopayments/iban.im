@@ -5,11 +5,16 @@ import (
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
+	// "fmt"
 )
 
 // ChangeProfile mutation change profile
 func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutationArgs) (*ChangeProfileResponse, error) {
-	userID := ctx.Value(handler.ContextKey("userID"))
+	userID := ctx.Value(handler.ContextKey("UserID"))
+	// fmt.Println("inside change profile")
+	// fmt.Println("User id :",userID)
+	// fmt.Printf("ctx: %+v\n",ctx)
+
 
 	if userID == nil {
 		msg := "Not Authorized"

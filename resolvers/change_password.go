@@ -5,11 +5,16 @@ import (
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
+	// "fmt"
 )
 
 // ChangePassword mutation change password
 func (r *Resolvers) ChangePassword(ctx context.Context, args changePasswordMutationArgs) (*ChangePasswordResponse, error) {
-	userID := ctx.Value(handler.ContextKey("userID"))
+	userID := ctx.Value(handler.ContextKey("UserID"))
+	// fmt.Println("inside change password")
+	// fmt.Println("User id :",userID)
+	// fmt.Printf("ctx: %+v\n",ctx)
+
 
 	if userID == nil {
 		msg := "Not Authorized"
