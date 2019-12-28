@@ -154,6 +154,7 @@ mutation {
     error
     user {
       id
+      handle
       email
       firstName
       lastName
@@ -175,6 +176,7 @@ mutation {
     error
     user {
       id
+      handle
       email
       firstName
       lastName
