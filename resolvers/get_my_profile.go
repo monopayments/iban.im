@@ -5,7 +5,7 @@ import (
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
-	"github.com/monocash/iban.im/tools"
+	// "github.com/monocash/iban.im/tools"
 	
 )
 
@@ -14,13 +14,7 @@ import (
 // GetMyProfile resolver
 func (r *Resolvers) GetMyProfile(ctx context.Context) (*GetMyProfileResponse, error) {
 	UserID := ctx.Value(handler.ContextKey("UserID"))
-	// jwtToken := ctx.Value(handler.ContextKey("JWT_TOKEN"))
-	// fmt.Println("inside resolver getmyprofile")
-	// fmt.Println("UserID: ",UserID)
-	// fmt.Println("JWT_TOKEN: ",jwtToken)
-	// fmt.Printf("context:%+v\n",ctx)
-	// fmt.Printf("context Req :%+v\n",ctx.Request)
-	tools.GetContextDetails(ctx)
+	// tools.GetContextDetails(ctx)
 	if UserID == nil {
 		msg := "Not Authorized"
 		return &GetMyProfileResponse{Status: false, Msg: &msg, User: nil}, nil

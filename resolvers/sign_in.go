@@ -5,14 +5,13 @@ import (
 
 	"github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/utils"
-	"fmt"
+	// "fmt"
 )
 
 // SignIn mutation creates user
 func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
 	user := model.User{}
-	fmt.Println("signin resolver ici")
-	// fmt.Println("args: ",args)
+	// fmt.Println("signin resolver ici")
 
 	r.DB.Where("email = ?", args.Email).First(&user)
 
