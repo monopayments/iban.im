@@ -114,11 +114,13 @@ mutation {
     password: "12345678"
     firstName: "graphql"
     lastName: "go"
+    handle:"test"
   ) {
     ok
     error
     user {
       id
+      handle
       email
       firstName
       lastName
@@ -194,6 +196,7 @@ query {
     error
     user {
       id
+      handle
       email
       firstName
       lastName
