@@ -4,6 +4,7 @@ type Mutation {
     password: String!
     firstName: String!
     lastName: String!
+    handle: String!
   ): SignUpResponse!
   signIn(email: String!, password: String!): SignInResponse!
   changePassword(password: String!): ChangePasswordResponse!

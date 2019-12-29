@@ -5,10 +5,12 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	
 )
 
 // ValidateJWT : func to parse JWT and to return the identity
 func ValidateJWT(tokenString *string) (*string, error) {
+	fmt.Println("inside validate jwt", &tokenString)
 	token, err := jwt.Parse(*tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("  Unexpected signing method: %v", token.Header["alg"])
@@ -32,7 +34,7 @@ func ValidateJWT(tokenString *string) (*string, error) {
 			return nil, err
 		}
 
-		userID = claims["userID"].(string)
+		userID = claims["UserID"].(string)
 	} else {
 		// should do something here!
 		return nil, err

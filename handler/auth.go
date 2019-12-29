@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/monocash/iban.im/utils"
 	"net/http"
+	"fmt"
 )
 
 // ContextKey for the userID in context
@@ -13,15 +14,16 @@ type ContextKey string
 func Authenticate(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// var userID *string
-
+		fmt.Println("inside authentication")
 		ctx := r.Context()
 		userID, err := validateAuthHeader(ctx, r)
 		if err != nil {
 			// should do something here
+			fmt.Println("validate auth header error")
 		}
 
 		if userID != nil {
-			ctx = context.WithValue(ctx, ContextKey("userID"), *userID)
+			ctx = context.WithValue(ctx, ContextKey("UserID"), *userID)
 		}
 
 		h.ServeHTTP(w, r.WithContext(ctx))
@@ -29,6 +31,7 @@ func Authenticate(h http.Handler) http.Handler {
 }
 
 func validateAuthHeader(ctx context.Context, r *http.Request) (*string, error) {
+	fmt.Println("inside validate auth header")
 	tokenString := r.Header.Get("Authorization")
 	if tokenString == "" {
 		return nil, nil

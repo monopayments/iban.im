@@ -1,5 +1,6 @@
 type User {
   id: ID!
+  handle: String!
   email: String!
   firstName: String!
   lastName: String!

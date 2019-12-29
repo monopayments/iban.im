@@ -6,19 +6,22 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	graphql "github.com/graph-gophers/graphql-go"
 
 	"github.com/monocash/iban.im/db"
-	"github.com/monocash/iban.im/model"
+	// "github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/resolvers"
 	"github.com/monocash/iban.im/schema"
+	"github.com/monocash/iban.im/handler"
 
 	"github.com/appleboy/gin-jwt/v2"
 
 	"github.com/gin-gonic/gin"
+	"fmt"
 )
+var identityKey = "UserID"
+
 
 func main() {
 
@@ -28,12 +31,13 @@ func main() {
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
 
-	db, err := db.ConnectDB()
+	database, err := db.ConnectDB()
+	fmt.Printf("db: %+v:",database)
 	if err != nil {
 		panic(err)
 	}
 
-	defer db.Close()
+	defer database.Close()
 
 	context.Background()
 
@@ -43,77 +47,12 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	type login struct {
-		Handle   string `form:"handle" json:"handle" binding:"required"`
-		Password string `form:"password" json:"password" binding:"required"`
-	}
+	
 
-	var identityKey = "UserID"
+	
 
-	// the jwt middleware
-	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
-		Realm:       "ibanim zone",
-		Key:         []byte("ibanim key"),
-		Timeout:     time.Hour,
-		MaxRefresh:  time.Hour,
-		IdentityKey: identityKey,
-		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*model.User); ok {
-				return jwt.MapClaims{
-					identityKey: v.Handle,
-				}
-			}
-			return jwt.MapClaims{}
-		},
-		IdentityHandler: func(c *gin.Context) interface{} {
-			claims := jwt.ExtractClaims(c)
-			return &model.User{
-				Handle: claims[identityKey].(string),
-			}
-		},
-		Authenticator: func(c *gin.Context) (interface{}, error) {
-			var loginVals login
-			if err := c.ShouldBind(&loginVals); err != nil {
-				return "", jwt.ErrMissingLoginValues
-			}
+	authMiddleware, err := handler.AuthMiddleware(database)
 
-			user := model.User{}
-
-			db.DB.Where("email = ?", loginVals.Handle).First(&user)
-
-			if user.UserID == 0 {
-				return "", jwt.ErrFailedAuthentication
-			}
-
-			if !user.ComparePassword(loginVals.Password) {
-				return "", jwt.ErrFailedAuthentication
-			}
-
-			return &model.User{
-				UserID:    user.UserID,
-				LastName:  user.LastName,
-				FirstName: user.FirstName,
-			}, nil
-
-			return nil, jwt.ErrFailedAuthentication
-		},
-		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if v, ok := data.(*model.User); ok && v.Admin == true {
-				return true
-			}
-
-			return false
-		},
-		Unauthorized: func(c *gin.Context, code int, message string) {
-			c.JSON(code, gin.H{
-				"code":    code,
-				"message": message,
-			})
-		},
-		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
-		TokenHeadName: "Bearer",
-		TimeFunc:      time.Now,
-	})
 
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
@@ -129,11 +68,47 @@ func main() {
 		})
 	}
 
+	auth.Use(authMiddleware.MiddlewareFunc())
+	{
+		auth.GET("/hello", func (c *gin.Context) {
+			claims := jwt.ExtractClaims(c)
+			user, _ := c.Get(identityKey)
+
+			c.JSON(200, gin.H{
+				"userID":   claims[identityKey],
+				"userName": user,
+				"text":     "Hello World.",
+			})
+		})
+	}
+
 	router.GET("/graph", func(c *gin.Context) {
+		fmt.Println("inside get graph")
 		c.HTML(http.StatusOK, "graph.tmpl.html", nil)
 	})
+	
+	authMW := authMiddleware.MiddlewareFunc()
 
 	router.POST("/graph", func(c *gin.Context) {
+		// fmt.Println("inside post graph")
+		ctx := c.Request.Context()
+
+		if _, ok := c.Request.Header["Authorization"]; ok {
+			authMW(c)
+			
+			// fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
+			claims := jwt.ExtractClaims(c)
+
+		currentID,ok:=claims[identityKey].(float64)
+		if !ok{
+			currentID=0
+		}
+		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), int(currentID))
+
+
+
+		}
+		
 		var params struct {
 			Query         string                 `json:"query"`
 			OperationName string                 `json:"operationName"`
@@ -142,12 +117,11 @@ func main() {
 		if err := json.NewDecoder(c.Request.Body).Decode(&params); err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 		}
-
+	
 		opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
-		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: db}, opts...)
+		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: database}, opts...)
 
-		response := schema.Exec(c, params.Query, params.OperationName, params.Variables)
-
+		response := schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 		}
@@ -164,3 +138,6 @@ func main() {
 	}
 
 }
+
+
+
