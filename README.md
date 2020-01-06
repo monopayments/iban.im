@@ -210,3 +210,22 @@ query {
   }
 }
 ```
+
+### Add new Iban
+
+```graphql
+mutation {
+  ibanNew(text:"TR320010009999901234567890",password:"fatih",handle:"fakturk"){
+    ok
+    error
+    iban{
+      id
+      handle
+      text
+      password
+      createdAt
+      updatedAt
+    }
+  }
+}
+```
