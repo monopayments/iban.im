@@ -19,6 +19,12 @@ func (r *IbanResponse) ID() graphql.ID {
 	return graphql.ID(id)
 }
 
+// UserID for IbanResponse
+func (r *IbanResponse) OwnerID() string{
+	ownerId := strconv.Itoa(int(r.i.OwnerID))
+	return ownerId
+}
+
 // Text for IbanResponse
 func (r *IbanResponse) Text() string {
 	return r.i.Text

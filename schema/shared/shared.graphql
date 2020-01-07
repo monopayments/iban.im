@@ -17,4 +17,5 @@ type Iban {
   password: String!
   createdAt: String!
   updatedAt: String!
+  ownerId: String!
 }
