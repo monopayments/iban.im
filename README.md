@@ -1,6 +1,12 @@
 # iban.im
 IBAN Shorter
 
+## Purpose
+Shorten IBAN numbers with url such as :
+- iban.im/user/alias
+- iban.im/fakturk/garanti
+
+
 ## Stacks
 
 - Go
@@ -9,8 +15,11 @@ IBAN Shorter
 
 ## Features
 
-- User Sign Up & Sign In
-- Change a Password, Profile
+- [x] New users should Sign Up & Sign In
+- [x] Change a Password of user
+- [x] Change a Profile of user
+- [ ] When adding new IBAN check if is it exist with same name (we can add with different names)
+- [x] A user should add iban to only itself
 
 ## How to Run
 
