@@ -90,20 +90,20 @@ func main() {
 	authMW := authMiddleware.MiddlewareFunc()
 
 	router.POST("/graph", func(c *gin.Context) {
-		// fmt.Println("inside post graph")
+		fmt.Println("inside post graph")
 		ctx := c.Request.Context()
 
 		if _, ok := c.Request.Header["Authorization"]; ok {
 			authMW(c)
 			
-			// fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
+			fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
 			claims := jwt.ExtractClaims(c)
 
-		currentID,ok:=claims[identityKey].(float64)
-		if !ok{
-			currentID=0
-		}
-		ctx = context.WithValue(ctx,handler.ContextKey("UserID"), int(currentID))
+			currentID,ok:=claims[identityKey].(float64)
+			if !ok{
+				currentID=0
+			}
+			ctx = context.WithValue(ctx,handler.ContextKey("UserID"), int(currentID))
 
 
 

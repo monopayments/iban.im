@@ -6,6 +6,7 @@ import (
 	graphql "github.com/graph-gophers/graphql-go"
 
 	"github.com/monocash/iban.im/model"
+	"fmt"
 )
 
 // UserResponse is the user response type
@@ -61,5 +62,13 @@ func (r *UserResponse) UpdatedAt() string {
 
 // Handle for UserResponse
 func (r *UserResponse) Handle() string {
+	fmt.Printf("ibans: %+v\n",&r.u.Ibans)
+
 	return r.u.Handle
 }
+
+// Handle for UserResponse
+// func (r *UserResponse) Ibans() *[]*model.Iban {
+// 	fmt.Printf("ibans: %+v\n",&r.u.Ibans)
+// 	return &r.u.Ibans
+// }

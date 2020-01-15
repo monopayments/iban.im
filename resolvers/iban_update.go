@@ -5,13 +5,19 @@ import (
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
+	"fmt"
 )
 
 // IbanUpdate mutation change profile
 func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs) (*IbanUpdateResponse, error) {
-	ibanID := ctx.Value(handler.ContextKey("ibanID"))
+	userID := ctx.Value(handler.ContextKey("UserID"))
+	// ibanID:=1
+	fmt.Println("ibanid: ",userID)
+	fmt.Printf("ctx: %+v, args: %+v\n",ctx,args)
 
-	if ibanID == nil {
+
+
+	if userID == nil {
 		msg := "Not Authorized"
 		return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
 	}
@@ -24,23 +30,27 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 		return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
 	}
 	iban := model.Iban{}
+	userid,_:= userID.(int)
+	ibans:=r.FindIbanByOwner(userid)
+	
+	fmt.Printf("ibans: %+v\n",ibans)
 
-	if err := r.DB.First(&iban, ibanID).Error; err != nil {
-		msg := "Not existing iban"
-		return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
-	}
+	// if err := r.DB.First(&iban, ibanID).Error; err != nil {
+	// 	msg := "Not existing iban"
+	// 	return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
+	// }
 
-	if args.Password != nil {
-		iban.Password = *args.Password
-	}
+	// if args.Password != "" {
+	// 	iban.Password = args.Password
+	// }
 
-	r.DB.Save(&iban)
+	// r.DB.Save(&iban)
 	return &IbanUpdateResponse{Status: true, Msg: nil, Iban: &IbanResponse{i: &iban}}, nil
 }
 
 type IbanUpdateMutationArgs struct {
 	Text     string
-	Password *string
+	Password string
 	Handle   string
 }
 
@@ -60,3 +70,11 @@ func (r *IbanUpdateResponse) Ok() bool {
 func (r *IbanUpdateResponse) Error() *string {
 	return r.Msg
 }
+
+func (r *Resolvers)FindIbanByOwner(userID int)[]model.Iban{
+	ibans:=[]model.Iban{}
+	// Get all matched records
+	r.DB.Where("owner_id = ?", userID).Find(&ibans)
+	return ibans
+}
+
