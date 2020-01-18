@@ -19,11 +19,33 @@ func (r *Resolvers) IbanNew(ctx context.Context,args IbanNewMutationArgs) (*Iban
 	// userid,_:= strconv.Atoi(UserID.(string))
 	userid,_:= UserID.(int)
 	fmt.Printf("UserID: %+v, userid: %i\n",UserID,userid)
+	if r.HandleCheck(userid,args.Handle) {
+		msg := "Same Handle used : "+args.Handle
+		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, nil
+	}
+	
+
 	IbanNew := model.Iban{Text: args.Text, Password: args.Password, Handle: args.Handle, OwnerID:uint(userid)}
 
 	r.DB.Create(&IbanNew)
 
 	return &IbanNewResponse{Status: true, Msg: nil, Iban: &IbanResponse{i: &IbanNew}}, nil
+}
+// checks if this handle used for the user
+func (r *Resolvers) HandleCheck(userid int, handle string) bool{
+	handleStatus:=false
+	ibans:=r.FindIbanByOwner(userid)
+	fmt.Printf("ibans: %+v\n",ibans)
+	for _,iban := range ibans{
+		fmt.Println(iban.Handle)
+		if handle == iban.Handle{
+			fmt.Println("Same handle found")
+			handleStatus=true
+			break
+		}
+
+	}
+	return handleStatus
 }
 
 type IbanNewMutationArgs struct {
