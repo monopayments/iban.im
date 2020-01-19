@@ -1,8 +1,14 @@
 type Query {
   getMyProfile: GetMyProfileResponse!
+  getMyIbans: GetMyIbansResponse!
 }
 type GetMyProfileResponse {
   ok: Boolean!
   error: String
   user: User
+}
+type GetMyIbansResponse {
+  ok: Boolean!
+  error: String
+  iban: [Iban]
 }
