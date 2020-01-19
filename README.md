@@ -18,9 +18,13 @@ Shorten IBAN numbers with url such as :
 - [x] New users should Sign Up & Sign In
 - [x] Change a Password of user
 - [x] Change a Profile of user
+- [ ] Delete a Profile of user
+- [x] Get Profile of user
 - [x] New IBAN add for user
-- [ ] Update IBAN  for user
-- [ ] When adding new IBAN check if is it exist with same name (we can add with different names)
+- [x] Update IBAN  for user
+- [ ] Delete IBAN  for user
+- [ ] Get IBAN's of user
+- [x] When adding new IBAN check if is it exist with same name (we can add with different names)
 - [x] A user should add iban to only itself
 
 ## How to Run
@@ -240,3 +244,23 @@ mutation {
   }
 }
 ```
+
+### Update Iban
+
+```graphql
+mutation {
+  ibanUpdate(text:"TR420010009999901234567891",password:"fatih",handle:"garanti"){
+    ok
+    error
+    iban{
+      id
+      handle
+      text
+      password
+      createdAt
+      updatedAt
+    }
+  }
+}
+```
+

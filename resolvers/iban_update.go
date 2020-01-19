@@ -46,6 +46,7 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 
 	if args.Password != "" {
 		iban.Password = args.Password
+		iban.HashPassword()
 	}
 
 	r.DB.Save(&iban)
