@@ -23,7 +23,7 @@ Shorten IBAN numbers with url such as :
 - [x] New IBAN add for user
 - [x] Update IBAN  for user
 - [ ] Delete IBAN  for user
-- [ ] Get IBAN's of user
+- [x] Get IBAN's of user
 - [x] When adding new IBAN check if is it exist with same name (we can add with different names)
 - [x] A user should add iban to only itself
 
@@ -259,6 +259,26 @@ mutation {
       password
       createdAt
       updatedAt
+    }
+  }
+}
+```
+
+### Get User IBANs
+
+```graphql
+query {
+  getMyIbans {
+    ok
+    error
+    iban {
+       id
+      handle
+      text
+      password
+      createdAt
+      updatedAt
+      ownerId
     }
   }
 }
