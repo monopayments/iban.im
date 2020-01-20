@@ -4,13 +4,5 @@ image:
   file: .gitpod.dockerfile
 
 tasks:
-  - init: psql -c 'create database ibanim;' cd /workspace/iban.im && go mod vendor && go run ./migrations/init.go
-  - command: go run main.go -env gitpod
-ports:
-  - port: 1000-8999
-image:
-  file: .gitpod.dockerfile
-
-tasks:
   - init: psql -c 'create database ibanim;' && cd /workspace/iban.im && go mod vendor && go run ./migrations/init.go
   - command: go run main.go -env gitpod
