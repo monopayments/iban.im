@@ -16,7 +16,7 @@ type DB struct {
 var connStrMap = map[string]string {
 	"localhost" : "host=localhost port=5432 user=ibanim dbname=ibanim password=ibanim sslmode=disable",
 	"docker" : "host=host.docker.internal port=5432 user=ibanim dbname=ibanim password=ibanim sslmode=disable",
-	"gitpod" : "host=localhost port=5432 user=gitpod dbname=ibanim password= sslmode=disable",
+	"gitpod" : "host=localhost port=5432 user=gitpod dbname=ibanim sslmode=disable",
 }
 
 // ConnectDB : connecting DB
