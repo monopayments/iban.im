@@ -2,3 +2,7 @@ ports:
   - port: 1000-8999
 image:
   file: .gitpod.dockerfile
+
+tasks:
+  - init: cd /workspace/iban.im && go mod vendor && go run ./migrations/init.go
+  - command: go run main.go
