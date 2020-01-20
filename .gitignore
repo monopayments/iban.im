@@ -1,2 +1,4 @@
 .env
 .docker_build/
+.theia/
+.github/

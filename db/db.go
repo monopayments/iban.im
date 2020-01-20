@@ -1,6 +1,8 @@
 package db
 
 import (
+	"os"
+
 	"github.com/jinzhu/gorm"
 	// gorm postgres dialect
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -19,7 +21,9 @@ var connStrMap = map[string]string {
 
 // ConnectDB : connecting DB
 func ConnectDB(env string) (*DB, error) {
-
+	if env == "gitpod" {
+		os.Unsetenv("PGHOSTADDR")
+	}
 	db, err := gorm.Open("postgres", connStrMap[env])
 	// db, err := gorm.Open("postgres", "host=host.docker.internal port=5432 user=ibanim dbname=ibanim password=ibanim sslmode=disable")
 
