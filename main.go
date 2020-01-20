@@ -24,9 +24,11 @@ import (
 var identityKey = "UserID"
 
 var env string 
+var port string
 
 func main() {
 	flag.StringVar(&env, "env", "localhost", "[localhost docker gitpod]")
+	flag.StringVar(&port, "port", "8080", "port")
 	flag.Parse()
 
 	log.Println("env")
@@ -48,10 +50,10 @@ func main() {
 
 	context.Background()
 
-	port := os.Getenv("PORT")
+	envPort := os.Getenv("PORT")
 
-	if port == "" {
-		log.Fatal("$PORT must be set")
+	if envPort != "" {
+		port = envPort
 	}
 
 	
