@@ -25,7 +25,7 @@ type User struct {
 	Verified  bool
 	Active    bool
 	Admin     bool
-	Ibans     []Iban `gorm:"polymorphic:Owner;"`
+	Ibans     []*Iban `gorm:"polymorphic:Owner;"`
 }
 
 // HashPassword : hashing the password

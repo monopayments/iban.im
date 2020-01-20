@@ -1,6 +1,12 @@
 # iban.im
 IBAN Shorter
 
+## Purpose
+Shorten IBAN numbers with url such as :
+- iban.im/user/alias
+- iban.im/fakturk/garanti
+
+
 ## Stacks
 
 - Go
@@ -9,8 +15,17 @@ IBAN Shorter
 
 ## Features
 
-- User Sign Up & Sign In
-- Change a Password, Profile
+- [x] New users should Sign Up & Sign In
+- [x] Change a Password of user
+- [x] Change a Profile of user
+- [ ] Delete a Profile of user
+- [x] Get Profile of user
+- [x] New IBAN add for user
+- [x] Update IBAN  for user
+- [ ] Delete IBAN  for user
+- [x] Get IBAN's of user
+- [x] When adding new IBAN check if is it exist with same name (we can add with different names)
+- [x] A user should add iban to only itself
 
 ## How to Run
 
@@ -210,3 +225,62 @@ query {
   }
 }
 ```
+
+### Add new Iban
+
+```graphql
+mutation {
+  ibanNew(text:"TR320010009999901234567890",password:"fatih",handle:"fakturk"){
+    ok
+    error
+    iban{
+      id
+      handle
+      text
+      password
+      createdAt
+      updatedAt
+    }
+  }
+}
+```
+
+### Update Iban
+
+```graphql
+mutation {
+  ibanUpdate(text:"TR420010009999901234567891",password:"fatih",handle:"garanti"){
+    ok
+    error
+    iban{
+      id
+      handle
+      text
+      password
+      createdAt
+      updatedAt
+    }
+  }
+}
+```
+
+### Get User IBANs
+
+```graphql
+query {
+  getMyIbans {
+    ok
+    error
+    iban {
+       id
+      handle
+      text
+      password
+      createdAt
+      updatedAt
+      ownerId
+    }
+  }
+}
+```
+

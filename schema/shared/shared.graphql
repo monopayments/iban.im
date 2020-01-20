@@ -9,3 +9,13 @@ type User {
   createdAt: String!
   updatedAt: String!
 }
+
+type Iban {
+  id: ID!
+  handle: String!
+  text: String!
+  password: String!
+  createdAt: String!
+  updatedAt: String!
+  ownerId: String!
+}

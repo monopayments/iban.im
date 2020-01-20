@@ -27,7 +27,7 @@ return jwt.New(&jwt.GinJWTMiddleware{
 	MaxRefresh:  time.Hour,
 	IdentityKey: identityKey,
 	PayloadFunc: func(data interface{}) jwt.MapClaims {
-		// fmt.Println("inside payload func")
+		fmt.Println("inside payload func")
 		// fmt.Printf("payload data: %+v\n",data)
 		if v, ok := data.(*model.User); ok {
 			// fmt.Println("inside v, ",v.Handle, v.UserID)
@@ -39,7 +39,7 @@ return jwt.New(&jwt.GinJWTMiddleware{
 		return jwt.MapClaims{}
 	},
 	IdentityHandler: func(c *gin.Context) interface{} {
-		// fmt.Println("inside identity handler")
+		fmt.Println("inside identity handler")
 		claims := jwt.ExtractClaims(c)
 		// user, _ := c.Get(identityKey)
 		// fmt.Printf("claims: %+v\n",claims)
@@ -49,7 +49,7 @@ return jwt.New(&jwt.GinJWTMiddleware{
 		}
 	},
 	Authenticator: func(c *gin.Context) (interface{}, error) {
-		// fmt.Println("inside Authenticator")
+		fmt.Println("inside Authenticator")
 		var loginVals login
 		if err := c.ShouldBind(&loginVals); err != nil {
 			return "", fmt.Errorf("bind error : %v ", jwt.ErrMissingLoginValues) 
@@ -77,7 +77,7 @@ return jwt.New(&jwt.GinJWTMiddleware{
 		return "", fmt.Errorf("auth error : %v ", jwt.ErrFailedAuthentication)
 	},
 	Authorizator: func(data interface{}, c *gin.Context) bool {
-		// fmt.Println("inside Authorizator")
+		fmt.Println("inside Authorizator")
 		// fmt.Printf("data: %+v\n",data)
 
 
