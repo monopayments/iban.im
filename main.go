@@ -29,6 +29,9 @@ func main() {
 	flag.StringVar(&env, "env", "localhost", "[localhost docker gitpod]")
 	flag.Parse()
 
+	log.Println("env")
+	log.Println(env)
+
 	router := gin.New()
 
 	router.Use(gin.Logger())
