@@ -1,12 +1,20 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/monocash/iban.im/db"
 	"github.com/monocash/iban.im/model"
 )
 
+var env string 
+
 func main() {
-	d, err := db.ConnectDB()
+
+	flag.StringVar(&env, "env", "localhost", "[localhost docker gitpod]")
+	flag.Parse()
+
+	d, err := db.ConnectDB(env)
 	if err != nil {
 		panic(err)
 	}

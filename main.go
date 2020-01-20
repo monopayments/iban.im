@@ -31,9 +31,6 @@ func main() {
 	flag.StringVar(&port, "port", "8080", "port")
 	flag.Parse()
 
-	log.Println("env")
-	log.Println(env)
-
 	router := gin.New()
 
 	router.Use(gin.Logger())
