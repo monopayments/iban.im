@@ -2,6 +2,7 @@ package main // import "github.com/monocash/iban.im
 
 import (
 	"context"
+	"flag"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -22,8 +23,13 @@ import (
 )
 var identityKey = "UserID"
 
+var env string 
+var port string
 
 func main() {
+	flag.StringVar(&env, "env", "localhost", "[localhost docker gitpod]")
+	flag.StringVar(&port, "port", "8080", "port")
+	flag.Parse()
 
 	router := gin.New()
 
@@ -31,7 +37,7 @@ func main() {
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
 
-	database, err := db.ConnectDB()
+	database, err := db.ConnectDB(env)
 	fmt.Printf("db: %+v:",database)
 	if err != nil {
 		panic(err)
@@ -41,10 +47,10 @@ func main() {
 
 	context.Background()
 
-	port := os.Getenv("PORT")
+	envPort := os.Getenv("PORT")
 
-	if port == "" {
-		log.Fatal("$PORT must be set")
+	if envPort != "" {
+		port = envPort
 	}
 
 	
