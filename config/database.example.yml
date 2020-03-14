@@ -1,0 +1,4 @@
+db:
+  adapter: postgres
+  name: ibanim
+  user: ibanim

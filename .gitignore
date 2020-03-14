@@ -2,3 +2,6 @@
 .docker_build/
 .theia/
 vendor/
+config/database.yml
+config/smtp.yml
+.idea/
