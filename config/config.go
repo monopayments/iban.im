@@ -20,13 +20,19 @@ type SMTPConfig struct {
 	Password string
 }
 
+type AppConfig struct {
+	Port  uint `default:"7000" env:"PORT"`
+	Env   string `default:"localhost" env:"ENV"`
+}
+
 var Config = struct {
-	DB		DBConfig
-	SMTP 	SMTPConfig
+	DB   DBConfig
+	SMTP SMTPConfig
+	APP  AppConfig
 }{}
 
-func init()  {
-	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml"); err != nil {
+func init() {
+	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml","config/application.yml"); err != nil {
 		panic(err)
 	}
 }
