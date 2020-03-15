@@ -72,8 +72,6 @@ func AuthMiddleware() (*jwt.GinJWTMiddleware, error) {
 				FirstName: user.FirstName,
 				// Handle: user.Email,
 			}, nil
-
-			return "", fmt.Errorf("auth error : %v ", jwt.ErrFailedAuthentication)
 		},
 		Authorizator: func(data interface{}, c *gin.Context) bool {
 			fmt.Println("inside Authorizator")

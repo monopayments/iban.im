@@ -50,7 +50,7 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 		iban.HashPassword()
 	}
 
-	r.DB.Save(&iban)
+	config.DB.Save(&iban)
 	return &IbanUpdateResponse{Status: true, Msg: nil, Iban: &IbanResponse{i: &iban}}, nil
 }
 

@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	"github.com/monocash/iban.im/config"
 	"github.com/monocash/iban.im/model"
 	"context"
 	"github.com/monocash/iban.im/handler"
@@ -27,7 +28,7 @@ func (r *Resolvers) IbanNew(ctx context.Context,args IbanNewMutationArgs) (*Iban
 
 	IbanNew := model.Iban{Text: args.Text, Password: args.Password, Handle: args.Handle, OwnerID:uint(userid)}
 	IbanNew.HashPassword()
-	r.DB.Create(&IbanNew)
+	config.DB.Create(&IbanNew)
 
 	return &IbanNewResponse{Status: true, Msg: nil, Iban: &IbanResponse{i: &IbanNew}}, nil
 }

@@ -31,7 +31,7 @@ func (r *Resolvers) ChangePassword(ctx context.Context, args changePasswordMutat
 	user.Password = args.Password
 	user.HashPassword()
 
-	r.DB.Save(&user)
+	config.DB.Save(&user)
 	return &ChangePasswordResponse{Status: true, Msg: nil, User: &UserResponse{u: &user}}, nil
 }
 

@@ -5,6 +5,7 @@ import (
 
 	// jwt "github.com/dgrijalva/jwt-go"
 	"fmt"
+	"github.com/monocash/iban.im/config"
 	"net/http"
 	"bytes"
 	"encoding/json"
@@ -13,7 +14,7 @@ import (
 
 // SignJWT : func to generate JWT
 func SignJWT(userMail, userPass *string) (*string, error) {
-	jwt_token,err:= login_jwt_token(userMail,userPass)
+	jwtToken,err:= loginJwtToken(userMail,userPass)
 	// token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 	// 	"userID": *userID,
 	// 	"exp":    time.Now().Add(time.Second * 30 * 24 * 60 * 60),
@@ -25,14 +26,14 @@ func SignJWT(userMail, userPass *string) (*string, error) {
 	
 
 	// return &tokenString, err
-	return &jwt_token,err
+	return &jwtToken,err
 }
 type Payload struct {
 	Handle   string `json:"handle"`
 	Password string `json:"password"`
 }
 
-func login_jwt_token(userMail,userPass *string) (string,error){
+func loginJwtToken(userMail,userPass *string) (string,error){
 
 
 	data := Payload{
@@ -50,7 +51,7 @@ func login_jwt_token(userMail,userPass *string) (string,error){
 
 	body := bytes.NewReader(payloadBytes)
 
-	req, err := http.NewRequest("POST", "http://localhost:8081/login", body)
+	req, err := http.NewRequest("POST", fmt.Sprintf("http://localhost:%d/api/login",config.Config.App.Port), body)
 	if err != nil {
 		// handle err
 		fmt.Println("error in req: ",err)

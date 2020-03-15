@@ -26,10 +26,10 @@ type AppConfig struct {
 	Debug bool   `default:"false" env:"DEBUG"`
 
 	// Session Timeout - minutes
-	Timeout uint `default:"60"` // minutes
+	Timeout uint `default:"60"`
 
 	// Auth Max Refresh - minutes
-	MaxRefresh uint `default:"60"` // minutes
+	MaxRefresh uint `default:"60"`
 	
 	// Auth Key
 	Key string `default:"12345678" env:"AUTH_KEY"`

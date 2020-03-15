@@ -6,7 +6,9 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/monocash/iban.im/model"
+
+	// _ "github.com/jinzhu/gorm/dialects/sqlite"
 	"os"
 	"time"
 )
@@ -43,6 +45,8 @@ func init() {
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(30)
 	DB.DB().SetConnMaxLifetime(time.Second * 60)
+
+	DB.AutoMigrate(&model.User{},&model.Iban{},&model.Group{})
 
 	// TODO ping control for mysql
 	if adapter == "mysql" {

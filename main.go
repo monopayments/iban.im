@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/monocash/iban.im/config"
+	_ "github.com/monocash/iban.im/model"
 	"log"
 	"net/http"
 
@@ -31,7 +32,7 @@ func main() {
 
 	defer config.DB.Close()
 
-	context.Background()
+	//context.Background()
 
 	authMiddleware, err := handler.AuthMiddleware()
 
@@ -39,7 +40,7 @@ func main() {
 		log.Fatal("JWT Error:" + err.Error())
 	}
 
-	router.POST("/login", authMiddleware.LoginHandler)
+	router.POST("/api/login", authMiddleware.LoginHandler)
 	auth := router.Group("/auth")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
