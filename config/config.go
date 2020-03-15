@@ -21,18 +21,19 @@ type SMTPConfig struct {
 }
 
 type AppConfig struct {
-	Port  uint `default:"7000" env:"PORT"`
+	Port  uint   `default:"7000" env:"PORT"`
 	Env   string `default:"localhost" env:"ENV"`
+	Debug bool   `default:"false" env:"DEBUG"`
 }
 
 var Config = struct {
-	DB   DBConfig
-	SMTP SMTPConfig
-	APP  AppConfig
+	Db   DBConfig
+	Smtp SMTPConfig
+	App  AppConfig
 }{}
 
 func init() {
-	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml","config/application.yml"); err != nil {
+	if err := configor.Load(&Config, "config/database.yml", "config/smtp.yml", "config/application.yml"); err != nil {
 		panic(err)
 	}
 }
