@@ -17,7 +17,7 @@ func (r *Resolvers) GetMyIbans(ctx context.Context) (*GetMyIbansResponse, error)
 	}
 	userid,_:= UserID.(int)
 	ibans:=r.FindIbanByOwner(userid)
-	IbansResponse:=[]*IbanResponse{}
+	var IbansResponse []*IbanResponse
 	for _,iban := range ibans{
 		// fmt.Println(iban.Handle)
 		r:=IbanResponse{i:&iban}

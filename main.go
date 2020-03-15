@@ -2,34 +2,26 @@ package main // import "github.com/monocash/iban.im
 
 import (
 	"context"
-	"flag"
 	"encoding/json"
+	graphql "github.com/graph-gophers/graphql-go"
+	"github.com/monocash/iban.im/config"
 	"log"
 	"net/http"
-	"os"
 
-	graphql "github.com/graph-gophers/graphql-go"
-
-	"github.com/monocash/iban.im/db"
+	"github.com/monocash/iban.im/handler"
 	// "github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/resolvers"
 	"github.com/monocash/iban.im/schema"
-	"github.com/monocash/iban.im/handler"
 
 	"github.com/appleboy/gin-jwt/v2"
 
-	"github.com/gin-gonic/gin"
 	"fmt"
+	"github.com/gin-gonic/gin"
 )
-var identityKey = "UserID"
+const identityKey = "UserID"
 
-var env string 
-var port string
 
 func main() {
-	flag.StringVar(&env, "env", "localhost", "[localhost docker gitpod]")
-	flag.StringVar(&port, "port", "8080", "port")
-	flag.Parse()
 
 	router := gin.New()
 
@@ -37,28 +29,11 @@ func main() {
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
 
-	database, err := db.ConnectDB(env)
-	fmt.Printf("db: %+v:",database)
-	if err != nil {
-		panic(err)
-	}
-
-	defer database.Close()
+	defer config.DB.Close()
 
 	context.Background()
 
-	envPort := os.Getenv("PORT")
-
-	if envPort != "" {
-		port = envPort
-	}
-
-	
-
-	
-
-	authMiddleware, err := handler.AuthMiddleware(database)
-
+	authMiddleware, err := handler.AuthMiddleware()
 
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
@@ -125,7 +100,7 @@ func main() {
 		}
 	
 		opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
-		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: database}, opts...)
+		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{}, opts...)
 
 		response := schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 		if err != nil {
@@ -139,9 +114,7 @@ func main() {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
 
-	if err := http.ListenAndServe(":"+port, router); err != nil {
-		log.Fatal(err)
-	}
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d",config.Config.App.Port),router))
 
 }
 

@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/monocash/iban.im/config"
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
@@ -87,9 +88,9 @@ func (r *Resolvers) FindIbanByHandle(ibans []model.Iban, handle string )  model.
 	return model.Iban{}
 }
 func (r *Resolvers)FindIbanByOwner(userID int)[]model.Iban{
-	ibans:=[]model.Iban{}
+	var ibans []model.Iban
 	// Get all matched records
-	r.DB.Where("owner_id = ?", userID).Find(&ibans)
+	config.DB.Where("owner_id = ?", userID).Find(&ibans)
 	return ibans
 }
 

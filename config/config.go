@@ -24,6 +24,18 @@ type AppConfig struct {
 	Port  uint   `default:"7000" env:"PORT"`
 	Env   string `default:"localhost" env:"ENV"`
 	Debug bool   `default:"false" env:"DEBUG"`
+
+	// Session Timeout - minutes
+	Timeout uint `default:"60"` // minutes
+
+	// Auth Max Refresh - minutes
+	MaxRefresh uint `default:"60"` // minutes
+	
+	// Auth Key
+	Key string `default:"12345678" env:"AUTH_KEY"`
+
+	// Realm name to display to the user.
+	Realm string `default:"ibanim zone"`
 }
 
 var Config = struct {

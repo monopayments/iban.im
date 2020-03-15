@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/monocash/iban.im/config"
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
@@ -22,7 +23,7 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 	}
 	user := model.User{}
 
-	if err := r.DB.First(&user, userID).Error; err != nil {
+	if err := config.DB.First(&user, userID).Error; err != nil {
 		msg := "Not existing user"
 		return &ChangeProfileResponse{Status: false, Msg: &msg, User: nil}, nil
 	}

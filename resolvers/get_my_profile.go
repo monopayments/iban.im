@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/monocash/iban.im/config"
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
@@ -21,7 +22,7 @@ func (r *Resolvers) GetMyProfile(ctx context.Context) (*GetMyProfileResponse, er
 	}
 
 	user := model.User{}
-	if err := r.DB.First(&user, UserID).Error; err != nil {
+	if err := config.DB.First(&user, UserID).Error; err != nil {
 		msg := "Not found"
 		return &GetMyProfileResponse{Status: false, Msg: &msg, User: nil}, nil
 	}

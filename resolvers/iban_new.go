@@ -43,7 +43,6 @@ func (r *Resolvers) HandleCheck(userid int, handle string) bool{
 			handleStatus=true
 			break
 		}
-
 	}
 	return handleStatus
 }
