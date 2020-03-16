@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=latin-ext');
+
+body{
+  font-family: 'Montserrat', sans-serif;
+  background-color: #efefef;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 56px);
+}
+
+// display-flex-space-between-center
+.df-sbc{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// display-flex-center-center
+.df-cc{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cont{
+  max-width: 960px;
+  margin: auto;
+}
+
+#nav{
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  a{
+    >span{
+      text-transform: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+  }
+}
+
+.home-content {
+  padding: 2rem;
+  text-align: center;
+  >h1 {
+    padding-bottom: 1rem;
+  }
+  >div {
+    line-height: 1.5;
+  }
+}
+
+form.form {
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 1rem;
+  .v-input{
+    padding-top: 0;
+  }
+  &.login-form{
+    max-width: 400px;
+  }
+  &.register-form{
+    max-width: 600px;
+  }
+  .v-btn__content{
+    text-transform: none;
+  }
+}
+
+.text-center{
+  text-align: center;
+}
+
+.v-messages__message {
+  color: red;
+}

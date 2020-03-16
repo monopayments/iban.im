@@ -1,33 +1,30 @@
 <template>
-  <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn>
-          <router-link to="/">Home</router-link>
-        </v-btn>
-        <v-btn>
-          <router-link to="/login">Login</router-link>
-        </v-btn>
-      </v-toolbar-items>
-    </v-app-bar>
-
-    <v-content>
-      <router-view/>
-    </v-content>
-  </v-app>
+  <div>
+    <Nav />
+    <div class="page">
+      <v-content class="df-cc">
+        <router-view/>
+      </v-content>
+    </div>
+  </div>
 </template>
 
 <script>
 
+  import Nav from "./components/Nav";
+
 export default {
   name: 'App',
+  components: {
+    Nav
+  },
+
   data: () => ({
     //
   }),
 };
+
 </script>
+<style lang="scss">
+  @import './assets/styles/global.scss';
+</style>
