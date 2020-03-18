@@ -72,6 +72,7 @@ export default new Vuex.Store({
             }).then(({data}) => {
                 if(data.data.signIn.ok){
                     commit('SET_USER_DATA', data.data.signIn.token);
+                    router.push('/dashboard');
                 }else{
                     commit('SET_ERROR', data.data.signIn.error);
                 }
