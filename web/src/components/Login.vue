@@ -20,6 +20,11 @@
                             :rules="formRules.password"
                     />
                 </v-col>
+                <v-col v-if="error" :sm="12">
+                    <div class="error">
+                        {{error}}
+                    </div>
+                </v-col>
                 <v-col class="df-sbc">
                     <v-btn class="ma-2" outlined to="/register">Register</v-btn>
                     <v-btn class="ma-2" :dark="isValid" :disabled="!isValid" color="primary" @click="submit">Login</v-btn>
