@@ -5,11 +5,10 @@ import (
 	"encoding/json"
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/monocash/iban.im/config"
+	"github.com/monocash/iban.im/handler"
 	_ "github.com/monocash/iban.im/model"
 	"log"
 	"net/http"
-
-	"github.com/monocash/iban.im/handler"
 	// "github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/resolvers"
 	"github.com/monocash/iban.im/schema"
@@ -32,7 +31,7 @@ func main() {
 
 	defer config.DB.Close()
 
-	//context.Background()
+	context.Background()
 
 	authMiddleware, err := handler.AuthMiddleware()
 
@@ -43,26 +42,7 @@ func main() {
 	router.POST("/api/login", authMiddleware.LoginHandler)
 	auth := router.Group("/auth")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
-	auth.Use(authMiddleware.MiddlewareFunc())
-	{
-		auth.GET("/profile", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "graph.tmpl.html", nil)
-		})
-	}
 
-	auth.Use(authMiddleware.MiddlewareFunc())
-	{
-		auth.GET("/hello", func (c *gin.Context) {
-			claims := jwt.ExtractClaims(c)
-			user, _ := c.Get(identityKey)
-
-			c.JSON(200, gin.H{
-				"userID":   claims[identityKey],
-				"userName": user,
-				"text":     "Hello World.",
-			})
-		})
-	}
 
 	router.GET("/graph", func(c *gin.Context) {
 		fmt.Println("inside get graph")
@@ -86,9 +66,6 @@ func main() {
 				currentID=0
 			}
 			ctx = context.WithValue(ctx,handler.ContextKey("UserID"), int(currentID))
-
-
-
 		}
 		
 		var params struct {
@@ -97,16 +74,26 @@ func main() {
 			Variables     map[string]interface{} `json:"variables"`
 		}
 		if err := json.NewDecoder(c.Request.Body).Decode(&params); err != nil {
+			log.Println("decode error",err)
 			c.String(http.StatusInternalServerError, err.Error())
+			return
 		}
+
+		log.Println("params")
+		log.Println(params)
 	
 		opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
 		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{}, opts...)
 
 		response := schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 		if err != nil {
+			log.Println("graph response error",err.Error())
 			c.String(http.StatusInternalServerError, err.Error())
+			return
 		}
+
+		log.Println("response")
+		log.Printf("%v",string(response.Data))
 
 		c.JSON(200, response)
 	})

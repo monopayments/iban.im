@@ -14,13 +14,13 @@ type User struct {
 	UserID    uint `gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt *time.Time
+	DeletedAt *time.Time `sql:"index"`
 	Email     string `gorm:"type:varchar(100);not null"`
 	Password  string `gorm:"not null"`
 	Handle    string `gorm:"not null"`
 	FirstName string `gorm:"type:varchar(50);not null"`
 	LastName  string `gorm:"type:varchar(50);not null"`
-	Bio       string
+	Bio       string `gorm:"type:text"`
 	Avatar    string
 	Verified  bool
 	Active    bool

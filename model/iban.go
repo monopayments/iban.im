@@ -13,7 +13,7 @@ type Iban struct {
 	IbanID    uint `gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt *time.Time
+	DeletedAt *time.Time `sql:"index"`
 	Text      string `gorm:"type:varchar(100);not null"`
 	Password  string
 	Handle    string `gorm:"type:varchar(20);not null"`

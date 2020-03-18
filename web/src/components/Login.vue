@@ -31,6 +31,9 @@
 </template>
 
 <script>
+
+    import { mapState } from 'vuex';
+
     export default {
         name: "Login",
         data: () => ({
@@ -47,9 +50,12 @@
                 password: [v => !!v || 'Şifre zorunlu alandır']
             }
         }),
+        computed: {
+            ...mapState(['error'])
+        },
         methods: {
             submit() {
-
+                this.$store.dispatch('login', this.formData);
             }
         }
     }
