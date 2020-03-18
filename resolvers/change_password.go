@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/monocash/iban.im/config"
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
@@ -22,7 +23,7 @@ func (r *Resolvers) ChangePassword(ctx context.Context, args changePasswordMutat
 	}
 	user := model.User{}
 
-	if err := r.DB.First(&user, userID).Error; err != nil {
+	if err := config.DB.First(&user, userID).Error; err != nil {
 		msg := "Not existing user"
 		return &ChangePasswordResponse{Status: false, Msg: &msg, User: nil}, nil
 	}
@@ -30,7 +31,7 @@ func (r *Resolvers) ChangePassword(ctx context.Context, args changePasswordMutat
 	user.Password = args.Password
 	user.HashPassword()
 
-	r.DB.Save(&user)
+	config.DB.Save(&user)
 	return &ChangePasswordResponse{Status: true, Msg: nil, User: &UserResponse{u: &user}}, nil
 }
 

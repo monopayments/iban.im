@@ -3,6 +3,7 @@ package resolvers
 import (
 	// "strconv"
 
+	"github.com/monocash/iban.im/config"
 	"github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/utils"
 	// "fmt"
@@ -13,7 +14,7 @@ func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
 	user := model.User{}
 	// fmt.Println("signin resolver ici")
 
-	r.DB.Where("email = ?", args.Email).First(&user)
+	config.DB.Where("email = ?", args.Email).First(&user)
 
 	if user.UserID == 0 {
 		msg := "Not Sign up yet"

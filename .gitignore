@@ -4,4 +4,6 @@
 vendor/
 config/database.yml
 config/smtp.yml
+config/application.yml
 .idea/
+web/node_modules

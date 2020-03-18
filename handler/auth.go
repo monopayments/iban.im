@@ -2,9 +2,9 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"github.com/monocash/iban.im/utils"
 	"net/http"
-	"fmt"
 )
 
 // ContextKey for the userID in context

@@ -12,7 +12,7 @@ type Group struct {
 	GroupID   uint `gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt *time.Time
+	DeletedAt *time.Time `sql:"index"`
 	GroupName string `gorm:"type:varchar(100);not null"`
 	GroupURL  string `gorm:"type:varchar(180)"`
 	GroupLogo string
