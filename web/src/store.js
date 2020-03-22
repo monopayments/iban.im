@@ -11,6 +11,7 @@ export default new Vuex.Store({
         error: null,
         isLoaded: false,
         profile: null,
+        security: null,
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -33,11 +34,16 @@ export default new Vuex.Store({
         SET_IS_LOADED(state,isLoaded) {
             state.isLoaded = isLoaded
         },
-        UPDATE_PROFILE(state,payload) {
+        CHANGE_PROFILE(state,payload) {
             console.log(payload);
             state.profile = {
                 ...state.profile,
                 ...payload
+            }
+        },
+        CHANGE_PASSWORD(state,payload) {
+            state.security = {
+                password : payload
             }
         }
 
@@ -72,6 +78,50 @@ export default new Vuex.Store({
             }).finally(() => {
                 commit('SET_IS_LOADED', true);
             })
+        },
+        changePassword({commit},credentials) {
+            console.log(credentials);
+            commit('SET_IS_LOADED', false);
+            console.log(credentials);
+            axios.post('/graph', {
+                query: `
+                    mutation ($password: String!) {
+                        changePassword(password: $password) {
+                            ok,
+                            error
+                        }
+                    }
+                `,
+                variables: {
+                    "password" : credentials.password
+                }
+            }).then(({data}) => {
+                console.log(data)
+            }).finally(() => {
+                commit('SET_IS_LOADED', true);
+            });
+        },
+        changeProfile({commit},credentials) {
+            console.log(credentials);
+            commit('SET_IS_LOADED', false);
+            console.log(credentials);
+            axios.post('/graph', {
+                query: `
+                    mutation ($bio: String!) {
+                        changeProfile(bio: $bio) {
+                            ok,
+                            error
+                        }
+                    }
+                `,
+                variables: {
+                    "bio" : credentials.bio
+                }
+            }).then(({data}) => {
+                console.log(data)
+            }).finally(() => {
+                commit('SET_IS_LOADED', true);
+            });
         },
         register({commit}, credentials) {
             commit('SET_IS_LOADED', false);
