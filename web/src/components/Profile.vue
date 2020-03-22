@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-form v-if="this.$store.state.isLoaded" class="profile-form" v-model="isValid" ref="form">
+        <v-form v-if="this.$store.state.isLoaded" class="profile-form" ref="form">
             <v-row>
 
                 <v-col :sm="12" :md="6">
@@ -21,16 +21,14 @@
                     <v-text-field
                             v-model="firstName"
                             label="First Name"
-                            :rules="formRules.firstName"
-                            required
+                            disabled
                     />
                 </v-col>
                 <v-col :sm="12" :md="6">
                     <v-text-field
                             v-model="lastName"
                             label="Last Name"
-                            :rules="formRules.lastName"
-                            required
+                            disabled
                     />
                 </v-col>
                 <v-col :sm="12">
@@ -41,7 +39,7 @@
                     />
                 </v-col>
                 <v-col class="fr">
-                    <v-btn class="ma-2" color="primary" :dark="isValid" :disabled="!isValid" :outlined="!isValid"  @click="submit">Save</v-btn>
+                    <v-btn class="ma-2" color="primary" dark @click="submit">Save</v-btn>
                 </v-col>
             </v-row>
         </v-form>
@@ -53,19 +51,11 @@
     import { mapFields } from "../helper"
     export default {
         name: "Profile",
-        data: () => ({
-            isValid: true,
-            model: null,
-            formRules: {
-                firstName: [v => !!v || 'Ad zorunlu alandır'],
-                lastName: [v => !!v || 'Soyad zorunlu alandır'],
-            },
-        }),
         computed: {
           ...mapFields({
               fields: ["firstName", "lastName", "handle", "bio","email"],
               base: "profile",
-              mutation: "UPDATE_PROFILE"
+              mutation: "CHANGE_PROFILE"
           }),
         },
         created() {
@@ -76,7 +66,10 @@
                 fetchProfile: 'fetchProfile',
             }),
             submit() {
-                console.log('submitted')
+                console.log('submitted');
+                this.$store.dispatch('changeProfile', {
+                    bio: this.bio
+                })
             }
         }
     }
