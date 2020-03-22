@@ -18,6 +18,7 @@ type Iban struct {
 	Password  string
 	Handle    string `gorm:"type:varchar(20);not null"`
 	Active    bool
+	IsPrivate bool
 	OwnerID   uint
 	OwnerType string
 }
