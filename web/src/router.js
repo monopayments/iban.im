@@ -4,31 +4,78 @@ import Home from './components/Home'
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
+import VueBodyClass from 'vue-body-class';
+import Ibans from "./components/Ibans";
+import Profile from "./components/Profile";
+import Security from "./components/Security";
 
 Vue.use(Router);
 
-export default new Router({
+const routes =  [
+    {
+        path: '/',
+        name: 'home',
+        component: Home,
+        meta: {
+            bodyClass: 'guest'
+        }
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: {
+            bodyClass: 'guest'
+        }
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: Register,
+        meta: {
+            bodyClass: 'guest'
+        }
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        meta: {
+            bodyClass: 'dashboard'
+        },
+        children: [
+            {
+                path: '/',
+                name: 'dashboard.profile',
+                component: Profile,
+            },
+            {
+                path: 'ibans',
+                name: 'dashboard.ibans',
+                component: Ibans,
+                meta: {
+                    bodyClass: 'ibans'
+                },
+            },
+            {
+                path: 'security',
+                name: 'dashboard.security',
+                component: Security,
+                meta: {
+                    bodyClass: 'security'
+                },
+            }
+        ]
+    },
+];
+
+const router = new Router({
     mode: 'history',
-    routes: [
-        {
-            path: '/',
-            name: 'home',
-            component: Home
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: Register
-        },
-        {
-            path: '/dashboard',
-            name: 'dashboard',
-            component: Dashboard
-        },
-    ]
-})
+    routes
+});
+
+const vueBodyClass = new VueBodyClass(routes);
+
+router.beforeEach((to, from, next) => { vueBodyClass.guard(to, next) });
+
+export default router;

@@ -2,7 +2,7 @@
   <div>
     <Nav />
     <div class="page">
-      <v-content class="df-cc">
+      <v-content>
         <router-view/>
       </v-content>
     </div>

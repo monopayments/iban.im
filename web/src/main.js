@@ -12,14 +12,14 @@ Vue.config.productionTip = false;
 
 new Vue({
     vuetify,
-    router,
     store,
+    router,
     render: h => h(App),
 
     created() {
         const token = localStorage.getItem('user');
         if (token) {
-            this.$store.commit('SET_USER_DATA', token)
+            this.$store.commit('SET_TOKEN', token)
         }
         axios.interceptors.response.use(
             response => response,

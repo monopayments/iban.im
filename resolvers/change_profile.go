@@ -22,7 +22,6 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 		return &ChangeProfileResponse{Status: false, Msg: &msg, User: nil}, nil
 	}
 	user := model.User{}
-
 	if err := config.DB.First(&user, userID).Error; err != nil {
 		msg := "Not existing user"
 		return &ChangeProfileResponse{Status: false, Msg: &msg, User: nil}, nil

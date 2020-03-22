@@ -19,8 +19,8 @@ body{
   justify-content: space-between;
   align-items: center;
 }
-
-// display-flex-center-center
+//
+//// display-flex-center-center
 .df-cc{
   display: flex;
   justify-content: center;
@@ -33,7 +33,7 @@ body{
 }
 
 #nav{
-  padding: 1rem;
+  padding: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -74,6 +74,34 @@ form.form {
   .v-btn__content{
     text-transform: none;
   }
+}
+
+.i-tab{
+  padding: 1rem;
+}
+
+a.active-url {
+  color: white !important;
+}
+
+.v-dashboard{
+  width: 600px;
+  margin-top: 1rem;
+  .v-tabs-bar__content {
+    justify-content: center;
+  }
+}
+
+body.dashboard{
+  #nav{
+    display: none;
+  }
+}
+
+// float-right
+.fr{
+  display: flex;
+  justify-content: flex-end;
 }
 
 .text-center{
