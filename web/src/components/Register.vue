@@ -16,7 +16,7 @@
                     <v-text-field
                             v-model="formData.lastName"
                             label="Last Name"
-                            :rules="formRules.firstName"
+                            :rules="formRules.lastName"
                     />
                 </v-col>
                 <v-col :sm="12" :md="6">
@@ -110,6 +110,7 @@
         },
         methods: {
             submit() {
+
                 this.$store.dispatch('register', this.formData)
             }
         }
