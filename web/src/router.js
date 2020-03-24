@@ -50,6 +50,14 @@ const routes =  [
                 component: Profile,
             },
             {
+                path: 'security',
+                name: 'dashboard.security',
+                component: Security,
+                meta: {
+                    bodyClass: 'security'
+                },
+            },
+            {
                 path: 'ibans',
                 name: 'dashboard.ibans',
                 component: Ibans,
@@ -57,14 +65,6 @@ const routes =  [
                     bodyClass: 'ibans'
                 },
             },
-            {
-                path: 'security',
-                name: 'dashboard.security',
-                component: Security,
-                meta: {
-                    bodyClass: 'security'
-                },
-            }
         ]
     },
 ];

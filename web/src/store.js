@@ -54,6 +54,21 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        mapFields({commit,state}, options) {
+            const object = {};
+            for (let x = 0; x < options.fields.length; x++) {
+                const field = [options.fields[x]];
+                object[field] = {
+                    get() {
+                        return state[options.base][field];
+                    },
+                    set(value) {
+                        commit(options.mutation, { [field]: value });
+                    }
+                };
+            }
+            return object;
+        },
         fetchProfile({commit}) {
             commit('SET_IS_LOADED', false);
             axios.post('/graph',{
