@@ -40,6 +40,11 @@ func (r *IbanResponse) Handle() string {
 	return r.i.Handle
 }
 
+// IsPrivate for IbanResponse
+func (r *IbanResponse) IsPrivate() bool {
+	return r.i.IsPrivate
+}
+
 // CreatedAt for IbanResponse
 func (r *IbanResponse) CreatedAt() string {
 	return r.i.CreatedAt.String()

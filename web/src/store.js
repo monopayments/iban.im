@@ -69,6 +69,34 @@ export default new Vuex.Store({
             }
             return object;
         },
+
+        /*
+        * query{
+  getMyIbans {ok,error,iban{
+    id,
+    handle,
+    text,
+  }}
+}
+        *
+        * */
+
+        fetchIbans({commit}) {
+            commit('SET_IS_LOADED', false);
+            axios.post('/graph',{
+                query: `{
+                 getMyIbans{ok,error,iban{id,handle,text,isPrivate}}
+                }`,
+            }).then(({data}) => {
+                console.log('data');
+                console.log(data);
+
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                commit('SET_IS_LOADED', true);
+            })
+        },
         fetchProfile({commit}) {
             commit('SET_IS_LOADED', false);
             axios.post('/graph',{

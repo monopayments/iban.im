@@ -66,7 +66,7 @@
 </template>
 
 <script>
-
+    import { mapActions } from 'vuex';
     import { cloneDeep } from 'lodash';
 
     function reset() {
@@ -101,7 +101,15 @@
                 return () => (this.current.isPrivate && this.current.password !== '') || 'Lütfen şifre giriniz'
             },
         },
+        created() {
+            this.fetchProfile();
+            this.fetchIbans();
+        },
         methods: {
+            ...mapActions({
+                fetchProfile: 'fetchProfile',
+                fetchIbans: 'fetchIbans',
+            }),
             remove(index) {
                 this.$delete(this.items,index);
                 this.selectedIndex = undefined;
