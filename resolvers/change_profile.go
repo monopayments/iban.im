@@ -34,7 +34,10 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 		user.Avatar = *args.Avatar
 	}
 
-	config.DB.Save(&user)
+	if err := config.DB.Save(&user).Error;err != nil{
+		msg := err.Error()
+		return &ChangeProfileResponse{Status: false, Msg: &msg, User: nil}, err
+	}
 	return &ChangeProfileResponse{Status: true, Msg: nil, User: &UserResponse{u: &user}}, nil
 }
 

@@ -28,7 +28,10 @@ func (r *Resolvers) IbanNew(ctx context.Context,args IbanNewMutationArgs) (*Iban
 
 	IbanNew := model.Iban{Text: args.Text, Password: args.Password, Handle: args.Handle, OwnerID:uint(userid)}
 	IbanNew.HashPassword()
-	config.DB.Create(&IbanNew)
+	if err := config.DB.Create(&IbanNew).Error;err != nil {
+		msg := err.Error()
+		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, err
+	}
 
 	return &IbanNewResponse{Status: true, Msg: nil, Iban: &IbanResponse{i: &IbanNew}}, nil
 }
@@ -52,6 +55,7 @@ type IbanNewMutationArgs struct {
 	Text     string
 	Password string
 	Handle   string
+	IsPrivate bool
 }
 
 // IbanNewResponse is the response type
