@@ -12,6 +12,7 @@ export default new Vuex.Store({
         isLoaded: false,
         profile: null,
         security: null,
+        ibans: [],
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
                 token
             }`;
             state.token = token
+        },
+        SET_IBANS(state,ibans){
+            state.ibans = ibans;
         },
         SET_ERROR(state,error){
             state.error = error;
@@ -70,17 +74,6 @@ export default new Vuex.Store({
             return object;
         },
 
-        /*
-        * query{
-  getMyIbans {ok,error,iban{
-    id,
-    handle,
-    text,
-  }}
-}
-        *
-        * */
-
         fetchIbans({commit}) {
             commit('SET_IS_LOADED', false);
             axios.post('/graph',{
@@ -90,7 +83,9 @@ export default new Vuex.Store({
             }).then(({data}) => {
                 console.log('data');
                 console.log(data);
-
+                if(data.data.getMyIbans.ok) {
+                    commit('SET_IBANS', data.data.getMyIbans.iban);
+                }
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {

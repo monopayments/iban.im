@@ -1,6 +1,10 @@
 package model
 
 import (
+	"fmt"
+	"github.com/jinzhu/gorm"
+	"github.com/monocash/iban.im/config"
+	"strings"
 	"time"
 
 	// gorm postgres dialect
@@ -43,4 +47,40 @@ func (iban *Iban) ComparePassword(password string) bool {
 	}
 
 	return true
+}
+
+// Check Handle before create or update = must be add as index to db
+func (iban *Iban) CheckHandle() (exist bool) {
+	var ibans []Iban
+	config.DB.Where("owner_id = ? & handle = ?",iban.OwnerID,iban.Handle).Find(&ibans)
+	for _, tmp := range ibans {
+		if iban.Handle == tmp.Handle && iban.IbanID != tmp.IbanID {
+			exist = true
+		}
+	}
+	return
+}
+
+// BeforeSave Callback
+func (iban  *Iban) BeforeSave(tx *gorm.DB) (err error) {
+	if iban.CheckHandle() {
+		err = fmt.Errorf("handle already exist")
+	}
+	return
+}
+
+func (iban *Iban) Validate(db *gorm.DB)  {
+	if strings.TrimSpace(iban.Text) == "" {
+		db.AddError(fmt.Errorf("you have to provide IBAN"))
+	}else if strings.TrimSpace(iban.Handle) == "" {
+		db.AddError(fmt.Errorf("you have to provide handle"))
+	}else if iban.IsPrivate && strings.TrimSpace(iban.Password) == "" {
+		db.AddError(fmt.Errorf("you have to provide password"))
+	}
+}
+
+func GetIbanById(id uint) Iban  {
+	iban := Iban{}
+	config.DB.First(&iban,id)
+	return iban
 }

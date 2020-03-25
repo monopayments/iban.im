@@ -10,7 +10,7 @@ type Mutation {
   changePassword(password: String!): ChangePasswordResponse!
   changeProfile(bio: String, avatar: String): ChangeProfileResponse!
   ibanNew(text: String!, password: String!, handle: String!): IbanNewResponse!
-  ibanUpdate(text: String!, password: String!, handle: String!): IbanUpdateResponse!
+  ibanUpdate(id: Int!,text: String!, password: String!, handle: String!, isPrivate: Boolean!): IbanUpdateResponse!
 }
 type SignUpResponse {
   ok: Boolean!

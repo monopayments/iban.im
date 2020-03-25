@@ -16,7 +16,7 @@ func (r *Resolvers) SignUp(args signUpMutationArgs) (*SignUpResponse, error) {
 	}
 
 	newUser.HashPassword()
-	if err := config.DB.Create(&newUser).Error;err != nil {
+	if err := config.DB.Create(&newUser).Error; err != nil {
 		msg := err.Error()
 		return &SignUpResponse{Status: false, Msg: &msg, User: nil}, nil
 	}
@@ -29,7 +29,7 @@ type signUpMutationArgs struct {
 	Password  string
 	FirstName string
 	LastName  string
-	Handle	  string
+	Handle    string
 }
 
 // SignUpResponse is the response type

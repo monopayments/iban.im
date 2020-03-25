@@ -28,8 +28,8 @@ func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
 
 	// userIDString := strconv.Itoa(int(user.UserID))
 	userEmailString := user.Email
-	userPassString:= args.Password
-	tokenString, err := utils.SignJWT(&userEmailString,&userPassString)
+	userPassString := args.Password
+	tokenString, err := utils.SignJWT(&userEmailString, &userPassString)
 	if err != nil {
 		msg := "Error in generating JWT"
 		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil

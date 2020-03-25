@@ -4,64 +4,54 @@ import (
 	"context"
 	"github.com/monocash/iban.im/config"
 
+	"fmt"
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
-	"fmt"
 )
 
 // IbanUpdate mutation change profile
-func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs) (*IbanUpdateResponse, error) {
-	userID := ctx.Value(handler.ContextKey("UserID"))
-	// ibanID:=1
-	fmt.Println("ibanid: ",userID)
-	fmt.Printf("ctx: %+v, args: %+v\n",ctx,args)
+func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs) (response *IbanUpdateResponse, err error) {
+	response = &IbanUpdateResponse{}
+	iban := model.GetIbanById(uint(args.Id))
 
+	defer func() {
+		if err != nil {
+			msg := err.Error()
+			response.Msg = &msg
+		}else{
+			response.Status = true
+			response.Iban =  &IbanResponse{i: &iban}
+		}
+	}()
 
-
-	if userID == nil {
-		msg := "Not Authorized"
-		return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
+	if userID := ctx.Value(handler.ContextKey("UserID"));userID == nil {
+		err = fmt.Errorf("not authorized")
+		return
 	}
-	if args.Text == "" {
-		msg := "You have to provide IBAN"
-		return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
-	}
-	if args.Handle == "" {
-		msg := "You have to provide handle"
-		return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
-	}
-	iban := model.Iban{}
-	userid,_:= userID.(int)
-	ibans:=r.FindIbanByOwner(userid)
-	iban = r.FindIbanByHandle(ibans,args.Handle)
-	fmt.Printf("ibans: %+v\n",ibans)
-	fmt.Printf("founded iban: %+v\n",ibans)
 
-	iban.Handle=args.Handle
+	if iban.IbanID == 0 {
+		err = fmt.Errorf("iban is not exist")
+		return
+	}
+
+	iban.Handle = args.Handle
 	iban.Text = args.Text
-
-	// if err := r.DB.First(&iban, ibanID).Error; err != nil {
-	// 	msg := "Not existing iban"
-	// 	return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, nil
-	// }
 
 	if args.Password != "" {
 		iban.Password = args.Password
 		iban.HashPassword()
 	}
 
-	if err := config.DB.Save(&iban).Error;err != nil {
-		msg := err.Error()
-		return &IbanUpdateResponse{Status: false, Msg: &msg, Iban: nil}, err
-	}
-
-	return &IbanUpdateResponse{Status: true, Msg: nil, Iban: &IbanResponse{i: &iban}}, nil
+	err = config.DB.Save(&iban).Error
+	return
 }
 
 type IbanUpdateMutationArgs struct {
 	Text     string
 	Password string
 	Handle   string
+	Id 		 int
+	IsPrivate bool
 }
 
 // IbanUpdateResponse is the response type
@@ -80,10 +70,10 @@ func (r *IbanUpdateResponse) Ok() bool {
 func (r *IbanUpdateResponse) Error() *string {
 	return r.Msg
 }
-func (r *Resolvers) FindIbanByHandle(ibans []model.Iban, handle string )  model.Iban{
-	for _,iban := range ibans{
+func (r *Resolvers) FindIbanByHandle(ibans []model.Iban, handle string) model.Iban {
+	for _, iban := range ibans {
 		fmt.Println(iban.Handle)
-		if handle == iban.Handle{
+		if handle == iban.Handle {
 			fmt.Println("Same handle found")
 			return iban
 		}
@@ -91,10 +81,9 @@ func (r *Resolvers) FindIbanByHandle(ibans []model.Iban, handle string )  model.
 	}
 	return model.Iban{}
 }
-func (r *Resolvers)FindIbanByOwner(userID int)[]model.Iban{
+func (r *Resolvers) FindIbanByOwner(userID int) []model.Iban {
 	var ibans []model.Iban
 	// Get all matched records
 	config.DB.Where("owner_id = ?", userID).Find(&ibans)
 	return ibans
 }
-

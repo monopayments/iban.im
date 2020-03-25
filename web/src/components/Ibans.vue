@@ -5,7 +5,7 @@
             <v-list flat>
                 <v-list-item-group v-model="selectedIndex" color="primary">
                     <v-list-item
-                        v-for="(item,i) in items"
+                        v-for="(item,i) in ibans"
                         :key="i"
                         class="iban-item"
                     >
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { mapActions,mapState } from 'vuex';
     import { cloneDeep } from 'lodash';
 
     function reset() {
@@ -81,7 +81,6 @@
     export default {
         name: "Ibans",
         data: () => ({
-            items: [],
             valid: false,
             showForm: false,
             selectedIndex: undefined,
@@ -97,6 +96,7 @@
             },
         }),
         computed: {
+            ...mapState(['ibans']),
             passwordRule() {
                 return () => (this.current.isPrivate && this.current.password !== '') || 'Lütfen şifre giriniz'
             },
@@ -111,7 +111,7 @@
                 fetchIbans: 'fetchIbans',
             }),
             remove(index) {
-                this.$delete(this.items,index);
+                this.$delete(this.ibans,index);
                 this.selectedIndex = undefined;
                 this.showForm = false;
                 this.current = reset();
@@ -123,9 +123,9 @@
             },
             save() {
                 if(this.selectedIndex !== undefined){
-                    this.items[this.selectedIndex] = cloneDeep(this.current)
+                    this.ibans[this.selectedIndex] = cloneDeep(this.current)
                 }else{
-                    this.items.push(cloneDeep(this.current))
+                    this.ibans.push(cloneDeep(this.current))
                 }
                 this.current = reset();
                 this.showForm = false;
@@ -147,7 +147,7 @@
                     this.current = reset();
                     this.showForm = false;
                 }else{
-                    this.current = cloneDeep(this.items[newValue]);
+                    this.current = cloneDeep(this.ibans[newValue]);
                     this.showForm = true;
                 }
             }

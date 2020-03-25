@@ -7,8 +7,8 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/monocash/iban.im/model"
-
-	// _ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/qor/validations"
+	// _ "github.com/jinzhu/gorm/dialects/sqlite" TODO - disabled for compile time issue
 	"os"
 	"time"
 )
@@ -40,6 +40,8 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	validations.RegisterCallbacks(DB)
 
 	DB.LogMode(Config.App.Debug)
 	DB.DB().SetMaxIdleConns(10)
