@@ -1,10 +1,8 @@
 package resolvers
 
-import(
+import (
 	"context"
-
 	"github.com/monocash/iban.im/handler"
-	
 )
 
 // GetMyIbansresolver
@@ -19,10 +17,8 @@ func (r *Resolvers) GetMyIbans(ctx context.Context) (*GetMyIbansResponse, error)
 	ibans:=r.FindIbanByOwner(userid)
 	var IbansResponse []*IbanResponse
 	for _,iban := range ibans{
-		// fmt.Println(iban.Handle)
-		r:=IbanResponse{i:&iban}
-		IbansResponse=append(IbansResponse,&r)
-
+		tmp := iban
+		IbansResponse=append(IbansResponse,&IbanResponse{i:&tmp})
 	}
 	
 	return &GetMyIbansResponse{Status: true, Msg: nil, Iban: &IbansResponse}, nil

@@ -16,7 +16,6 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 	// fmt.Println("User id :",userID)
 	// fmt.Printf("ctx: %+v\n",ctx)
 
-
 	if userID == nil {
 		msg := "Not Authorized"
 		return &ChangeProfileResponse{Status: false, Msg: &msg, User: nil}, nil
@@ -34,7 +33,7 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 		user.Avatar = *args.Avatar
 	}
 
-	if err := config.DB.Save(&user).Error;err != nil{
+	if err := config.DB.Save(&user).Error; err != nil {
 		msg := err.Error()
 		return &ChangeProfileResponse{Status: false, Msg: &msg, User: nil}, err
 	}

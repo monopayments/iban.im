@@ -20,7 +20,7 @@ func (r *IbanResponse) ID() graphql.ID {
 }
 
 // UserID for IbanResponse
-func (r *IbanResponse) OwnerID() string{
+func (r *IbanResponse) OwnerID() string {
 	ownerId := strconv.Itoa(int(r.i.OwnerID))
 	return ownerId
 }
@@ -38,6 +38,11 @@ func (r *IbanResponse) Password() string {
 // Handle for IbanResponse
 func (r *IbanResponse) Handle() string {
 	return r.i.Handle
+}
+
+// IsPrivate for IbanResponse
+func (r *IbanResponse) IsPrivate() bool {
+	return r.i.IsPrivate
 }
 
 // CreatedAt for IbanResponse

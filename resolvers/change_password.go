@@ -16,7 +16,6 @@ func (r *Resolvers) ChangePassword(ctx context.Context, args changePasswordMutat
 	// fmt.Println("User id :",userID)
 	// fmt.Printf("ctx: %+v\n",ctx)
 
-
 	if userID == nil {
 		msg := "Not Authorized"
 		return &ChangePasswordResponse{Status: false, Msg: &msg, User: nil}, nil
@@ -31,7 +30,7 @@ func (r *Resolvers) ChangePassword(ctx context.Context, args changePasswordMutat
 	user.Password = args.Password
 	user.HashPassword()
 
-	if err := config.DB.Save(&user).Error;err != nil {
+	if err := config.DB.Save(&user).Error; err != nil {
 		msg := err.Error()
 		return &ChangePasswordResponse{Status: false, Msg: &msg, User: nil}, err
 	}

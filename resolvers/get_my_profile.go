@@ -7,10 +7,7 @@ import (
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
 	// "github.com/monocash/iban.im/tools"
-	
 )
-
-
 
 // GetMyProfile resolver
 func (r *Resolvers) GetMyProfile(ctx context.Context) (*GetMyProfileResponse, error) {

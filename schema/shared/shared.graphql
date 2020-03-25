@@ -18,4 +18,5 @@ type Iban {
   createdAt: String!
   updatedAt: String!
   ownerId: String!
+  isPrivate: Boolean!
 }

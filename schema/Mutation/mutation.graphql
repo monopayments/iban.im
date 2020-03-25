@@ -9,8 +9,9 @@ type Mutation {
   signIn(email: String!, password: String!): SignInResponse!
   changePassword(password: String!): ChangePasswordResponse!
   changeProfile(bio: String, avatar: String): ChangeProfileResponse!
-  ibanNew(text: String!, password: String!, handle: String!): IbanNewResponse!
-  ibanUpdate(text: String!, password: String!, handle: String!): IbanUpdateResponse!
+  ibanNew(text: String!, password: String!, handle: String!, isPrivate: Boolean!): IbanNewResponse!
+  ibanUpdate(id: ID!,text: String!, password: String!, handle: String!, isPrivate: Boolean!): IbanUpdateResponse!
+  ibanDelete(id: ID!): IbanDeleteResponse!
 }
 type SignUpResponse {
   ok: Boolean!
@@ -31,6 +32,11 @@ type ChangeProfileResponse {
   ok: Boolean!
   error: String
   user: User
+}
+
+type IbanDeleteResponse {
+  ok: Boolean!
+  error: String
 }
 
 type IbanNewResponse {
