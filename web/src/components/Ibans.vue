@@ -71,6 +71,7 @@
 
     function reset() {
         return {
+            id: "",
             handle: '',
             text: '',
             isPrivate: false,
@@ -109,12 +110,29 @@
             ...mapActions({
                 fetchProfile: 'fetchProfile',
                 fetchIbans: 'fetchIbans',
+                ibanUpdate: 'ibanUpdate',
+                ibanDelete: 'ibanDelete',
             }),
             remove(index) {
-                this.$delete(this.ibans,index);
-                this.selectedIndex = undefined;
-                this.showForm = false;
-                this.current = reset();
+                console.log(index);
+                this.ibanDelete(this.ibans[index].id).then((data) => {
+                    if(data.errors){
+                        alert(data.errors[0].message);
+                        return;
+                    }
+                    if(data.data.ibanDelete.ok){
+                        this.$delete(this.ibans,index);
+                        this.selectedIndex = undefined;
+                        this.showForm = false;
+                        this.current = reset();
+                    }else{
+                        alert(data.data.ibanDelete.msg);
+                    }
+                })
+                // this.$delete(this.ibans,index);
+                // this.selectedIndex = undefined;
+                // this.showForm = false;
+                // this.current = reset();
             },
             cancel() {
                 this.showForm = false;
@@ -122,14 +140,33 @@
                 this.current = reset();
             },
             save() {
-                if(this.selectedIndex !== undefined){
-                    this.ibans[this.selectedIndex] = cloneDeep(this.current)
-                }else{
-                    this.ibans.push(cloneDeep(this.current))
+                // yoksa null hatası veriyor
+                if(!this.current.isPrivate){
+                    this.current.password = '';
                 }
-                this.current = reset();
-                this.showForm = false;
-                this.selectedIndex = undefined;
+                const process = this.current.id === "" ? "ibanNew" : "ibanUpdate";
+                this.ibanUpdate(this.current).then((data) => {
+                    console.log('in component');
+                    console.log(data);
+                    if(data.errors){
+                        alert(data.errors[0].message);
+                        return;
+                    }
+                    if(!data.data[process].ok){
+                        alert(data.data[process].msg);
+                    }else{
+                        this.current.id = data.data[process].iban.id;
+                        if(this.selectedIndex !== undefined) {
+                            this.ibans[this.selectedIndex] = cloneDeep(this.current)
+                        }else{
+                            this.ibans.push(cloneDeep(this.current));
+                        }
+                        this.current = reset();
+                        this.showForm = false;
+                        this.selectedIndex = undefined;
+                    }
+                });
+
             },
             show() {
                 this.current = reset();

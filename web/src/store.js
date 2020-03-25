@@ -5,6 +5,26 @@ import router from './router'
 
 Vue.use(Vuex);
 
+const queryIbanUpdate = `
+                    mutation ($id: ID!, $text: String!, $password: String!, $handle: String!, $isPrivate: Boolean!) {
+                        ibanUpdate(id: $id, text: $text, password: $password, handle: $handle isPrivate: $isPrivate) {
+                            ok,
+                            error,
+                            iban {id}
+                        }
+                    }
+                `;
+
+const queryIbanCreate = `
+                    mutation ($text: String!, $password: String!, $handle: String!, $isPrivate: Boolean!) {
+                        ibanNew(text: $text, password: $password, handle: $handle isPrivate: $isPrivate) {
+                            ok,
+                            error,
+                            iban {id}
+                        }
+                    }
+                `;
+
 export default new Vuex.Store({
     state: {
         token: null,
@@ -74,6 +94,29 @@ export default new Vuex.Store({
             return object;
         },
 
+        async ibanDelete({commit}, id) {
+            commit('SET_IS_LOADED', false);
+            console.log(id);
+            return axios.post('/graph', {
+                query: `
+                    mutation ($id: ID!) {
+                        ibanDelete(id: $id) {
+                            ok,
+                            error
+                        }
+                    }
+                `,
+                variables: {
+                    id
+                }
+            }).then(({data}) => {
+                console.log(data);
+                return data
+            }).finally(() => {
+                commit('SET_IS_LOADED', true);
+            });
+        },
+
         fetchIbans({commit}) {
             commit('SET_IS_LOADED', false);
             axios.post('/graph',{
@@ -116,6 +159,26 @@ export default new Vuex.Store({
             }).finally(() => {
                 commit('SET_IS_LOADED', true);
             })
+        },
+        async ibanUpdate({commit},variables) {
+            console.log(variables);
+            commit('SET_IS_LOADED', false);
+            let query = "";
+            if("id" in variables && variables["id"] !== "") {
+                query = queryIbanUpdate;
+            }else{
+                query = queryIbanCreate;
+            }
+
+            return axios.post('/graph', {
+                query,
+                variables
+            }).then(({data}) => {
+                console.log(data);
+                return data;
+            }).finally(() => {
+                commit('SET_IS_LOADED', true);
+            });
         },
         changePassword({commit},credentials) {
             console.log(credentials);

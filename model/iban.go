@@ -3,13 +3,9 @@ package model
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"github.com/monocash/iban.im/config"
+	"golang.org/x/crypto/bcrypt"
 	"strings"
 	"time"
-
-	// gorm postgres dialect
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // Iban : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`
@@ -50,9 +46,9 @@ func (iban *Iban) ComparePassword(password string) bool {
 }
 
 // Check Handle before create or update = must be add as index to db
-func (iban *Iban) CheckHandle() (exist bool) {
+func (iban *Iban) CheckHandle(tx *gorm.DB) (exist bool) {
 	var ibans []Iban
-	config.DB.Where("owner_id = ? & handle = ?",iban.OwnerID,iban.Handle).Find(&ibans)
+	tx.Where("owner_id = ? & handle = ?",iban.OwnerID,iban.Handle).Find(&ibans)
 	for _, tmp := range ibans {
 		if iban.Handle == tmp.Handle && iban.IbanID != tmp.IbanID {
 			exist = true
@@ -63,7 +59,7 @@ func (iban *Iban) CheckHandle() (exist bool) {
 
 // BeforeSave Callback
 func (iban  *Iban) BeforeSave(tx *gorm.DB) (err error) {
-	if iban.CheckHandle() {
+	if iban.CheckHandle(tx) {
 		err = fmt.Errorf("handle already exist")
 	}
 	return
@@ -77,10 +73,4 @@ func (iban *Iban) Validate(db *gorm.DB)  {
 	}else if iban.IsPrivate && strings.TrimSpace(iban.Password) == "" {
 		db.AddError(fmt.Errorf("you have to provide password"))
 	}
-}
-
-func GetIbanById(id uint) Iban  {
-	iban := Iban{}
-	config.DB.First(&iban,id)
-	return iban
 }

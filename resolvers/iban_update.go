@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/graph-gophers/graphql-go"
 	"github.com/monocash/iban.im/config"
 
 	"fmt"
@@ -9,10 +10,16 @@ import (
 	"github.com/monocash/iban.im/model"
 )
 
+func (r *Resolvers) GetIbanById(id graphql.ID) model.Iban {
+	iban := model.Iban{}
+	config.DB.Where("iban_id = ?",id).First(&iban)
+	return iban
+}
+
 // IbanUpdate mutation change profile
 func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs) (response *IbanUpdateResponse, err error) {
 	response = &IbanUpdateResponse{}
-	iban := model.GetIbanById(uint(args.Id))
+	iban := r.GetIbanById(args.Id)
 
 	defer func() {
 		if err != nil {
@@ -37,9 +44,13 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 	iban.Handle = args.Handle
 	iban.Text = args.Text
 
-	if args.Password != "" {
+	if args.IsPrivate && args.Password != "" {
+		iban.IsPrivate = true
 		iban.Password = args.Password
 		iban.HashPassword()
+	}else if !args.IsPrivate{
+		iban.IsPrivate = false
+		iban.Password = ""
 	}
 
 	err = config.DB.Save(&iban).Error
@@ -50,8 +61,8 @@ type IbanUpdateMutationArgs struct {
 	Text     string
 	Password string
 	Handle   string
-	Id 		 int
-	IsPrivate bool
+	Id 		 graphql.ID
+	IsPrivate bool `json:"isPrivate"`
 }
 
 // IbanUpdateResponse is the response type

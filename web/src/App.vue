@@ -1,5 +1,8 @@
 <template>
   <div>
+    <v-overlay :value="!this.$store.state.isLoaded">
+      <v-progress-circular indeterminate size="64" />
+    </v-overlay>
     <Nav />
     <div class="page">
       <v-content>
