@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div data-app>
     <v-overlay :value="!this.$store.state.isLoaded">
       <v-progress-circular indeterminate size="64" />
     </v-overlay>
-    <Nav />
+    <Nav style="visibility: hidden" />
     <div class="page">
       <v-content>
         <router-view/>

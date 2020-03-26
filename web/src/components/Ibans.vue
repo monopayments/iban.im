@@ -1,6 +1,6 @@
 <template>
     <div class="iban-wrap">
-
+        <h3 class="text-center">Ibans</h3>
         <div class="i-list">
             <v-list flat>
                 <v-list-item-group v-model="selectedIndex" color="primary">
@@ -12,7 +12,6 @@
                         <v-list-item-icon>
                             <v-icon v-if="selectedIndex === i">mdi-minus</v-icon>
                             <v-icon v-else>mdi-plus-circle-outline</v-icon>
-                            <v-icon class="q-delete" @click="remove(i)">mdi-delete</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title v-text="item.handle" />
@@ -21,47 +20,62 @@
                 </v-list-item-group>
             </v-list>
         </div>
-        <div class="i-form pt-4" v-if="showForm">
-            <v-form ref="form" v-model="valid">
-                <div class="form-item">
-                    <v-text-field
-                            v-model="current.handle"
-                            label="Handle"
-                            :rules="formRules.handle" />
-                </div>
-                <div class="form-item">
-                    <v-text-field
-                            v-model="current.text"
-                            label="Iban No"
-                            :rules="formRules.text" />
-                </div>
-                <div class="form-item">
-                    <v-checkbox
-                            v-model="current.isPrivate"
-                            label=" Private"
-                    />
-                </div>
-                <div class="form-item" v-if="current.isPrivate">
-                    <v-text-field
-                            v-model="current.password"
-                            label="Password"
-                            :rules="[passwordRule]" />
-                </div>
-                <div class="form-item form-buttons">
-                    <v-btn @click="cancel" class="text-none add-question" outlined>
-                        <v-icon>mdi-minus</v-icon>
-                        Cancel
-                    </v-btn>
-                    <v-btn color="primary" dark @click="save" class="text-none add-question">
-                        <v-icon dark>mdi-plus</v-icon>
-                        Save
-                    </v-btn>
-                </div>
-            </v-form>
-        </div>
-        <v-btn class="text-none add-iban" v-if="!showForm" @click="show" rounded>
-            <v-icon>mdi-plus</v-icon> Add
-        </v-btn>
+        <v-dialog v-model="dialog" max-width="600px">
+            <template v-slot:activator="{ on }">
+                <v-btn class="text-none add-iban" v-on="on" @click="show" rounded>
+                    <v-icon>mdi-plus</v-icon> Add
+                </v-btn>
+            </template>
+            <v-card>
+                <v-card-text>
+                    <v-container>
+                        <div class="i-form pt-4">
+                            <v-form ref="form" v-model="valid">
+                                <div class="form-item">
+                                    <v-text-field
+                                            v-model="current.handle"
+                                            label="Handle"
+                                            :rules="formRules.handle" />
+                                </div>
+                                <div class="form-item">
+                                    <v-text-field
+                                            v-model="current.text"
+                                            label="Iban No"
+                                            :rules="formRules.text" />
+                                </div>
+                                <div class="form-item">
+                                    <v-checkbox
+                                            v-model="current.isPrivate"
+                                            label=" Private"
+                                    />
+                                </div>
+                                <div class="form-item" v-if="current.isPrivate">
+                                    <v-text-field
+                                            v-model="current.password"
+                                            label="Password"
+                                            :rules="[passwordRule]" />
+                                </div>
+                                <div class="form-item form-buttons">
+                                    <v-btn v-if="current.id === ''" @click="cancel" class="text-none add-question" outlined>
+                                        <v-icon>mdi-minus</v-icon>
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn v-else @click="remove" class="text-none add-question" outlined>
+                                        <v-icon>mdi-minus</v-icon>
+                                        Delete
+                                    </v-btn>
+                                    <v-btn color="primary" dark @click="save" class="text-none add-question">
+                                        <v-icon dark>mdi-plus</v-icon>
+                                        Save
+                                    </v-btn>
+                                </div>
+                            </v-form>
+                        </div>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 
@@ -82,6 +96,7 @@
     export default {
         name: "Ibans",
         data: () => ({
+            dialog: false,
             valid: false,
             showForm: false,
             selectedIndex: undefined,
@@ -113,29 +128,30 @@
                 ibanUpdate: 'ibanUpdate',
                 ibanDelete: 'ibanDelete',
             }),
-            remove(index) {
-                console.log(index);
-                this.ibanDelete(this.ibans[index].id).then((data) => {
+            remove() {
+                console.log(this.selectedIndex);
+                const r = confirm('Are you sure?');
+                if (r !== true) {
+                    return;
+                }
+
+                this.ibanDelete(this.ibans[this.selectedIndex].id).then((data) => {
                     if(data.errors){
                         alert(data.errors[0].message);
                         return;
                     }
                     if(data.data.ibanDelete.ok){
-                        this.$delete(this.ibans,index);
+                        this.$delete(this.ibans,this.selectedIndex);
                         this.selectedIndex = undefined;
-                        this.showForm = false;
+                        this.dialog = false;
                         this.current = reset();
                     }else{
                         alert(data.data.ibanDelete.msg);
                     }
                 })
-                // this.$delete(this.ibans,index);
-                // this.selectedIndex = undefined;
-                // this.showForm = false;
-                // this.current = reset();
             },
             cancel() {
-                this.showForm = false;
+                this.dialog = false;
                 this.selectedIndex = undefined;
                 this.current = reset();
             },
@@ -146,8 +162,6 @@
                 }
                 const process = this.current.id === "" ? "ibanNew" : "ibanUpdate";
                 this.ibanUpdate(this.current).then((data) => {
-                    console.log('in component');
-                    console.log(data);
                     if(data.errors){
                         alert(data.errors[0].message);
                         return;
@@ -162,7 +176,7 @@
                             this.ibans.push(cloneDeep(this.current));
                         }
                         this.current = reset();
-                        this.showForm = false;
+                        this.dialog = false;
                         this.selectedIndex = undefined;
                     }
                 });
@@ -173,7 +187,7 @@
                 this.selectedIndex = undefined;
                 const self = this;
                 setTimeout(function () {
-                    self.showForm = true;
+                    self.dialog = true;
                 },100)
             }
         },
@@ -182,10 +196,10 @@
                 console.log(newValue,oldValue);
                 if(newValue === undefined){
                     this.current = reset();
-                    this.showForm = false;
+                    this.dialog = false;
                 }else{
                     this.current = cloneDeep(this.ibans[newValue]);
-                    this.showForm = true;
+                    this.dialog = true;
                 }
             }
         }

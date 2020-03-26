@@ -8,6 +8,7 @@ type User {
   avatar: String
   createdAt: String!
   updatedAt: String!
+  visible: Boolean!
 }
 
 type Iban {

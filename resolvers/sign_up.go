@@ -30,6 +30,7 @@ type signUpMutationArgs struct {
 	FirstName string
 	LastName  string
 	Handle    string
+	Visible   bool
 }
 
 // SignUpResponse is the response type

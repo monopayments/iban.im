@@ -1,6 +1,8 @@
 type Query {
   getMyProfile: GetMyProfileResponse!
   getMyIbans: GetMyIbansResponse!
+  getProfile(username: String!): SingleProfile!
+  showInfo(id: ID!, password: String!) : ShowInfoResponse!
 }
 type GetMyProfileResponse {
   ok: Boolean!
@@ -10,5 +12,17 @@ type GetMyProfileResponse {
 type GetMyIbansResponse {
   ok: Boolean!
   error: String
+  iban: [Iban]
+}
+
+type ShowInfoResponse {
+  ok: Boolean!
+  error: String
+}
+
+type SingleProfile {
+  ok: Boolean!
+  error: String
+  user: User
   iban: [Iban]
 }

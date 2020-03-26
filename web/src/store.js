@@ -33,6 +33,7 @@ export default new Vuex.Store({
         profile: null,
         security: null,
         ibans: [],
+        canShow: false,
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -69,6 +70,15 @@ export default new Vuex.Store({
             state.security = {
                 password : payload
             }
+        },
+        SET_SINGLE(state, payload) {
+            const {user,iban} = payload;
+            state.profile = user;
+            state.ibans = iban;
+        },
+
+        SET_SHOW_INFO(state, payload) {
+            state.canShow = payload;
         }
 
     },
@@ -78,6 +88,9 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        setLoaded({commit},payload) {
+            commit('SET_IS_LOADED', payload);
+        },
         mapFields({commit,state}, options) {
             const object = {};
             for (let x = 0; x < options.fields.length; x++) {
@@ -110,8 +123,11 @@ export default new Vuex.Store({
                     id
                 }
             }).then(({data}) => {
-                console.log(data);
-                return data
+                if(data.errors) {
+                    alert(data.errors[0].message);
+                    return
+                }
+                return data;
             }).finally(() => {
                 commit('SET_IS_LOADED', true);
             });
@@ -160,6 +176,66 @@ export default new Vuex.Store({
                 commit('SET_IS_LOADED', true);
             })
         },
+        checkShowPassword({commit},variables) {
+            commit('SET_IS_LOADED', false);
+            axios.post('/graph',{
+                query: `query ShowInfo($id: ID!,$password: String!) {
+                    showInfo(id: $id,password: $password) {
+                        ok,
+                        error
+                    }
+                }`,
+                variables
+            }).then(({data}) => {
+                if(data.errors) {
+                    alert(data.errors[0].message);
+                    return
+                }
+                commit('SET_SHOW_INFO',data.data.showInfo.ok);
+                console.log(data);
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                commit('SET_IS_LOADED', true);
+            })
+        },
+        fetchSingleProfile({commit},variables) {
+            commit('SET_IS_LOADED', false);
+            axios.post('/graph',{
+                query: `query GetProfile($username: String!) {
+                    getProfile(username: $username) {
+                        ok,
+                        error,
+                        user {
+                            visible,
+                            handle,
+                            firstName,
+                            lastName,
+                            email,
+                            bio
+                        },
+                        iban {
+                            id,
+                            text,
+                            isPrivate,
+                            handle
+                        }
+                    }
+                }`,
+                variables
+            }).then(({data}) => {
+                if(data.errors) {
+                    alert(data.errors[0].message);
+                    return
+                }
+                commit('SET_SINGLE',data.data.getProfile);
+                console.log(data);
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                commit('SET_IS_LOADED', true);
+            })
+        },
         async ibanUpdate({commit},variables) {
             console.log(variables);
             commit('SET_IS_LOADED', false);
@@ -202,23 +278,24 @@ export default new Vuex.Store({
                 commit('SET_IS_LOADED', true);
             });
         },
-        changeProfile({commit},credentials) {
-            console.log(credentials);
+        changeProfile({commit},variables) {
+            console.log(variables);
             commit('SET_IS_LOADED', false);
-            console.log(credentials);
             axios.post('/graph', {
                 query: `
-                    mutation ($bio: String!) {
-                        changeProfile(bio: $bio) {
+                    mutation ($bio: String!, $handle: String!) {
+                        changeProfile(bio: $bio, handle: $handle) {
                             ok,
                             error
                         }
                     }
                 `,
-                variables: {
-                    "bio" : credentials.bio
-                }
+                variables
             }).then(({data}) => {
+                if(data.errors){
+                    commit('SET_ERROR', data.errors[0].message);
+                    return;
+                }
                 console.log(data)
             }).finally(() => {
                 commit('SET_IS_LOADED', true);
@@ -228,8 +305,8 @@ export default new Vuex.Store({
             commit('SET_IS_LOADED', false);
             axios.post('/graph', {
                 query: `
-                    mutation ($email: String!, $password: String!, $firstName: String!, $lastName: String!, $handle: String!) {
-                      signUp(email: $email,password: $password, firstName: $firstName, lastName: $lastName, handle: $handle){
+                    mutation ($email: String!, $password: String!, $firstName: String!, $lastName: String!, $handle: String!, $visible: Boolean!) {
+                      signUp(email: $email,password: $password, firstName: $firstName, lastName: $lastName, handle: $handle, visible: $visible){
                         ok,
                         error,
                         user{

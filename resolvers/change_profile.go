@@ -29,8 +29,8 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 	if args.Bio != nil {
 		user.Bio = *args.Bio
 	}
-	if args.Avatar != nil {
-		user.Avatar = *args.Avatar
+	if args.Handle != nil {
+		user.Handle = *args.Handle
 	}
 
 	if err := config.DB.Save(&user).Error; err != nil {
@@ -42,7 +42,7 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 
 type changeProfileMutationArgs struct {
 	Bio    *string
-	Avatar *string
+	Handle *string
 }
 
 // ChangeProfileResponse is the response type

@@ -48,7 +48,7 @@ func (iban *Iban) ComparePassword(password string) bool {
 // Check Handle before create or update = must be add as index to db
 func (iban *Iban) CheckHandle(tx *gorm.DB) (exist bool) {
 	var ibans []Iban
-	tx.Where("owner_id = ? & handle = ?",iban.OwnerID,iban.Handle).Find(&ibans)
+	tx.Where("owner_id = ? AND handle = ?",iban.OwnerID,iban.Handle).Find(&ibans)
 	for _, tmp := range ibans {
 		if iban.Handle == tmp.Handle && iban.IbanID != tmp.IbanID {
 			exist = true

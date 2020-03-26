@@ -2,6 +2,9 @@
     <div>
         <v-form class="profile-form" v-model="isValid" ref="form">
             <v-row>
+                <v-col :md="12">
+                    <h3 class="text-center">Update Password</h3>
+                </v-col>
                 <v-col :sm="12" :md="6">
                     <v-text-field
                             v-model="password"

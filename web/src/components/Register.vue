@@ -54,6 +54,12 @@
                             @click:append="showPassword = !showPassword"
                     />
                 </v-col>
+                <v-col :sm="12">
+                    <v-checkbox
+                            v-model="formData.visible"
+                            label=" Email Adresimi Göster"
+                    />
+                </v-col>
                 <v-col v-if="error" :sm="12">
                     <div class="error">
                         {{error}}
@@ -83,6 +89,7 @@
                 email: '',
                 handle: '',
                 password: '',
+                visible: false,
             },
             passwordRepeat: null,
             formRules: {
