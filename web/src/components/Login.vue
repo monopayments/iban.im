@@ -20,6 +20,7 @@
                             :rules="formRules.password"
                     />
                 </v-col>
+
                 <v-col v-if="error" :sm="12">
                     <div class="error">
                         {{error}}
@@ -37,7 +38,7 @@
 
 <script>
 
-    import { mapState } from 'vuex';
+    import { mapState,mapActions } from 'vuex';
 
     export default {
         name: "Login",
@@ -58,7 +59,13 @@
         computed: {
             ...mapState(['error'])
         },
+        created() {
+            this.setLoaded(true);
+        },
         methods: {
+            ...mapActions({
+                setLoaded: 'setLoaded',
+            }),
             submit() {
                 this.$store.dispatch('login', this.formData);
             }

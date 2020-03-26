@@ -46,6 +46,18 @@ body{
   }
 }
 
+main.v-content {
+  max-width: 700px;
+}
+
+.i-tab {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 600px;
+}
+
 .home-content {
   padding: 2rem;
   text-align: center;
@@ -57,10 +69,15 @@ body{
   }
 }
 
+.v-slide-group__content{
+  justify-content: center;
+}
+
 form.form {
   background-color: white;
+  margin: auto;
   padding: 2rem;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  //box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   border-radius: 1rem;
   .v-input{
     padding-top: 0;
@@ -85,7 +102,6 @@ a.active-url {
 }
 
 .v-dashboard{
-  width: 600px;
   margin-top: 1rem;
   .v-tabs-bar__content {
     justify-content: center;
@@ -94,7 +110,7 @@ a.active-url {
 
 body.dashboard{
   #nav{
-    display: none;
+    visibility: hidden;
   }
 }
 
@@ -116,4 +132,54 @@ body.dashboard{
   color: red;
   text-align: center;
   font-weight: 400;
+}
+
+body.ibans .i-tab{
+  display: block;
+}
+
+
+.single-iban>ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.single-iban>ul>li {
+  min-width: 300px;
+  display: flex;
+  border: 1px solid #efefef;
+  border-bottom: none;
+}
+
+.single-iban>ul>li>span {
+  padding: 0.5rem;
+  flex: 1;
+  text-align: left;
+}
+
+.single-iban>ul>li>span:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.single-iban>ul>li:last-child {
+  border-bottom: 1px solid #efefef;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.profile-info + div {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-info>h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-bottom: 1px solid;
+  margin-bottom: 0.5rem;
 }

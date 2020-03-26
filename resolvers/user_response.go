@@ -40,6 +40,11 @@ func (r *UserResponse) LastName() string {
 	return r.u.LastName
 }
 
+// Visible for UserResponse
+func (r *UserResponse) Visible() bool {
+	return r.u.Visible
+}
+
 // Bio for UserResponse
 func (r *UserResponse) Bio() *string {
 	return &r.u.Bio

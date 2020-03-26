@@ -3,6 +3,7 @@ package resolvers
 import (
 	// "strconv"
 
+	"fmt"
 	"github.com/monocash/iban.im/config"
 	"github.com/monocash/iban.im/model"
 	"github.com/monocash/iban.im/utils"
@@ -10,32 +11,38 @@ import (
 )
 
 // SignIn mutation creates user
-func (r *Resolvers) SignIn(args signInMutationArgs) (*SignInResponse, error) {
-	user := model.User{}
-	// fmt.Println("signin resolver ici")
-
-	config.DB.Where("email = ?", args.Email).First(&user)
+func (r *Resolvers) SignIn(args signInMutationArgs) (response *SignInResponse, err error) {
+	response = &SignInResponse{}
+	user := r.GetUserByEmail(args.Email)
+	var tokenString *string
+	defer func() {
+		if err != nil {
+			msg := err.Error()
+			response.Msg = &msg
+		}else{
+			response.Status = true
+			response.Token = tokenString
+		}
+	}()
 
 	if user.UserID == 0 {
-		msg := "Not Sign up yet"
-		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil
+		err = fmt.Errorf("not sign up yet")
+		return
 	}
 
 	if !user.ComparePassword(args.Password) {
-		msg := "Password is not correct"
-		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil
+		err = fmt.Errorf("password is not correct")
+		return
 	}
 
-	// userIDString := strconv.Itoa(int(user.UserID))
-	userEmailString := user.Email
-	userPassString := args.Password
-	tokenString, err := utils.SignJWT(&userEmailString, &userPassString)
-	if err != nil {
-		msg := "Error in generating JWT"
-		return &SignInResponse{Status: false, Msg: &msg, Token: nil}, nil
-	}
+	tokenString, err = utils.SignJWT(&args.Email, &args.Password)
+	return
+}
 
-	return &SignInResponse{Status: true, Msg: nil, Token: tokenString}, nil
+func (r *Resolvers) GetUserByEmail(email string) model.User {
+	user := model.User{}
+	config.DB.Where("email = ?",email).First(&user)
+	return user
 }
 
 type signInMutationArgs struct {
