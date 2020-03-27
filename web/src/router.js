@@ -11,6 +11,7 @@ import Logout from "./components/Logout";
 import Main from "./components/Main";
 import Single from "./components/Single";
 import SingleIban from "./components/SingleIban";
+import store from "./store";
 
 Vue.use(Router);
 
@@ -24,16 +25,30 @@ const routes =  [
         },
         children: [
             {
+                path: '/',
+                name: 'home.main',
+                component: Main,
+                meta: {
+                    bodyClass: 'guest',
+                    public: true,
+                }
+            },
+            {
                 path: '/dashboard',
                 name: 'home.profile',
                 component: Profile,
+                meta: {
+                    bodyClass: 'dashboard',
+                    requiresAuth: true
+                },
             },
             {
                 path: '/dashboard/security',
                 name: 'home.security',
                 component: Security,
                 meta: {
-                    bodyClass: 'security'
+                    bodyClass: 'security',
+                    requiresAuth: true
                 },
             },
             {
@@ -41,31 +56,26 @@ const routes =  [
                 name: 'home.ibans',
                 component: Ibans,
                 meta: {
-                    bodyClass: 'ibans'
+                    bodyClass: 'ibans',
+                    requiresAuth: true
                 },
             },
             {
-                path: '/dashboard/ibans',
+                path: '/dashboard/logout',
                 name: 'home.logout',
                 component: Logout,
                 meta: {
-                    bodyClass: 'logout'
+                    bodyClass: 'logout',
+                    requiresAuth: true
                 },
-            },
-            {
-                path: '/',
-                name: 'home.main',
-                component: Main,
-                meta: {
-                    bodyClass: 'guest'
-                }
             },
             {
                 path: '/login',
                 name: 'home.login',
                 component: Login,
                 meta: {
-                    bodyClass: 'guest'
+                    bodyClass: 'guest',
+                    public: true,
                 }
             },
             {
@@ -73,7 +83,8 @@ const routes =  [
                 name: 'home.register',
                 component: Register,
                 meta: {
-                    bodyClass: 'guest'
+                    bodyClass: 'guest',
+                    public: true,
                 }
             },
             {
@@ -103,6 +114,25 @@ const router = new Router({
 
 const vueBodyClass = new VueBodyClass(routes);
 
-router.beforeEach((to, from, next) => { vueBodyClass.guard(to, next) });
+//router.beforeEach((to, from, next) => { vueBodyClass.guard(to, next) });
+router.beforeEach(async(to,from,next) => {
+    if (to.path === '/logout'){
+        localStorage.removeItem('user');
+        next('/login');
+    }
+    const token = localStorage.getItem("user");
+    if(token && !store.state.logged) {
+        store.commit('SET_HEADER', token);
+        await store.dispatch('getUser');
+    }
+    if (to.matched.some(record => record.meta.requiresAuth) && !store.state.logged) {
+        next('/login');
+    }
+
+    if (to.matched.some(record => record.meta.public) && store.state.logged) {
+        next('/dashboard');
+    }
+    vueBodyClass.guard(to, next);
+});
 
 export default router;

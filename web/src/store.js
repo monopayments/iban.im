@@ -34,6 +34,7 @@ export default new Vuex.Store({
         security: null,
         ibans: [],
         canShow: false,
+        logged: false,
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -43,6 +44,12 @@ export default new Vuex.Store({
             }`;
             state.token = token
         },
+        SET_HEADER(state,token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${
+                token
+            }`;
+            state.token = token;
+        },
         SET_IBANS(state,ibans){
             state.ibans = ibans;
         },
@@ -50,7 +57,9 @@ export default new Vuex.Store({
             state.error = error;
         },
         SET_USER_DATA(state, profile){
+            console.log('SET_USER_DATA');
             state.profile = profile;
+            state.logged = true;
         },
         LOGOUT() {
             localStorage.removeItem('user');
@@ -150,6 +159,22 @@ export default new Vuex.Store({
             }).finally(() => {
                 commit('SET_IS_LOADED', true);
             })
+        },
+        async getUser({commit}) {
+            const response = await axios.post('/graph',{
+                query: `{
+                      getMyProfile {
+                        user {id,firstName,lastName,handle,bio,email},
+                        ok,
+                        error
+                      }
+                    }`,
+            });
+            console.log('in get user');
+            console.log(response);
+            if(response.data.data){
+              commit('SET_USER_DATA', response.data.data.getMyProfile.user);
+            }
         },
         fetchProfile({commit}) {
             commit('SET_IS_LOADED', false);
