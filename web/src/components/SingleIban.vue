@@ -1,7 +1,7 @@
 <template>
     <div v-if="profile" class="single-iban">
         <ul v-if="!current.isPrivate">
-            <li><span><v-icon left>mdi-account</v-icon>Hesap Adı</span><span>{{name}}</span></li>
+            <li><span><v-icon left>mdi-account</v-icon>IBAN name</span><span>{{name}}</span></li>
             <li><span><v-icon left>mdi-bank</v-icon>Handle</span><span>{{current.handle}}</span></li>
             <li><span><v-icon left>mdi-cash-multiple</v-icon>IBAN</span><span>{{current.text}}</span></li>
         </ul>
@@ -35,7 +35,7 @@
                 password: '',
             },
             formRules: {
-                password: [v => !!v || 'Şifre zorunlu alandır']
+                password: [v => !!v || 'Password is required']
             }
         }),
         computed: {
