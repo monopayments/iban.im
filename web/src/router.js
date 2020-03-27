@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Home from './components/Home'
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Dashboard from "./components/Dashboard";
 import VueBodyClass from 'vue-body-class';
 import Ibans from "./components/Ibans";
 import Profile from "./components/Profile";
@@ -17,45 +16,6 @@ Vue.use(Router);
 
 const routes =  [
     {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: Dashboard,
-        meta: {
-            bodyClass: 'dashboard'
-        },
-        children: [
-            {
-                path: '/',
-                name: 'dashboard.profile',
-                component: Profile,
-            },
-            {
-                path: 'security',
-                name: 'dashboard.security',
-                component: Security,
-                meta: {
-                    bodyClass: 'security'
-                },
-            },
-            {
-                path: 'ibans',
-                name: 'dashboard.ibans',
-                component: Ibans,
-                meta: {
-                    bodyClass: 'ibans'
-                },
-            },
-            {
-                path: 'logout',
-                name: 'dashboard.logout',
-                component: Logout,
-                meta: {
-                    bodyClass: 'logout'
-                },
-            },
-        ]
-    },
-    {
         path: '/',
         name: 'home',
         component: Home,
@@ -63,6 +23,35 @@ const routes =  [
             bodyClass: 'guest'
         },
         children: [
+            {
+                path: '/dashboard',
+                name: 'home.profile',
+                component: Profile,
+            },
+            {
+                path: '/dashboard/security',
+                name: 'home.security',
+                component: Security,
+                meta: {
+                    bodyClass: 'security'
+                },
+            },
+            {
+                path: '/dashboard/ibans',
+                name: 'home.ibans',
+                component: Ibans,
+                meta: {
+                    bodyClass: 'ibans'
+                },
+            },
+            {
+                path: '/dashboard/ibans',
+                name: 'home.logout',
+                component: Logout,
+                meta: {
+                    bodyClass: 'logout'
+                },
+            },
             {
                 path: '/',
                 name: 'home.main',

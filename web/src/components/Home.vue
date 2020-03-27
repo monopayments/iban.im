@@ -1,7 +1,7 @@
 <template>
         <v-card outlined raised class="home-content">
             <v-tabs dark active-class="active-url" class="main-tab" background-color="teal darken-3"  v-model="activeTab" centered>
-                <v-tab v-for="tab of tabs" :key="tab.id" :to="tab.route" exact>
+                <v-tab v-for="tab of logged ? tabsLogged : tabs" :key="tab.id" :to="tab.route" exact>
                     <v-icon left>mdi-{{tab.icon}}</v-icon>
                     {{ tab.name }}
                 </v-tab>
@@ -12,17 +12,6 @@
                     </div>
                 </v-tab-item>
             </v-tabs>
-            <div style="display: none">
-                To use the app, you'll need to
-                <br>
-                <router-link to="/login">
-                    Login
-                </router-link>
-                or
-                <router-link to="/register" >
-                    Register
-                </router-link>
-            </div>
         </v-card>
 </template>
 
@@ -36,7 +25,18 @@
                     { id: 1, name: "Home", route: `/`, icon: `home` },
                     { id: 2, name: "Login", route: `/login`, icon: `account` },
                     { id: 3, name: "Register", route: `/register`, icon: `account-plus` },
+                ],
+                tabsLogged: [
+                    { id: 1, name: "Profile", route: `/dashboard`, icon: `account` },
+                    { id: 2, name: "Security", route: `/dashboard/security`, icon: `account-lock` },
+                    { id: 3, name: "Ibans", route: `/dashboard/ibans`, icon: `cash-multiple` },
+                    { id: 4, name: "Logout", route: `/dashboard/logout`, icon: `account-arrow-right` },
                 ]
+            }
+        },
+        computed:  {
+            logged() {
+                return "user" in localStorage;
             }
         },
         created() {
@@ -48,7 +48,7 @@
         },
         watch : {
             '$store.state.profile'(profile) {
-                if(this.tabs.length < 4) {
+                if(!this.logged && this.tabs.length < 4) {
                     const route = `/${profile.handle}`;
                     this.tabs.push({
                         id: 4,
