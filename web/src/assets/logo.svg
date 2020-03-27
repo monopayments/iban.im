@@ -1,1 +1,21 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.5 100"><defs><style>.cls-1{fill:#1697f6;}.cls-2{fill:#7bc6ff;}.cls-3{fill:#1867c0;}.cls-4{fill:#aeddff;}</style></defs><title>Artboard 46</title><polyline class="cls-1" points="43.75 0 23.31 0 43.75 48.32"/><polygon class="cls-2" points="43.75 62.5 43.75 100 0 14.58 22.92 14.58 43.75 62.5"/><polyline class="cls-3" points="43.75 0 64.19 0 43.75 48.32"/><polygon class="cls-4" points="64.58 14.58 87.5 14.58 43.75 100 43.75 62.5 64.58 14.58"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="360px" height="360px" viewBox="0 0 360 360" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>AppIcon and Shadow@0.5x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="IBAN.im" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="currency-converter-app-icon">
+            <g id="AppIcon-and-Shadow">
+                <g id="AppIcon" fill="#F24C4D">
+                    <path d="M264,0 C322.229814,0 360,37.7701863 360,96 L360,264 C360,322.229814 322.229814,360 264,360 L96,360 C37.7701863,360 0,322.229814 0,264 L0,96 C0,37.7701863 37.7701863,0 96,0 L264,0 Z" id="IconBg"></path>
+                </g>
+                <text id="IBAN" font-family="IBMPlexMonoNerdFontCM-Bold, IBMPlexMono Nerd Font Mono" font-size="112" font-weight="bold" line-spacing="112" fill="#FFFFFF">
+                    <tspan x="46" y="183">IBAN</tspan>
+                </text>
+                <text id=".IM" font-family="IBMPlexMonoNerdFontCM-Bold, IBMPlexMono Nerd Font Mono" font-size="112" font-weight="bold" line-spacing="112" fill="#FFFFFF">
+                    <tspan x="73.5" y="295">.IM</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

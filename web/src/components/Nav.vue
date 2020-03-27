@@ -1,7 +1,7 @@
 <template>
     <div id="nav" class="cont">
         <v-btn rounded class="btn-home" to="/">
-            Anasayfa
+            Home
         </v-btn>
         <v-btn rounded v-if="true" class="btn-login" to="/login">
             Login

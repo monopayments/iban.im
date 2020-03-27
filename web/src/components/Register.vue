@@ -57,7 +57,7 @@
                 <v-col :sm="12">
                     <v-checkbox
                             v-model="formData.visible"
-                            label=" Email Adresimi Göster"
+                            label=" Show my email adress on my public profile."
                     />
                 </v-col>
                 <v-col v-if="error" :sm="12">
@@ -93,25 +93,25 @@
             },
             passwordRepeat: null,
             formRules: {
-                firstName: [v => !!v || 'Ad zorunlu alandır'],
-                lastName: [v => !!v || 'Soyad zorunlu alandır'],
+                firstName: [v => !!v || 'Your name is required'],
+                lastName: [v => !!v || 'Surname is required'],
                 handle: [
-                    v => !!v || 'Kullanıcı adı zorunlu alandır',
-                    v => /^[A-Za-z0-9]*$/.test(v) || 'kullanıcı adı yalnızca harf ve rakam içerebilir'
+                    v => !!v || 'Username is required',
+                    v => /^[A-Za-z0-9]*$/.test(v) || 'please only azAZ09'
                 ],
                 email: [
-                    v => !!v || 'Eposta zorunludur',
-                    v => /.+@.+/.test(v) || 'Geçerli bir eposta adresi girin',
+                    v => !!v || 'Mail is required',
+                    v => /.+@.+/.test(v) || 'please use a valid mail adress',
                 ],
                 password: [
-                    v => !!v || 'Şifre zorunlu alandır',
-                    v => v.length > 6 || 'Şifre en az 7 karakter olmalıdır'
+                    v => !!v || 'Password is required',
+                    v => v.length > 6 || 'Minimum length is 7'
                 ]
             },
         }),
         computed: {
             passwordConfirmationRule() {
-                return () => (this.formData.password === this.passwordRepeat) || 'Şifreler eşleşmiyor'
+                return () => (this.formData.password === this.passwordRepeat) || 'Password is not match'
             },
             ...mapState(['error'])
         },

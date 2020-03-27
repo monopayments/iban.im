@@ -50,10 +50,10 @@
             },
             formRules: {
                 email: [
-                    v => !!v || 'Eposta zorunludur',
-                    v => /.+@.+/.test(v) || 'Geçerli bir eposta adresi girin',
+                    v => !!v || 'Mail is required',
+                    v => /.+@.+/.test(v) || 'please use a valid mail adress',
                 ],
-                password: [v => !!v || 'Şifre zorunlu alandır']
+                password: [v => !!v || 'Password is required']
             }
         }),
         computed: {

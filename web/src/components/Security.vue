@@ -43,14 +43,14 @@
             password: null,
             formRules: {
                 password: [
-                    v => !!v || 'Şifre zorunlu alandır',
-                    v => v && v.length > 6 || 'Şifre en az 7 karakter olmalıdır'
+                    v => !!v || 'Password is required',
+                    v => v && v.length > 6 || 'Minimum length is 7'
                 ]
             },
         }),
         computed: {
             passwordConfirmationRule() {
-                return () => (this.password === this.passwordRepeat) || 'Şifreler eşleşmiyor'
+                return () => (this.password === this.passwordRepeat) || 'Password is not match'
             },
         },
         methods: {

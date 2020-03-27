@@ -70,8 +70,8 @@
             },
             formRules: {
                 handle: [
-                    v => !!v || 'Kullanıcı adı zorunlu alandır',
-                    v => /^[A-Za-z0-9]*$/.test(v) || 'kullanıcı adı yalnızca harf ve rakam içerebilir'
+                    v => !!v || 'You need an username',
+                    v => /^[A-Za-z0-9]*$/.test(v) || 'please only AZaz09'
                 ],
             },
         }),

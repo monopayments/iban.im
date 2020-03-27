@@ -1,7 +1,9 @@
 <template>
     <div>
-        To use the app, you'll need to
-        <br>
+         Shorten, create and share memorable links for IBANS.
+
+        <b>IBAN.im/nickname/bank</b>
+        <br><br>
         <router-link to="/login">
             Login
         </router-link>

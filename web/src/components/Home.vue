@@ -1,6 +1,6 @@
 <template>
-        <v-card outlined raised class="home-content">
-            <v-tabs dark active-class="active-url" class="main-tab" background-color="teal darken-3"  v-model="activeTab" centered>
+        <v-card outlined class="home-content">
+            <v-tabs dark active-class="active-url" class="main-tab" background-color="teal darken-3 mono-bg"  v-model="activeTab" centered>
                 <v-tab v-for="tab of tabs" :key="tab.id" :to="tab.route" exact>
                     <v-icon left>mdi-{{tab.icon}}</v-icon>
                     {{ tab.name }}
@@ -13,15 +13,11 @@
                 </v-tab-item>
             </v-tabs>
             <div style="display: none">
-                To use the app, you'll need to
-                <br>
-                <router-link to="/login">
-                    Login
-                </router-link>
-                or
-                <router-link to="/register" >
-                    Register
-                </router-link>
+
+                Shorten, create and share memorable links for IBANS.
+
+                <b>IBAN.im/nickname/bank</b>
+
             </div>
         </v-card>
 </template>

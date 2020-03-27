@@ -1,6 +1,6 @@
 <template>
     <div class="iban-wrap">
-        <h3 class="text-center">Ibans</h3>
+        <h3 class="text-center">IBANs</h3>
         <div class="i-list">
             <v-list flat>
                 <v-list-item-group v-model="selectedIndex" color="primary">
@@ -40,7 +40,7 @@
                                 <div class="form-item">
                                     <v-text-field
                                             v-model="current.text"
-                                            label="Iban No"
+                                            label="IBAN No"
                                             :rules="formRules.text" />
                                 </div>
                                 <div class="form-item">
@@ -103,18 +103,18 @@
             current: reset(),
             formRules: {
                 text: [
-                    v => !!v || 'iban zorunlu alandır',
+                    v => !!v || 'IBAN is required',
                 ],
                 handle: [
-                    v => !!v || 'handle zorunlu alandır',
-                    v => /^[A-Za-z0-9]*$/.test(v) || 'handle yalnızca harf ve rakam içerebilir'
+                    v => !!v || 'IBAN handle is required',
+                    v => /^[A-Za-z0-9]*$/.test(v) || 'please only use a-z,A-Z or 0-9'
                 ],
             },
         }),
         computed: {
             ...mapState(['ibans']),
             passwordRule() {
-                return () => (this.current.isPrivate && this.current.password !== '') || 'Lütfen şifre giriniz'
+                return () => (this.current.isPrivate && this.current.password !== '') || 'Please provide password'
             },
         },
         created() {
