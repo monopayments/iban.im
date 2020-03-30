@@ -173,7 +173,7 @@ button.close-modal {
 }
 
 .single-iban>ul>li {
-  min-width: 300px;
+  width: 500px;
   display: flex;
   border: 1px solid #efefef;
   border-bottom: none;
@@ -181,13 +181,14 @@ button.close-modal {
 
 .single-iban>ul>li>span {
   padding: 0.5rem;
-  flex: 1;
   text-align: left;
+  float: left;
 }
 
 .single-iban>ul>li>span:first-child {
   text-align: left;
   font-weight: 500;
+  width: 150px;
 }
 
 .single-iban>ul>li:last-child {

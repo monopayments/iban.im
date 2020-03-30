@@ -13,6 +13,7 @@ import Single from "./components/Single";
 import SingleIban from "./components/SingleIban";
 import store from "./store";
 
+
 Vue.use(Router);
 
 const routes =  [
@@ -137,5 +138,6 @@ router.beforeEach(async(to,from,next) => {
     }
     vueBodyClass.guard(to, next);
 });
+
 
 export default router;

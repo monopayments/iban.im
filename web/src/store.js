@@ -57,7 +57,7 @@ export default new Vuex.Store({
             state.error = error;
         },
         SET_USER_DATA(state, profile){
-            console.log('SET_USER_DATA');
+            //console.log('SET_USER_DATA');
             state.profile = profile;
             state.logged = true;
         },
@@ -69,7 +69,7 @@ export default new Vuex.Store({
             state.isLoaded = isLoaded
         },
         CHANGE_PROFILE(state,payload) {
-            console.log(payload);
+            //console.log(payload);
             state.profile = {
                 ...state.profile,
                 ...payload
@@ -118,7 +118,7 @@ export default new Vuex.Store({
 
         async ibanDelete({commit}, id) {
             commit('SET_IS_LOADED', false);
-            console.log(id);
+            //console.log(id);
             return axios.post('/graph', {
                 query: `
                     mutation ($id: ID!) {
@@ -149,8 +149,8 @@ export default new Vuex.Store({
                  getMyIbans{ok,error,iban{id,handle,text,isPrivate}}
                 }`,
             }).then(({data}) => {
-                console.log('data');
-                console.log(data);
+                //console.log('data');
+                //console.log(data);
                 if(data.data.getMyIbans.ok) {
                     commit('SET_IBANS', data.data.getMyIbans.iban);
                 }
@@ -170,8 +170,8 @@ export default new Vuex.Store({
                       }
                     }`,
             });
-            console.log('response');
-            console.log(response);
+            //console.log('response');
+            //console.log(response);
             if(response.data.errors){
                 router.push('/login');
             }
@@ -192,8 +192,8 @@ export default new Vuex.Store({
                       }
                     }`,
             }).then(({data}) => {
-                console.log('data');
-                console.log(data);
+                //console.log('data');
+                //console.log(data);
                 if(data.data.getMyProfile.ok) {
                     commit('SET_USER_DATA', data.data.getMyProfile.user);
                 }else{
@@ -222,7 +222,7 @@ export default new Vuex.Store({
                     return
                 }
                 commit('SET_SHOW_INFO',data.data.showInfo.ok);
-                console.log(data);
+                //console.log(data);
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
@@ -259,7 +259,7 @@ export default new Vuex.Store({
                     return
                 }
                 commit('SET_SINGLE',data.data.getProfile);
-                console.log(data);
+                //console.log(data);
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
@@ -267,7 +267,7 @@ export default new Vuex.Store({
             })
         },
         async ibanUpdate({commit},variables) {
-            console.log(variables);
+            //console.log(variables);
             commit('SET_IS_LOADED', false);
             let query = "";
             if("id" in variables && variables["id"] !== "") {
@@ -283,16 +283,16 @@ export default new Vuex.Store({
                 query,
                 variables
             }).then(({data}) => {
-                console.log(data);
+                //console.log(data);
                 return data;
             }).finally(() => {
                 commit('SET_IS_LOADED', true);
             });
         },
         changePassword({commit},credentials) {
-            console.log(credentials);
+            //console.log(credentials);
             commit('SET_IS_LOADED', false);
-            console.log(credentials);
+            //console.log(credentials);
             axios.post('/graph', {
                 query: `
                     mutation ($password: String!) {
@@ -312,7 +312,7 @@ export default new Vuex.Store({
             });
         },
         changeProfile({commit},variables) {
-            console.log(variables);
+            //console.log(variables);
             commit('SET_IS_LOADED', false);
             axios.post('/graph', {
                 query: `
@@ -329,7 +329,7 @@ export default new Vuex.Store({
                     commit('SET_ERROR', data.errors[0].message);
                     return;
                 }
-                console.log(data)
+                //console.log(data)
             }).finally(() => {
                 commit('SET_IS_LOADED', true);
             });
@@ -353,8 +353,8 @@ export default new Vuex.Store({
                     ...credentials
                 },
             }).then(({data}) => {
-                console.log(data);
-                console.log(data.data.signUp.ok);
+                //console.log(data);
+                //console.log(data.data.signUp.ok);
                 if(data.data.signUp.ok){
                     router.push('/login');
                 }else{
