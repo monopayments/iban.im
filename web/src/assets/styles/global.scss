@@ -40,15 +40,21 @@ body{
 }
 
 #nav{
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   a{
     >span{
       text-transform: none;
       font-size: 0.9rem;
       font-weight: 400;
+    }
+    >img {
+      display: block;
+      margin: auto;
+      height: 80px;
+      border-radius: 0.5rem;
     }
   }
 }
@@ -64,6 +70,9 @@ main.v-content {
   justify-content: center;
   width: 600px;
 }
+
+
+
 
 .home-content {
   padding: 2rem;
@@ -114,15 +123,8 @@ a.active-url {
     justify-content: center;
   }
 }
-
-.v-tabs-slider{
-  display: none;
-}
-
-body.dashboard{
-  #nav{
-    visibility: hidden;
-  }
+body.guest.home .i-tab {
+  flex-direction: column;
 }
 
 // float-right
@@ -147,6 +149,19 @@ body.dashboard{
 
 body.ibans .i-tab{
   display: block;
+}
+
+button.close-modal {
+  background-color: transparent !important;
+  position: absolute;
+  right: -2.75rem;
+  top: -0.5rem;
+  box-shadow: none;
+}
+
+.i-form {
+  position: relative;
+  padding-top: 0.5rem;
 }
 
 
@@ -193,4 +208,42 @@ body.ibans .i-tab{
   font-weight: 500;
   border-bottom: 1px solid;
   margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 576px) {
+  .i-tab{
+    width: 100%;
+    >form{
+      width: 100%;
+    }
+  }
+  body.guest.home .i-tab{
+    flex-direction: column;
+  }
+  form.v-form>.row {
+    flex-direction: column;
+    >div{
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+  }
+  .v-content__wrap{
+    max-width: 100vw;
+    >div{
+      border: none !important;
+    }
+  }
+  .home-content{
+    padding: 1rem;
+  }
+  main.v-content{
+    max-width: 100vw;
+  }
+  form.form{
+    padding: 0.5rem;
+    >.row{
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
 }

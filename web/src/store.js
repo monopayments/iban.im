@@ -170,10 +170,15 @@ export default new Vuex.Store({
                       }
                     }`,
             });
-            console.log('in get user');
+            console.log('response');
             console.log(response);
+            if(response.data.errors){
+                router.push('/login');
+            }
             if(response.data.data){
-              commit('SET_USER_DATA', response.data.data.getMyProfile.user);
+                commit('SET_USER_DATA', response.data.data.getMyProfile.user);
+            }else{
+                router.push('/login');
             }
         },
         fetchProfile({commit}) {
@@ -266,6 +271,9 @@ export default new Vuex.Store({
             commit('SET_IS_LOADED', false);
             let query = "";
             if("id" in variables && variables["id"] !== "") {
+                if(variables["isPrivate"] && !("password" in variables)) {
+                    variables["password"] = "";
+                }
                 query = queryIbanUpdate;
             }else{
                 query = queryIbanCreate;

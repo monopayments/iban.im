@@ -2,10 +2,10 @@
     <div>
         <v-form v-if="this.model" v-model="isValid" class="profile-form" ref="form">
             <v-row>
-                <v-col :md="12">
+                <v-col md="12">
                     <h3 class="text-center">Profile</h3>
                 </v-col>
-                <v-col :sm="12" :md="12">
+                <v-col cols="12">
                     <v-text-field
                             v-model="model.email"
                             label="Email"
@@ -13,14 +13,14 @@
                     />
                 </v-col>
 
-                <v-col :sm="12" :md="6">
+                <v-col sm="6">
                     <v-text-field
                             v-model="model.firstName"
                             label="First Name"
                             disabled
                     />
                 </v-col>
-                <v-col :sm="12" :md="6">
+                <v-col sm="6">
                     <v-text-field
                             v-model="model.lastName"
                             label="Last Name"

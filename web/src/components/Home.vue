@@ -1,6 +1,6 @@
 <template>
     <v-card outlined class="home-content">
-        <v-tabs dark active-class="active-url" class="main-tab" background-color="teal darken-3 mono-bg"  v-model="activeTab" centered>
+        <v-tabs show-arrows dark active-class="active-url" class="main-tab" background-color="teal darken-3 mono-bg"  v-model="activeTab" centered>
             <v-tab v-for="tab of tabs" :key="tab.id" :to="tab.route" exact>
                 <v-icon left>mdi-{{tab.icon}}</v-icon>
                 {{ tab.name }}

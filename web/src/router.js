@@ -21,7 +21,7 @@ const routes =  [
         name: 'home',
         component: Home,
         meta: {
-            bodyClass: 'guest'
+            bodyClass: 'guest home'
         },
         children: [
             {
@@ -29,7 +29,7 @@ const routes =  [
                 name: 'home.main',
                 component: Main,
                 meta: {
-                    bodyClass: 'guest',
+                    bodyClass: 'guest home',
                     public: true,
                 }
             },
@@ -124,6 +124,9 @@ router.beforeEach(async(to,from,next) => {
     if(token && !store.state.logged) {
         store.commit('SET_HEADER', token);
         await store.dispatch('getUser');
+    }
+    if(token && !store.state.logged){
+        next('/login');
     }
     if (to.matched.some(record => record.meta.requiresAuth) && !store.state.logged) {
         next('/login');
