@@ -30,6 +30,9 @@
                 <v-card-text>
                     <v-container>
                         <div class="i-form pt-4">
+                            <v-btn class="text-none close-modal" @click="dialog = false">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
                             <v-form ref="form" v-model="valid">
                                 <div class="form-item">
                                     <v-text-field

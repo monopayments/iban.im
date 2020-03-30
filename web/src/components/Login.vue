@@ -18,6 +18,7 @@
                             v-model="formData.password"
                             label="Password"
                             :rules="formRules.password"
+                            type="password"
                     />
                 </v-col>
 

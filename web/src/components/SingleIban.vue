@@ -1,6 +1,6 @@
 <template>
     <div v-if="profile" class="single-iban">
-        <ul v-if="!current.isPrivate">
+        <ul v-if="current && !current.isPrivate">
             <li><span><v-icon left>mdi-account</v-icon>IBAN name</span><span>{{name}}</span></li>
             <li><span><v-icon left>mdi-bank</v-icon>Handle</span><span>{{current.handle}}</span></li>
             <li><span><v-icon left>mdi-cash-multiple</v-icon>IBAN</span><span>{{current.text}}</span></li>

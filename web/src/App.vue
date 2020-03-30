@@ -3,7 +3,7 @@
     <v-overlay :value="!this.$store.state.isLoaded">
       <v-progress-circular indeterminate size="64" />
     </v-overlay>
-    <Nav style="visibility: hidden" />
+    <Nav  />
     <div class="page">
       <v-content>
         <router-view/>

@@ -9,6 +9,18 @@ Vue.config.productionTip = false;
 
 //axios.defaults.baseURL = "http://195.201.97.159:4880";
 
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        console.log(error.response);
+        if (error.response.status === 401) {
+            localStorage.removeItem("user");
+            location.href = "/login";
+        }
+        return Promise.reject(error)
+    }
+);
+
 
 new Vue({
     vuetify,
@@ -17,20 +29,9 @@ new Vue({
     render: h => h(App),
 
     created() {
-        const token = localStorage.getItem('user');
-        if (token) {
-            this.$store.commit('SET_TOKEN', token)
-        }
-        axios.interceptors.response.use(
-            response => response,
-            error => {
-                console.log(error.response);
-                if (error.response.status === 401) {
-                    this.$store.dispatch('logout');
-                    this.$router.push('/');
-                }
-                return Promise.reject(error)
-            }
-        )
+        // const token = localStorage.getItem('user');
+        // if (token) {
+        //     this.$store.commit('SET_TOKEN', token)
+        // }
     }
 }).$mount('#app');
