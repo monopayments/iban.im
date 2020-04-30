@@ -3,6 +3,7 @@ package resolvers
 import (
 	"context"
 	"github.com/monocash/iban.im/config"
+	"strings"
 
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
@@ -30,7 +31,7 @@ func (r *Resolvers) ChangeProfile(ctx context.Context, args changeProfileMutatio
 		user.Bio = *args.Bio
 	}
 	if args.Handle != nil {
-		user.Handle = *args.Handle
+		user.Handle = strings.ToLower(*args.Handle)
 	}
 
 	if err := config.DB.Save(&user).Error; err != nil {

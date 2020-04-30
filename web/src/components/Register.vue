@@ -20,10 +20,10 @@
                     />
                 </v-col>
                 <v-col :sm="12" :md="6">
-                    <v-text-field
+                    <v-text-field class="lowercase-input" :value="value"
                             v-model="formData.handle"
                             label="UserName"
-                            :rules="formRules.username"
+                            :rules="formRules.handle"
                     />
                 </v-col>
                 <v-col :sm="12" :md="6">
@@ -123,3 +123,12 @@
         }
     }
 </script>
+
+
+<style>
+
+    .lowercase-input input{
+        text-transform: lowercase;
+    }
+
+</style>
