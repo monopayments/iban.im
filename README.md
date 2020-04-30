@@ -1,4 +1,4 @@
-# iban.im
+# IBAN.im
 IBAN Shorter
 
 ## Purpose
