@@ -6,10 +6,12 @@ import (
 	"github.com/monocash/iban.im/config"
 	"github.com/monocash/iban.im/handler"
 	"github.com/monocash/iban.im/model"
+	"strings"
 )
 
 // IbanNew mutation creates iban
 func (r *Resolvers) IbanNew(ctx context.Context, args IbanNewMutationArgs) (*IbanNewResponse, error) {
+	args.Handle = strings.ToLower(args.Handle)
 	UserID := ctx.Value(handler.ContextKey("UserID"))
 	if UserID == nil {
 		msg := "Not Authorized"
@@ -40,7 +42,7 @@ func (r *Resolvers) HandleCheck(userid int, handle string) bool {
 	fmt.Printf("ibans: %+v\n", ibans)
 	for _, iban := range ibans {
 		fmt.Println(iban.Handle)
-		if handle == iban.Handle {
+		if handle == strings.ToLower(iban.Handle) {
 			fmt.Println("Same handle found")
 			handleStatus = true
 			break

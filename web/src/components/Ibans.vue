@@ -35,7 +35,7 @@
                             </v-btn>
                             <v-form ref="form" v-model="valid">
                                 <div class="form-item">
-                                    <v-text-field
+                                    <v-text-field class="lowercase-input" :value="value"
                                             v-model="current.handle"
                                             label="Handle"
                                             :rules="formRules.handle" />
@@ -218,6 +218,7 @@
 
     .iban-item{
         position: relative;
+        text-transform: lowercase;
     }
     .mdi-delete{
         position: absolute !important;

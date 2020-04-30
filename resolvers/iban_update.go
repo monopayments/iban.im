@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/monocash/iban.im/config"
+	"strings"
 
 	"fmt"
 	"github.com/monocash/iban.im/handler"
@@ -41,7 +42,7 @@ func (r *Resolvers) IbanUpdate(ctx context.Context, args IbanUpdateMutationArgs)
 		return
 	}
 
-	iban.Handle = args.Handle
+	iban.Handle = strings.ToLower(args.Handle)
 	iban.Text = args.Text
 
 	if args.IsPrivate && args.Password != "" {
