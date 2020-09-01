@@ -96,6 +96,6 @@ func (r *Resolvers) FindIbanByHandle(ibans []model.Iban, handle string) model.Ib
 func (r *Resolvers) FindIbanByOwner(userID int) []model.Iban {
 	var ibans []model.Iban
 	// Get all matched records
-	config.DB.Where("owner_id = ?", userID).Find(&ibans)
+	config.DB.Where("owner_id = ? AND IsPrivate = false", userID).Find(&ibans)
 	return ibans
 }
