@@ -3,9 +3,29 @@
         <ul v-if="current && !current.isPrivate">
             <li><span><v-icon left>mdi-account</v-icon>IBAN name</span><span>{{name}}</span></li>
             <li><span><v-icon left>mdi-bank</v-icon>Handle</span><span>{{current.handle}}</span></li>
-            <li><span><v-icon left>mdi-cash-multiple</v-icon>IBAN</span><span>{{current.text}}</span></li>
+            <li>
+                <span>
+                    <v-icon left>
+                        mdi-cash-multiple
+                    </v-icon>
+                    IBAN
+                </span>
+                <span>
+                    {{current.text}}
+                </span>
+                <span>
+                    <v-icon 
+                        left 
+                        style="cursor: pointer;"
+                        v-clipboard:copy="current.text"
+                        v-clipboard:success="onCopy"
+                        v-clipboard:error="onError">
+                        mdi-content-copy
+                    </v-icon>
+                </span>
+            </li>
         </ul>
-        <v-form v-else class="show-info" v-model="isValid">
+        <v-form v-else-if="current && current.isPrivate" class="show-info" v-model="isValid">
             <v-row>
                 <v-col :md="6" :sm="12">
                     <v-text-field
@@ -21,6 +41,9 @@
                 </v-col>
             </v-row>
         </v-form>
+        <div v-else>
+            <b>An account named <i>{{$route.params.alias}}</i> was not found</b>
+        </div>
     </div>
 </template>
 
@@ -41,7 +64,7 @@
         computed: {
             ...mapState(['ibans','profile']),
             current() {
-                return this.ibans.filter( iban => iban.handle === this.$route.params.alias)[0]
+                return this.ibans.filter( iban => iban.handle.toLowerCase() === this.$route.params.alias.toLowerCase())[0]
             },
             name() {
                 return `${this.profile.firstName} ${this.profile.lastName}`
@@ -62,6 +85,13 @@
                     id       : this.current.id,
                     password : this.formData.password
                 });
+            },
+            onCopy() {
+                // TODO: can be added alert library or something
+                alert('Iban was copied to clipboard!')
+            },
+            onError() {
+                alert('Something went wrong!')
             }
         },
         watch : {

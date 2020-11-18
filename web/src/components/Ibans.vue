@@ -35,7 +35,7 @@
                             </v-btn>
                             <v-form ref="form" v-model="valid">
                                 <div class="form-item">
-                                    <v-text-field class="lowercase-input" :value="value"
+                                    <v-text-field class="lowercase-input"
                                             v-model="current.handle"
                                             label="Handle"
                                             :rules="formRules.handle" />
