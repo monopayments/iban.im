@@ -5,7 +5,7 @@
             <li><span><v-icon left>mdi-bank</v-icon>Handle</span><span>{{current.handle}}</span></li>
             <li><span><v-icon left>mdi-cash-multiple</v-icon>IBAN</span><span>{{current.text}}</span></li>
         </ul>
-        <v-form v-else class="show-info" v-model="isValid">
+        <v-form v-else-if="current && current.isPrivate" class="show-info" v-model="isValid">
             <v-row>
                 <v-col :md="6" :sm="12">
                     <v-text-field
@@ -21,6 +21,9 @@
                 </v-col>
             </v-row>
         </v-form>
+        <div v-else>
+            <b>An account named <i>{{$route.params.alias}}</i> was not found</b>
+        </div>
     </div>
 </template>
 
