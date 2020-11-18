@@ -28,7 +28,7 @@
                     />
                 </v-col>
                 <v-col :sm="12" :md="6">
-                    <v-text-field class="lowercase-input" :value="value"
+                    <v-text-field class="lowercase-input"
                             v-model="model.handle"
                             label="Username"
                             :rules="formRules.handle"

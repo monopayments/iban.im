@@ -20,7 +20,7 @@
                     />
                 </v-col>
                 <v-col :sm="12" :md="6">
-                    <v-text-field class="lowercase-input" :value="value"
+                    <v-text-field class="lowercase-input"
                             v-model="formData.handle"
                             label="UserName"
                             :rules="formRules.handle"
