@@ -41,7 +41,7 @@
         computed: {
             ...mapState(['ibans','profile']),
             current() {
-                return this.ibans.filter( iban => iban.handle === this.$route.params.alias)[0]
+                return this.ibans.filter( iban => iban.handle.toLowerCase() === this.$route.params.alias.toLowerCase())[0]
             },
             name() {
                 return `${this.profile.firstName} ${this.profile.lastName}`
