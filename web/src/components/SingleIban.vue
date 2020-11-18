@@ -3,7 +3,27 @@
         <ul v-if="current && !current.isPrivate">
             <li><span><v-icon left>mdi-account</v-icon>IBAN name</span><span>{{name}}</span></li>
             <li><span><v-icon left>mdi-bank</v-icon>Handle</span><span>{{current.handle}}</span></li>
-            <li><span><v-icon left>mdi-cash-multiple</v-icon>IBAN</span><span>{{current.text}}</span></li>
+            <li>
+                <span>
+                    <v-icon left>
+                        mdi-cash-multiple
+                    </v-icon>
+                    IBAN
+                </span>
+                <span>
+                    {{current.text}}
+                </span>
+                <span>
+                    <v-icon 
+                        left 
+                        style="cursor: pointer;"
+                        v-clipboard:copy="current.text"
+                        v-clipboard:success="onCopy"
+                        v-clipboard:error="onError">
+                        mdi-content-copy
+                    </v-icon>
+                </span>
+            </li>
         </ul>
         <v-form v-else-if="current && current.isPrivate" class="show-info" v-model="isValid">
             <v-row>
@@ -65,6 +85,13 @@
                     id       : this.current.id,
                     password : this.formData.password
                 });
+            },
+            onCopy() {
+                // TODO: can be added alert library or something
+                alert('Iban was copied to clipboard!')
+            },
+            onError() {
+                alert('Something went wrong!')
             }
         },
         watch : {

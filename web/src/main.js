@@ -21,6 +21,9 @@ axios.interceptors.response.use(
     }
 );
 
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
 
 new Vue({
     vuetify,
