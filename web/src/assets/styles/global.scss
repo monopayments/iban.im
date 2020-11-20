@@ -195,6 +195,13 @@ button.close-modal {
   border-bottom: 1px solid #efefef;
 }
 
+.single-iban__button {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
 .profile-info {
   text-align: center;
 }

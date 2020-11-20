@@ -1,5 +1,21 @@
 <template>
     <div v-if="profile" class="single-iban">
+        <div class="single-iban__button">
+            <v-tooltip right>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn 
+                        icon
+                        color="pink"
+                        v-bind="attrs"
+                        v-on="on"
+                        :to="{name: 'home.single', params: {username: $route.params.username}}">
+                        <v-icon>mdi-keyboard-return</v-icon>
+                    </v-btn>
+                
+                </template>
+                <span>Profile</span>
+            </v-tooltip>
+        </div>
         <ul v-if="current && !current.isPrivate">
             <li><span><v-icon left>mdi-account</v-icon>IBAN name</span><span>{{name}}</span></li>
             <li><span><v-icon left>mdi-bank</v-icon>Handle</span><span>{{current.handle}}</span></li>
