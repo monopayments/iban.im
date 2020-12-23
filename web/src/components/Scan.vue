@@ -16,11 +16,11 @@
         </li>
         <li style="--color: var(--primary-3)">
           Text in the image:
-          <div id="iban_raw"></div>
+          <div id="iban_raw">{{ibanRaw}}</div>
         </li>
         <li style="--color: var(--primary-3)">
           possible IBAN:
-          <strong id="iban"></strong>
+          <strong id="iban">{{iban}}</strong>
         </li>
       </ul>
     </div>
@@ -36,15 +36,16 @@ const worker = createWorker({
 
 export default {
   name: "Scan",
-  data() {
+  data () {
     return {
       url: null,
       text: null,
       iban: null,
+      ibanRaw : null,
     };
   },
   methods: {
-    recognize: async () => {
+    async recognize() {
       const iban_img = document.getElementById("iban_img");
       const iban_raw = document.getElementById("iban_raw");
       const iban_el = document.getElementById("iban");
@@ -58,7 +59,8 @@ export default {
         data: { text },
       } = await worker.recognize(iban_img);
       console.log(text);
-
+      this.ibanRaw = text;
+      this.iban = text;
       let str_iban = text;
       iban_raw.innerHTML = str_iban;
       str_iban = str_iban.match(
