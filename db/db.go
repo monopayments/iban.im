@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/monocash/iban.im/model"
 	"os"
 
 	"github.com/jinzhu/gorm"
@@ -12,10 +11,6 @@ import (
 // DB *grom.DB
 type DB struct {
 	*gorm.DB
-}
-
-func (db *DB) Migrate()  {
-	db.AutoMigrate(&model.User{},&model.Iban{},&model.Group{})
 }
 
 var connStrMap = map[string]string {
