@@ -1,22 +1,28 @@
 <template>
-  <div>
+  <div class="box">
     <div id="scan">
-      <button v-on:click="recognize">recognize</button>
-      <hr />
-      <input type="file" @change="onFileChange" />
-
-      <div id="preview">
-        <img id="iban_img" v-if="url" :src="url" />
-      </div>
-      <hr />
-      <div>
-        bulunan metin:
-        <div id="iban_raw"></div>
-      </div>
-      <div>
-        bulunan iban:
-        <strong id="iban"></strong>
-      </div>
+      <ul class="iconList">
+        
+        <li style="--color: var(--primary-2)">
+          <div id="preview">
+            <img id="iban_img" style="max-height: 40px;" alt="" v-if="url" :src="url" />
+          </div>
+        </li>
+        <li>
+          <input type="file" @change="onFileChange" />
+        </li>
+        <li>
+          <button v-on:click="recognize" class="btn">recognize</button>
+        </li>
+        <li style="--color: var(--primary-3)">
+          Text in the image:
+          <div id="iban_raw"></div>
+        </li>
+        <li style="--color: var(--primary-3)">
+          possible IBAN:
+          <strong id="iban"></strong>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -51,7 +57,7 @@ export default {
       const {
         data: { text },
       } = await worker.recognize(iban_img);
-      console.log(text)
+      console.log(text);
 
       let str_iban = text;
       iban_raw.innerHTML = str_iban;

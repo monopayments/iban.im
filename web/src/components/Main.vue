@@ -1,16 +1,17 @@
 <template>
-    <div>
+    <div class="box">
          Shorten, create and share memorable links for IBANS.
 
         <b>IBAN.im/nickname/bank</b>
         <br><br>
-        <router-link to="/login">
+        <router-link class="btn"  style="--color: var(--primary-2)" to="/login">
             Login
         </router-link>
         or
-        <router-link to="/register" >
+        <router-link class="btn" to="/register" >
             Register
         </router-link>
+        
     </div>
 </template>
 

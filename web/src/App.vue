@@ -5,9 +5,9 @@
     </v-overlay>
     <Nav  />
     <div class="page">
-      <v-content>
+      <v-main>
         <router-view/>
-      </v-content>
+      </v-main>
     </div>
   </div>
 </template>
