@@ -19,6 +19,7 @@
         { id: 1, name: "Home", route: `/`, icon: `home` },
         { id: 2, name: "Login", route: `/login`, icon: `account` },
         { id: 3, name: "Register", route: `/register`, icon: `account-plus` },
+        { id: 4, name: "Scan", route: `/scan`, icon: `eye` },
     ];
 
     const privateRoutes = [

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './components/Home'
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Scan from "./components/Scan";
 import VueBodyClass from 'vue-body-class';
 import Ibans from "./components/Ibans";
 import Profile from "./components/Profile";
@@ -83,6 +84,15 @@ const routes =  [
                 path: '/register',
                 name: 'home.register',
                 component: Register,
+                meta: {
+                    bodyClass: 'guest',
+                    public: true,
+                }
+            },
+            {
+                path: '/scan',
+                name: 'home.scan',
+                component: Scan,
                 meta: {
                     bodyClass: 'guest',
                     public: true,
