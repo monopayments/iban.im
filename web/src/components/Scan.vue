@@ -64,15 +64,19 @@ export default {
       await worker.setParameters({
         tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
       });
-      const {
+      let {
         data: { text },
       } = await worker.recognize(iban_img);
       this.scanning = false;
       console.log(text);
       this.ibanRaw = text;
-      this.iban = text.match(
+      text = text.replace(/ /g, '')
+      text = text.match(
         /[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}/m
       );
+      if(text.length > 0) {
+        this.iban = text[0];
+      }
     },
     onFileChange(e) {
       const file = e.target.files[0];
