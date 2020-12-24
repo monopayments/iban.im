@@ -12,6 +12,7 @@
     "core-js": "^3.8.1",
     "lodash": "latest",
     "strip-ansi": "^6.0.0",
+    "tesseract.js": "^2.1.4",
     "vue": "^2.6.12",
     "vue-apollo": "^3.0.5",
     "vue-body-class": "^3.0.2",

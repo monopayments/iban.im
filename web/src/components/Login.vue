@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="box">
         <v-form class="form login-form" v-model="isValid">
             <v-row>
                 <v-col :sm="12">
