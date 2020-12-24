@@ -61,6 +61,7 @@
             ...mapState(['error'])
         },
         created() {
+            this.$store.dispatch('resetError');
             this.setLoaded(true);
         },
         methods: {
