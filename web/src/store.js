@@ -88,6 +88,10 @@ export default new Vuex.Store({
 
         SET_SHOW_INFO(state, payload) {
             state.canShow = payload;
+        },
+
+        RESET_ERROR(state) {
+            state.error = null;
         }
 
     },
@@ -97,6 +101,9 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        resetError({commit}) {
+            commit('RESET_ERROR');
+        },
         setLoaded({commit},payload) {
             commit('SET_IS_LOADED', payload);
         },
