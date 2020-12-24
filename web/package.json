@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
+    "highlight.js": "^10.5.0",
     "lodash": "latest",
     "strip-ansi": "^6.0.0",
     "tesseract.js": "^2.1.4",
