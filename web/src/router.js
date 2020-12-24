@@ -90,14 +90,15 @@ const routes =  [
                 }
             },
             {
-                path: '/scan',
+                path: '/dashboard/scan',
                 name: 'home.scan',
                 component: Scan,
                 meta: {
-                    bodyClass: 'guest',
+                    bodyClass: 'scan',
                     public: true,
                 }
             },
+
             {
                 path: '/:username',
                 name: 'home.single',
@@ -143,7 +144,7 @@ router.beforeEach(async(to,from,next) => {
         next('/login');
     }
 
-    if (to.matched.some(record => record.meta.public) && store.state.logged) {
+    if (to.matched.some(record => record.meta.public) && store.state.logged && to.path !== '/scan') {
         next('/dashboard');
     }
     vueBodyClass.guard(to, next);
