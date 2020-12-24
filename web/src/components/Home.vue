@@ -26,7 +26,8 @@
         { id: 1, name: "Profile", route: `/dashboard`, icon: `account` },
         { id: 2, name: "Security", route: `/dashboard/security`, icon: `account-lock` },
         { id: 3, name: "IBANs", route: `/dashboard/ibans`, icon: `cash-multiple` },
-        { id: 4, name: "Logout", route: `/dashboard/logout`, icon: `account-arrow-right` },
+        { id: 4, name: "Scan", route: `/scan`, icon: `eye` },
+        { id: 5, name: "Logout", route: `/dashboard/logout`, icon: `account-arrow-right` },
     ];
 
     export default {
