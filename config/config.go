@@ -10,7 +10,7 @@ type DBConfig struct {
 	Host     string `env:"DBHost" default:"localhost"`
 	Port     string `env:"DBPort" default:"5432"`
 	User     string `env:"DBUser" default:"ibanim"`
-	Password string `env:"DBPassword"`
+	Password string `env:"DBPassword" default:"ibanim"`
 }
 
 type SMTPConfig struct {
