@@ -15,6 +15,7 @@ type Iban struct {
 	UpdatedAt time.Time
 	DeletedAt *time.Time `sql:"index"`
 	Text      string `gorm:"type:varchar(100);not null"`
+	Description      string
 	Password  string
 	Handle    string `gorm:"type:varchar(20);not null"`
 	Active    bool

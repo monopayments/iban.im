@@ -47,6 +47,12 @@
                                             :rules="formRules.text" />
                                 </div>
                                 <div class="form-item">
+                                    <v-text-field
+                                            v-model="current.description"
+                                            label="IBAN Description"
+                                            :rules="formRules.text" />
+                                </div>
+                                <div class="form-item">
                                     <v-checkbox
                                             v-model="current.isPrivate"
                                             label=" Private"
@@ -91,6 +97,7 @@
             id: "",
             handle: '',
             text: '',
+            description: '',
             isPrivate: false,
             password: '',
         }

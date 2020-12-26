@@ -53,6 +53,7 @@ func (r *Resolvers) HandleCheck(userid int, handle string) bool {
 
 type IbanNewMutationArgs struct {
 	Text      string
+	Description      string
 	Password  string
 	Handle    string
 	IsPrivate bool
