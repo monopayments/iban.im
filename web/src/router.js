@@ -90,14 +90,15 @@ const routes =  [
                 }
             },
             {
-                path: '/scan',
+                path: '/dashboard/scan',
                 name: 'home.scan',
                 component: Scan,
                 meta: {
-                    bodyClass: 'guest',
+                    bodyClass: 'scan',
                     public: true,
                 }
             },
+
             {
                 path: '/:username',
                 name: 'home.single',
@@ -127,24 +128,26 @@ const vueBodyClass = new VueBodyClass(routes);
 
 //router.beforeEach((to, from, next) => { vueBodyClass.guard(to, next) });
 router.beforeEach(async(to,from,next) => {
-    if (to.path === '/logout'){
-        localStorage.removeItem('user');
-        next('/login');
-    }
-    const token = localStorage.getItem("user");
-    if(token && !store.state.logged) {
-        store.commit('SET_HEADER', token);
-        await store.dispatch('getUser');
-    }
-    if(token && !store.state.logged){
-        next('/login');
-    }
-    if (to.matched.some(record => record.meta.requiresAuth) && !store.state.logged) {
-        next('/login');
-    }
+    if(to.path !== '/scan') {
+        if (to.path === '/logout'){
+            localStorage.removeItem('user');
+            next('/login');
+        }
+        const token = localStorage.getItem("user");
+        if(token && !store.state.logged) {
+            store.commit('SET_HEADER', token);
+            await store.dispatch('getUser');
+        }
+        if(token && !store.state.logged){
+            next('/login');
+        }
+        if (to.matched.some(record => record.meta.requiresAuth) && !store.state.logged) {
+            next('/login');
+        }
 
-    if (to.matched.some(record => record.meta.public) && store.state.logged) {
-        next('/dashboard');
+        if (to.matched.some(record => record.meta.public) && store.state.logged && to.path !== '/scan') {
+            next('/dashboard');
+        }
     }
     vueBodyClass.guard(to, next);
 });
