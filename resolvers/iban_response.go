@@ -30,6 +30,11 @@ func (r *IbanResponse) Text() string {
 	return r.i.Text
 }
 
+// Description for IbanResponse
+func (r *IbanResponse) Description() string {
+	return r.i.Description
+}
+
 // Password for IbanResponse
 func (r *IbanResponse) Password() string {
 	return r.i.Password

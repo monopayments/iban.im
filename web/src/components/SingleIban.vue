@@ -40,6 +40,11 @@
                     </v-icon>
                 </span>
             </li>
+            <li>
+                <span>
+                    {{current.description}}
+                </span>
+            </li>
         </ul>
         <v-form v-else-if="current && current.isPrivate" class="show-info" v-model="isValid">
             <v-row>
