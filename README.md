@@ -1,5 +1,5 @@
 # IBAN.im
-IBAN Shorter
+Shorten, create and share memorable links for IBANS
 
 ## Purpose
 Shorten IBAN numbers with url such as :
