@@ -2,7 +2,7 @@
     <div class="box">
          Shorten, create and share memorable links for IBANS.
 
-        <b>IBAN.im/nickname/bank</b>
+        <strong>IBAN.im/nickname/bank</strong>
         <br><br>
         <router-link class="btn"  style="--color: var(--primary-2)" to="/login">
             Login
@@ -11,6 +11,8 @@
         <router-link class="btn" to="/register" >
             Register
         </router-link>
+
+        Build By <a href="https://monopayments.com">MonoPayments</a>
         
     </div>
 </template>

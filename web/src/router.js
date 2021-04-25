@@ -4,6 +4,7 @@ import Home from './components/Home'
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Scan from "./components/Scan";
+import About from "./components/About";
 import VueBodyClass from 'vue-body-class';
 import Ibans from "./components/Ibans";
 import Profile from "./components/Profile";
@@ -70,6 +71,15 @@ const routes =  [
                     bodyClass: 'logout',
                     requiresAuth: true
                 },
+            },
+            {
+                path: '/about',
+                name: 'home.login',
+                component: About,
+                meta: {
+                    bodyClass: 'guest',
+                    public: true,
+                }
             },
             {
                 path: '/login',

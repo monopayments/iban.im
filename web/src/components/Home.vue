@@ -20,6 +20,7 @@
         { id: 2, name: "Login", route: `/login`, icon: `account` },
         { id: 3, name: "Register", route: `/register`, icon: `account-plus` },
         { id: 4, name: "Scan", route: `/scan`, icon: `eye` },
+        { id: 5, name: "About", route: `/about`, icon: `info` },
     ];
 
     const privateRoutes = [
@@ -28,6 +29,7 @@
         { id: 3, name: "IBANs", route: `/dashboard/ibans`, icon: `cash-multiple` },
         { id: 4, name: "Scan", route: `/scan`, icon: `eye` },
         { id: 5, name: "Logout", route: `/dashboard/logout`, icon: `account-arrow-right` },
+        { id: 6, name: "About", route: `/about`, icon: `info` },
     ];
 
     export default {
