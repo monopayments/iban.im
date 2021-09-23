@@ -2,8 +2,8 @@ package handler
 
 import (
 	"fmt"
-	"github.com/monocash/iban.im/config"
-	"github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/config"
+	"github.com/monopayments/iban.im/model"
 	"time"
 
 	"github.com/appleboy/gin-jwt/v2"

@@ -1,4 +1,4 @@
-module github.com/monocash/iban.im
+module github.com/monopayments/iban.im
 
 go 1.13
 
@@ -21,6 +21,7 @@ require (
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/qor/qor v1.2.0 // indirect
 	github.com/qor/validations v0.0.0-20171228122639-f364bca61b46
+	github.com/tidwall/gjson v1.6.5 // indirect
 	github.com/ugorji/go v1.2.6 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect

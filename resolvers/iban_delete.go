@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/graph-gophers/graphql-go"
-	"github.com/monocash/iban.im/config"
-	"github.com/monocash/iban.im/handler"
+	"github.com/monopayments/iban.im/config"
+	"github.com/monopayments/iban.im/handler"
 )
 
-func (r *Resolvers) IbanDelete(ctx context.Context, args IbanDeleteMutationArgs) (response *IbanDeleteResponse,err error)  {
+func (r *Resolvers) IbanDelete(ctx context.Context, args IbanDeleteMutationArgs) (response *IbanDeleteResponse, err error) {
 	response = &IbanDeleteResponse{}
 	iban := r.GetIbanById(args.Id)
 
@@ -16,30 +16,30 @@ func (r *Resolvers) IbanDelete(ctx context.Context, args IbanDeleteMutationArgs)
 		if err != nil {
 			msg := err.Error()
 			response.Msg = &msg
-		}else{
+		} else {
 			response.Status = true
 		}
 	}()
 
-	 userIdStr := ctx.Value(handler.ContextKey("UserID"))
-	 if userIdStr == nil{
-	 	err = fmt.Errorf("not authorized")
+	userIdStr := ctx.Value(handler.ContextKey("UserID"))
+	if userIdStr == nil {
+		err = fmt.Errorf("not authorized")
 		return
-	 }
+	}
 
-	 if iban.OwnerID != uint(userIdStr.(int)) {
-		 err = fmt.Errorf("not authorized")
-		 return
-	 }
+	if iban.OwnerID != uint(userIdStr.(int)) {
+		err = fmt.Errorf("not authorized")
+		return
+	}
 
-	 err = config.DB.Delete(&iban).Error
+	err = config.DB.Delete(&iban).Error
 
 	return
 }
 
 type IbanDeleteResponse struct {
 	Status bool
-	Msg *string
+	Msg    *string
 }
 
 // Ok for IbanDeleteResponse
@@ -54,6 +54,5 @@ func (r *IbanDeleteResponse) Error() *string {
 
 // args for delete mutation
 type IbanDeleteMutationArgs struct {
-	Id 		 graphql.ID
+	Id graphql.ID
 }
-

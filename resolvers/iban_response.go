@@ -5,7 +5,7 @@ import (
 
 	graphql "github.com/graph-gophers/graphql-go"
 
-	"github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/model"
 )
 
 // IbanResponse is the user response type

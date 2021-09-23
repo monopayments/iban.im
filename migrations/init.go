@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 
-	"github.com/monocash/iban.im/db"
-	"github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/db"
+	"github.com/monopayments/iban.im/model"
 )
 
-var env string 
+var env string
 
 func main() {
 

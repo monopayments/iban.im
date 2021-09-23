@@ -4,9 +4,10 @@ import (
 	// "strconv"
 
 	"fmt"
-	"github.com/monocash/iban.im/config"
-	"github.com/monocash/iban.im/model"
-	"github.com/monocash/iban.im/utils"
+
+	"github.com/monopayments/iban.im/config"
+	"github.com/monopayments/iban.im/model"
+	"github.com/monopayments/iban.im/utils"
 	// "fmt"
 )
 

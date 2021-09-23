@@ -3,8 +3,8 @@ package resolvers
 import (
 	"testing"
 
-	"github.com/monocash/iban.im/db"
-	"github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/db"
+	"github.com/monopayments/iban.im/model"
 )
 
 func TestSignIn(t *testing.T) {

@@ -6,7 +6,8 @@ import (
 	graphql "github.com/graph-gophers/graphql-go"
 
 	"fmt"
-	"github.com/monocash/iban.im/model"
+
+	"github.com/monopayments/iban.im/model"
 )
 
 // UserResponse is the user response type

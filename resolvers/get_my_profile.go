@@ -3,11 +3,12 @@ package resolvers
 import (
 	"context"
 	"fmt"
-	"github.com/monocash/iban.im/config"
 
-	"github.com/monocash/iban.im/handler"
-	"github.com/monocash/iban.im/model"
-	// "github.com/monocash/iban.im/tools"
+	"github.com/monopayments/iban.im/config"
+
+	"github.com/monopayments/iban.im/handler"
+	"github.com/monopayments/iban.im/model"
+	// "github.com/monopayments/iban.im/tools"
 )
 
 // GetMyProfile resolver

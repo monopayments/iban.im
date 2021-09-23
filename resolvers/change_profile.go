@@ -2,11 +2,12 @@ package resolvers
 
 import (
 	"context"
-	"github.com/monocash/iban.im/config"
 	"strings"
 
-	"github.com/monocash/iban.im/handler"
-	"github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/config"
+
+	"github.com/monopayments/iban.im/handler"
+	"github.com/monopayments/iban.im/model"
 	// "fmt"
 )
 

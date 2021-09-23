@@ -3,10 +3,11 @@ package resolvers
 import (
 	"context"
 	"fmt"
-	"github.com/monocash/iban.im/config"
-	"github.com/monocash/iban.im/handler"
-	"github.com/monocash/iban.im/model"
 	"strings"
+
+	"github.com/monopayments/iban.im/config"
+	"github.com/monopayments/iban.im/handler"
+	"github.com/monopayments/iban.im/model"
 )
 
 // IbanNew mutation creates iban

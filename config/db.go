@@ -3,10 +3,11 @@ package config
 import (
 	"errors"
 	"fmt"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/model"
 	"github.com/qor/validations"
 
 	// _ "github.com/jinzhu/gorm/dialects/sqlite" TODO - disabled for compile time issue

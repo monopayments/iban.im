@@ -1,25 +1,25 @@
-package main // import "github.com/monocash/iban.im
+package main // import "github.com/monopayments/iban.im
 
 import (
 	"context"
 	"encoding/json"
 	graphql "github.com/graph-gophers/graphql-go"
-	"github.com/monocash/iban.im/config"
-	"github.com/monocash/iban.im/handler"
-	_ "github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/config"
+	"github.com/monopayments/iban.im/handler"
+	_ "github.com/monopayments/iban.im/model"
 	"log"
 	"net/http"
-	// "github.com/monocash/iban.im/model"
-	"github.com/monocash/iban.im/resolvers"
-	"github.com/monocash/iban.im/schema"
+	// "github.com/monopayments/iban.im/model"
+	"github.com/monopayments/iban.im/resolvers"
+	"github.com/monopayments/iban.im/schema"
 
 	"github.com/appleboy/gin-jwt/v2"
 
 	"fmt"
 	"github.com/gin-gonic/gin"
 )
-const identityKey = "UserID"
 
+const identityKey = "UserID"
 
 func main() {
 
@@ -43,12 +43,11 @@ func main() {
 	auth := router.Group("/auth")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 
-
 	router.GET("/graph", func(c *gin.Context) {
 		fmt.Println("inside get graph")
 		c.HTML(http.StatusOK, "graph.tmpl.html", nil)
 	})
-	
+
 	authMW := authMiddleware.MiddlewareFunc()
 
 	router.POST("/graph", func(c *gin.Context) {
@@ -57,43 +56,43 @@ func main() {
 
 		if _, ok := c.Request.Header["Authorization"]; ok {
 			authMW(c)
-			
-			fmt.Printf("c header auth: %+v\n",c.Request.Header.Get("Authorization"))
+
+			fmt.Printf("c header auth: %+v\n", c.Request.Header.Get("Authorization"))
 			claims := jwt.ExtractClaims(c)
 
-			currentID,ok:=claims[identityKey].(float64)
-			if !ok{
-				currentID=0
+			currentID, ok := claims[identityKey].(float64)
+			if !ok {
+				currentID = 0
 			}
-			ctx = context.WithValue(ctx,handler.ContextKey("UserID"), int(currentID))
+			ctx = context.WithValue(ctx, handler.ContextKey("UserID"), int(currentID))
 		}
-		
+
 		var params struct {
 			Query         string                 `json:"query"`
 			OperationName string                 `json:"operationName"`
 			Variables     map[string]interface{} `json:"variables"`
 		}
 		if err := json.NewDecoder(c.Request.Body).Decode(&params); err != nil {
-			log.Println("decode error",err)
+			log.Println("decode error", err)
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
 
 		log.Println("params")
 		log.Println(params)
-	
+
 		opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
 		schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{}, opts...)
 
 		response := schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 		if err != nil {
-			log.Println("graph response error",err.Error())
+			log.Println("graph response error", err.Error())
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
 
 		log.Println("response")
-		log.Printf("%v",string(response.Data))
+		log.Printf("%v", string(response.Data))
 
 		c.JSON(200, response)
 	})
@@ -102,9 +101,6 @@ func main() {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d",config.Config.App.Port),router))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Config.App.Port), router))
 
 }
-
-
-

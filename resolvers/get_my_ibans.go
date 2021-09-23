@@ -2,7 +2,8 @@ package resolvers
 
 import (
 	"context"
-	"github.com/monocash/iban.im/handler"
+
+	"github.com/monopayments/iban.im/handler"
 )
 
 // GetMyIbansresolver

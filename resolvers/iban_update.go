@@ -2,13 +2,15 @@ package resolvers
 
 import (
 	"context"
-	"github.com/graph-gophers/graphql-go"
-	"github.com/monocash/iban.im/config"
 	"strings"
 
+	"github.com/graph-gophers/graphql-go"
+	"github.com/monopayments/iban.im/config"
+
 	"fmt"
-	"github.com/monocash/iban.im/handler"
-	"github.com/monocash/iban.im/model"
+
+	"github.com/monopayments/iban.im/handler"
+	"github.com/monopayments/iban.im/model"
 )
 
 func (r *Resolvers) GetIbanById(id graphql.ID) model.Iban {

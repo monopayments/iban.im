@@ -1,8 +1,8 @@
 package resolvers
 
 import (
-	"github.com/monocash/iban.im/config"
-	"github.com/monocash/iban.im/model"
+	"github.com/monopayments/iban.im/config"
+	"github.com/monopayments/iban.im/model"
 )
 
 // SignUp mutation creates user
@@ -10,7 +10,7 @@ func (r *Resolvers) SignUp(args signUpMutationArgs) (*SignUpResponse, error) {
 
 	newUser := model.User{Email: args.Email, Password: args.Password, FirstName: args.FirstName, LastName: args.LastName, Handle: args.Handle}
 
-	if !config.DB.Where("email = ? or handle = ?", args.Email,args.Handle).First(&model.User{}).RecordNotFound() {
+	if !config.DB.Where("email = ? or handle = ?", args.Email, args.Handle).First(&model.User{}).RecordNotFound() {
 		msg := "Already signed up"
 		return &SignUpResponse{Status: false, Msg: &msg, User: nil}, nil
 	}
