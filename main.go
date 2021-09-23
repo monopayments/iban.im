@@ -3,19 +3,22 @@ package main // import "github.com/monopayments/iban.im
 import (
 	"context"
 	"encoding/json"
+	"log"
+	"net/http"
+
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/monopayments/iban.im/config"
 	"github.com/monopayments/iban.im/handler"
 	_ "github.com/monopayments/iban.im/model"
-	"log"
-	"net/http"
+
 	// "github.com/monopayments/iban.im/model"
 	"github.com/monopayments/iban.im/resolvers"
 	"github.com/monopayments/iban.im/schema"
 
-	"github.com/appleboy/gin-jwt/v2"
+	jwt "github.com/appleboy/gin-jwt/v2"
 
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -57,7 +60,6 @@ func main() {
 		if _, ok := c.Request.Header["Authorization"]; ok {
 			authMW(c)
 
-			fmt.Printf("c header auth: %+v\n", c.Request.Header.Get("Authorization"))
 			claims := jwt.ExtractClaims(c)
 
 			currentID, ok := claims[identityKey].(float64)
