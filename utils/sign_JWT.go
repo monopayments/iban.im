@@ -44,9 +44,7 @@ func loginJwtToken(userMail, userPass *string) (string, error) {
 		// handle err
 		return "", err
 	}
-	fmt.Println("payloadbytes: ", payloadBytes)
-	fmt.Println("payloadbytes string: ", string(payloadBytes))
-
+	
 	body := bytes.NewReader(payloadBytes)
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("http://localhost:%d/api/login", config.Config.App.Port), body)
