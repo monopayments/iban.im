@@ -1,6 +1,8 @@
 module github.com/monopayments/iban.im
 
-go 1.13
+go 1.16
+
+replace github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt v3.2.0+incompatible
 
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
