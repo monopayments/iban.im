@@ -10,7 +10,7 @@ import (
 
 // ValidateJWT : func to parse JWT and to return the identity
 func ValidateJWT(tokenString *string) (*string, error) {
-	fmt.Println("inside validate jwt", &tokenString)
+	
 	token, err := jwt.Parse(*tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("  Unexpected signing method: %v", token.Header["alg"])
