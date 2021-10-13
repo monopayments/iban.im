@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.22.0",
-    "core-js": "^3.18.2",
+    "core-js": "^3.18.3",
     "highlight.js": "^11.2.0",
     "lodash": "latest",
     "strip-ansi": "^7.0.1",
