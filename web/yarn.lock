@@ -3319,10 +3319,10 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.23.0.tgz#b0fa5d0948a8d1d75e3d5635238b6c4625b05149"
-  integrity sha512-NmvAE4i0YAv5cKq8zlDoPd1VLKAqX5oLuZKs8xkJa4qi6RGn0uhCYFjWtHHC9EM/MwOwYWOs53W+V0aqEXq1sg==
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
   dependencies:
     follow-redirects "^1.14.4"
 
@@ -10370,9 +10370,9 @@ safe-regex@^1.1.0:
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
 sass-loader@^12:
-  version "12.2.0"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-12.2.0.tgz#b370010fb0ababae2ef9c6c89e05d6c6debc6042"
-  integrity sha512-qducnp5vSV+8A8MZxuH6zV0MUg4MOVISScl2wDTCAn/2WJX+9Auxh92O/rnkdR2bvi5QxZBafnzkzRrWGZvm7w==
+  version "12.3.0"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-12.3.0.tgz#93278981c189c36a58cbfc37d4b9cef0cdc02871"
+  integrity sha512-6l9qwhdOb7qSrtOu96QQ81LVl8v6Dp9j1w3akOm0aWHyrTYtagDt5+kS32N4yq4hHk3M+rdqoRMH+lIdqvW6HA==
   dependencies:
     klona "^2.0.4"
     neo-async "^2.6.2"
