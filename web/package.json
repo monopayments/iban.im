@@ -20,7 +20,7 @@
     "vue-clipboard2": "^0.3.3",
     "vue-gtm": "^3.5.0",
     "vue-router": "^3.5.3",
-    "vuetify": "^2.5.12",
+    "vuetify": "^2.5.13",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
