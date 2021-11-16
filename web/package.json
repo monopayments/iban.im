@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^6.5.95",
-    "@mdi/js": "^6.4.95",
+    "@mdi/js": "^6.5.95",
     "@vue/cli-plugin-babel": "^4.5.15",
     "@vue/cli-service": "^4.5.15",
     "@vue/cli-plugin-eslint": "^4.5.15",
