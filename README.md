@@ -13,8 +13,6 @@ Shorten IBAN numbers with url such as :
 - GraphQL : [graphql-go](https://github.com/graph-gophers/graphql-go)
 - ORM : [gorm](https://github.com/jinzhu/gorm)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://github.com/monopayments/iban.im)
-
 
 ## Features
 
