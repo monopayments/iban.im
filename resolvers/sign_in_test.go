@@ -8,13 +8,13 @@ import (
 )
 
 func TestSignIn(t *testing.T) {
-	db, err := db.ConnectDB()
-
+	db, err := db.ConnectDB("db/database.sqlite")
+	if err != nil {
+		t.Errorf("%s", err.Error())
+		return
+	}
 	defer db.DB.Close()
 
-	if err != nil {
-		t.Errorf(err.Error())
-	}
 	user := model.User{}
 	db.DB.Where("email = ?", "notexisting@test.com").First(&user)
 
