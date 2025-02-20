@@ -5,8 +5,9 @@ import (
 )
 
 func TestSignJWT(t *testing.T) {
-	userID := "1"
-	token, err := SignJWT(&userID)
+	userMail := "test@example.com"
+	userPass := "testpassword"
+	token, err := SignJWT(&userMail, &userPass)
 	if err != nil {
 		t.Error(err)
 	}

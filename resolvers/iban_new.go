@@ -20,7 +20,7 @@ func (r *Resolvers) IbanNew(ctx context.Context, args IbanNewMutationArgs) (*Iba
 	}
 	// userid,_:= strconv.Atoi(UserID.(string))
 	userid, _ := UserID.(int)
-	fmt.Printf("UserID: %+v, userid: %i\n", UserID, userid)
+	fmt.Printf("UserID: %+v, userid: %d\n", UserID, userid)
 	if r.HandleCheck(userid, args.Handle) {
 		msg := "Same Handle used : " + args.Handle
 		return &IbanNewResponse{Status: false, Msg: &msg, Iban: nil}, nil
@@ -53,11 +53,11 @@ func (r *Resolvers) HandleCheck(userid int, handle string) bool {
 }
 
 type IbanNewMutationArgs struct {
-	Text      string
-	Description      string
-	Password  string
-	Handle    string
-	IsPrivate bool
+	Text        string
+	Description string
+	Password    string
+	Handle      string
+	IsPrivate   bool
 }
 
 // IbanNewResponse is the response type

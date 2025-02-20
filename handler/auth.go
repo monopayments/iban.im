@@ -32,6 +32,7 @@ func Authenticate(h http.Handler) http.Handler {
 }
 
 func validateAuthHeader(ctx context.Context, r *http.Request) (*string, error) {
+	_ = ctx //Added to show temporarily used.
 	fmt.Println("inside validate auth header")
 	tokenString := r.Header.Get("Authorization")
 	if tokenString == "" {
