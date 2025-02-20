@@ -5,7 +5,6 @@ go 1.16
 replace github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt v3.2.0+incompatible
 
 require (
-	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/appleboy/gin-jwt/v2 v2.7.0
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/gin-gonic/gin v1.7.4
@@ -14,7 +13,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/graph-gophers/graphql-go v1.2.0
-	github.com/jinzhu/configor v1.2.1
+	github.com/jinzhu/configor v1.2.2
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/lib/pq v1.10.3 // indirect
